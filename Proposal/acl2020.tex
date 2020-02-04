@@ -15,6 +15,7 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[hyperref]{acl2020}
 \usepackage{times}
+\usepackage{tabularx}
 \usepackage{latexsym}
 \renewcommand{\UrlFont}{\ttfamily\small}
 \usepackage{microtype}
@@ -24,7 +25,7 @@
 
 \newcommand\BibTeX{B\textsc{ib}\TeX}
 
-\title{Group A: Exploration in  Neural Language Model Understanding of Idioms}
+\title{Group 1 Proposal: Exploration in  Neural Language Model Treatment of Similarity between Idioms and Non-figurative Paraphrases}
 
 \author{Daniel Campos \\
   University of Washington  \\
@@ -41,29 +42,140 @@
 \begin{document}
 \maketitle
 \section{Introduction}
-One or two paragraphs motivating primary research question / hypothesis
-● Be specific! (Not “Does BERT understand X?”.)
+There has been much work recently published that makes an attempt to understand the state-of-the-art-level successes obtained by pre-trained language models on a variety of NLP tasks. Many papers have attempted to investigate how these pre-trained language models and their deeply contextualized word embeddings, as well as earlier non-contextualized embeddings, encode various linguistic properties (see \citet{Belinkov_2019} for a detailed overview). We are interested in following in this vein of analysis to explore whether pre-trained language models are encoding semantic information about idiomatic language in their deeply contextualized embeddings that can be used to identify similarity between an idiom and a non-figurative paraphrase.
+
+\citet{bizzoni-lappin-2018-predicting} propose a new corpus for a metaphor paraphrasing task and use it to test a neural network on two classification problems, showing that their model produces results that are significantly correlated with human judgments. In addition to studies investigating how syntactic, semantic, and commonsense \citep{zhou2019evaluating} phenomenon are encoded in contextualized representations, \citet{shwartz2019pain} have presented an examination suite that includes 6 tasks related to lexical composition, and compare results on this suite for 6 different models, concluding that contextualized word representations typically perform better than static word embeddings on such tasks and that all of the models had more success on tasks related to \textit{detecting meaning shift} and more difficulty on \textit{recovering implicit meaning}. 
+
+Our interest in idioms, as multi-word expressions whose meanings cannot simply be determined by the sum of their parts, is clearly related to investigations of lexical composition, and \citet{shwartz2019pain}'s framework that uses classification tasks to test the ability of textual representations to address lexical composition will be a useful model. We propose, however, to explore whether semantic information about idioms is being captured in deep contextualized embeddings by a task more similar to the metaphor paraphrasing classification task presented in \citet{bizzoni-lappin-2018-predicting} and also to compare these findings to an intrinsic evaluation of word similarity similar to that found in \citet{Wang_2019} and \citet{van_Aken_2019}.
+
+
+
+
 \section{Methods}
-Imagine this as your actual methods section in your final paper.
-● What method will you use to address your question?
-● What data will you use?
-● Pre-existing, generate your own, …
-● How will you evaluate?
+
+\subsection{Model}
+We will use the pre-trained BERT model (BERT-base, uncased, with 12 encoder layers, 768 hidden units, and 12 attention heads) \citep{devlin2018bert}.
+
+\subsection{Idiom Paraphrase Probing Task}
+
+\vspace{5mm}
+[insert description here!]
+
+\vspace{15mm}
+
+
+
+\subsection{Comparison with Intrinsic Vector Similarity}
+
+One popular method for performing intrinsic evaluation of static word embeddings has been to examine the cosine similarity between vectors, especially in comparison with human judgments. In recent years, this method of analysis has been rightfully questioned as a means of evaluation. \citet{faruqui-etal-2016-problems} offer a particularly detailed explanation of problems with this approach, including the fact that \textit{relatedness} is often conflated with \textit{similarity}, that word vectors often capture task-specific (rather than semantic) similarity, and the fact that there hasn't been compelling evidence of correlation between the performance of word vectors on intrinsic similarity and extrinsic tasks such as paraphrasing or entailment.
+
+Despite such criticism, however, evaluation of vector similarity continues to be used as a method to investigate not only static global embeddings but also contextualized word embeddings produced by neural language models (e.g. \citet{van_Aken_2019}). \citet{huang_cho_bowman_2020} recently used vector representations of words including their surrounding contexts to attempt to automatically identify word senses from unsupervised data. \citep{ethayarajh2019contextual} measures cosine similarity between vectors in varying contexts at each layer of neural language models to conclude that `` ``much like how upper layers of LSTMs produce more task-specific
+representations (Liu et al., 2019a), upper layers of contextualizing models produce more context-specific representations" (56).
+
+ We propose using a measure of word embedding cosine similarity as a supplemental means of evaluation to accompany our idiom paraphrase extrinsic task. We hypothesize that cosine similarity between an idiom and a non-figurative paraphrase (and words used in idioms and their corresponding literal paraphrase counterparts) will be correlated with how well the linear classification model performs on the paraphrase pair.
+ 
+ \subsubsection{Vector Similarity Comparison Method}
+ 
+ We propose an experiment that will compare the cosine similarity of words used in the context of idioms with their uses in literal contexts as well as with a non-figurative paraphrase. For example, for the idiom \textit{let the cat out of the bag}, which can be paraphrased as \textit{to allow a secret to be revealed}, ``cat" can be understood figuratively as ``secret". To explore whether the word embedding for ``cat" in the context of the idiom seems to be capturing similar information for the word embedding(s) for ``secret" in its general word sense, we will do the following steps. 
+ 
+ We will take a set of (at least 10) sentences that use the word ``cat".  Only one of these sentences will contain the idiom usage of \textit{let the cat out of the bag}, and all of the others will be the most common literal sense of ``cat." We will also take a set of (at least 10) sentences that contain the word ``secret," in its dominant literal usage (that corresponds to its usage in the paraphrase \textit{to allow a secret to be revealed}). 
+ 
+ Next, we will use the HuggingFace Transformers library \citep{wolf2019huggingfaces} to tokenize, prepare, and feed each of the sentences as input into the pre-trained BERT model and to extract word embeddings for the indexes that correspond to ``cat" and ``secret" in each sentence respectively. Per \citep{ethayarajh2019contextual}'s findings that upper layers of neural language models tend to produce more context specific embeddings, we will likely take only the embedding from the last layer or an average across the embeddings from the last few layers.
+ 
+ We will then perform pairwise comparisons of the cosine similarity between the various usages. We will calculate the average cosine similarity between all of the literal-context usages of ``cat" and every word-embedding for ``secret", and compare this with the averaged cosine similarity score for the figurative use of ``cat" with all of the  word embeddings representing ``secret." We will also compare the average cosine similarity between all of the literal usage word embeddings for ``cat" with the average cosine similarity for the idiom usage of ``cat" and each literal usage.
+ 
+ Finally, we will also calculate the cosine similarity between the full sentence embedding representing the sentence containing the idiom and a sentence that is a literal paraphrase. These sentence pairs will be the same ones used in our idiom paraphrase probing task, and we will use them (as well as our word-specific embedding investigations) to try to see if there seems to be a correlation between vector cosine similarity scores and the classification performance.
+
+\subsection{Datasets}
+Exploration of available datasets so far has not yielded anything precisely in line with what we are looking to use, and so we expect to have to primarily construct our own datasets. We anticipate that this will take a non-trivial amount of work, and we intend to be attentive to the issues raised in \citep{niven2019probing} and \citep{mccoy2019right}, which show how unintentionally biased datasets can lead to inflated performance.
+
+\subsection{Dataset for Idiom Paraphrase Probing Task}
+\vspace{5mm}
+[insert description here!]
+
+\vspace{15mm}
+
+
+\subsection{Dataset for Word Embedding Cosine Similarity Comparison}
+As discussed in 2.3.1 above, we also have a specific dataset in mind that will overlap some with, but not be identical to the data used in our probing task. We anticipate having to generate this dataset ourselves and will make it public. We will start by identifying at least 50 commonly used English idioms and use each in a sentence. This idiom-containing-sentence and a paraphrase of it will be part of the data we include in the probing task. Then we will also need to generate a set of sentences that use a key word from the idiom in a literal manner, and a set of sentences the contain the corresponding paraphrased key word in typical usage. We will likely use a large free online corpus, such as the British National Corpus or the Corpus of Contemporary American English to help generate these sentences lists.
+
+\subsection{Evaluation}
+
+
+\vspace{5mm}
+[insert description here!]
+
+\vspace{15mm}
+
+
+
+
+
+
 \section{Possible Results}
-● No actual results, but:
-● What are the possible outcomes of your experiment?
-● What would each outcome show? How would you interpret it?
-\section{Division of labor + timeline}
-Make a list:
-● each task that needs to be accomplished
-● Who (can be >1!) will be primarily responsible for it
-● Rough estimate of deadline for that step
-● Keep in mind: things will change, not go as linearly as planned. But thinking
-about these things in advance will help!
-● Firm deadlines:
-● Presentations of results (mini conference): March 12, last day of class
-● Final paper: March 15
-● Write concurrently with making presentation
+\vspace{5mm}
+[insert description here!]
+
+\vspace{15mm}
+
+
+
+
+
+\section{Division of labor + Timeline}
+Our goal is to have a solid concept of our experiment as well as a robust dataset finalized by 2/20 so that we will have at least two full weeks to run the experiments, perform analysis, and write our paper with results. In the table below is our detailed plan for timeline and division of labor.
+
+\clearpage
+
+\begin{tabularx}{1.01\textwidth} { 
+  | >{\raggedright\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\raggedleft\arraybackslash}X | }
+ \hline
+ \textbf{Task} & \textbf{Description} & \textbf{Due Date}  & \textbf{People} \\
+ \hline
+ Experimental design  &  Concretely design our experiments, and decide high level aspects of datasets
+ & {first draft 2/6 \newline
+ tentative final draft 2/13} & Josh, Paige, Elena \\
+  \hline
+ Detailed dataset design  & Decide how to generate our data (write vs fetch \newline \& filter) and what linguistic rules to apply generating 
+ it
+  & outline by 2/13 & Elena, Daniel, Josh \\
+      \hline
+ Data discovery\// processing\// generation  & Produce\//generate data according to dataset design
+  & tentative final dataset by 2/20 & Elena, Daniel \\
+  
+      \hline
+Experiment implementation\// running & Write code to read in data, train the diagnostic classifier, do vector space similarity measures for word embeddings, and produce accuracy results (potentially for multiple different base NNs)
+
+  &  implementation by 2/20 \newline \newline
+  training, testing, and accuracy results by 2/23 & Josh, Daniel \\
+  
+   \hline
+ Data analysis & Analyze results from experiment
+  &  2/27 & Paige, Wes \\
+    
+   \hline
+ Paper writing & Write paper, including results and analysis
+  &  3/5 & Paige, Wes \\
+   \hline
+Special Topic Presentation & Speaker
+  &  2/20 & Wes + ?? \\
+     \hline
+Colloquium Presentation
+ & Speaker
+  &  3/12 & Elena + ?? \\
+  
+  
+
+\hline
+\end{tabularx}
+
+\clearpage
+
 \bibliography{anthology,acl2020}
 \bibliographystyle{acl_natbib}
+
+
 \end{document}
