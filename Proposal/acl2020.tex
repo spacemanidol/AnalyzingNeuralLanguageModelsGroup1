@@ -49,6 +49,8 @@ Some details of this task may depend on data availability and dataset choices, b
 
 \comment{I included metaphors here; we can drop that if necessary. This section also needs expansion and citation of other relevant work, ideally.}
 
+\comment{Compare classification accuracy to human annotators. As a stretch goal, potentially compare classification accuracy on idiom/literal sentences with classification accuracy on literal/literal sentences.}
+
 \vspace{5mm}
 [insert description here!]
 
@@ -67,9 +69,9 @@ representations (Liu et al., 2019a), upper layers of contextualizing models prod
  
  \subsubsection{Vector Similarity Comparison Method}
  
- We propose an experiment that will compare the cosine similarity of words used in the context of idioms with their uses in literal contexts as well as with a non-figurative paraphrase. For example, for the idiom \textit{let the cat out of the bag}, which can be paraphrased as \textit{to allow a secret to be revealed}, ``cat" can be understood figuratively as ``secret". To explore whether the word embedding for ``cat" in the context of the idiom seems to be capturing similar information for the word embedding(s) for ``secret" in its general word sense, we will do the following steps. 
+ We propose an experiment that will compare the cosine similarity of word embeddings generated from words used in the context of idioms with those generated from their uses in literal contexts as well as with a non-figurative paraphrase. For example, for the idiom \textit{let the cat out of the bag}, which can be paraphrased as \textit{to allow a secret to be revealed}, ``cat" can be understood figuratively as ``secret". To explore whether the word embedding for ``cat" in the context of the idiom seems to be capturing similar information for the word embedding(s) for ``secret" in its general word sense, we will do the following steps. 
  
- We will take a set of (at least 10) sentences that use the word ``cat".  Only one of these sentences will contain the idiom usage of \textit{let the cat out of the bag}, and all of the others will be the most common literal sense of ``cat." We will also take a set of (at least 10) sentences that contain the word ``secret," in its dominant literal usage (that corresponds to its usage in the paraphrase \textit{to allow a secret to be revealed}). 
+ We will take a set of (at least 10) sentences that use the word ``cat."  Only one of these sentences will contain the idiom usage of \textit{let the cat out of the bag}, and all of the others will be the most common literal sense of ``cat." We will also take a set of (at least 10) sentences that contain the word ``secret," in its dominant literal usage (that corresponds to its usage in the paraphrase \textit{to allow a secret to be revealed}). 
  
  Next, we will use the HuggingFace Transformers library \citep{wolf2019huggingfaces} to tokenize, prepare, and feed each of the sentences as input into the pre-trained BERT model and to extract word embeddings for the indexes that correspond to ``cat" and ``secret" in each sentence respectively. Per \citep{ethayarajh2019contextual}'s findings that upper layers of neural language models tend to produce more context specific embeddings, we will likely take only the embedding from the last layer or an average across the embeddings from the last few layers.
  
@@ -80,7 +82,7 @@ representations (Liu et al., 2019a), upper layers of contextualizing models prod
 \subsection{Datasets}
 Exploration of available datasets so far has not yielded anything precisely in line with what we are looking to use, and so we expect to have to primarily construct our own datasets. We anticipate that this will take a non-trivial amount of work, and we intend to be attentive to the issues raised in \citep{niven2019probing} and \citep{mccoy2019right}, which show how unintentionally biased datasets can lead to inflated performance.
 
-\subsection{Dataset for Idiom Paraphrase Probing Task}
+\subsubsection{Dataset for Idiom Paraphrase Probing Task}
 \vspace{5mm}
 Realistically, our dataset is likely to be a mix of pre-existing data and examples we produce ourselves. We have not settled on a final plan for generation of our data, and we expect that out how to generate the precise data that we want without introducing the opportunity for the biases discussed above to develop may represent the most substantial challenge in this experiment. That said, we have several candidates approaches we intend to explore.
 
@@ -93,19 +95,8 @@ We may also be able to reuse existing datasets (such as the data used in \cite{b
 \vspace{15mm}
 
 
-\subsection{Dataset for Word Embedding Cosine Similarity Comparison}
+\subsubsection{Dataset for Vector Similarity Comparison}
 As discussed in 2.3.1 above, we also have a specific dataset in mind that will overlap some with, but not be identical to the data used in our probing task. We anticipate having to generate this dataset ourselves and will make it public. We will start by identifying at least 50 commonly used English idioms and use each in a sentence. This idiom-containing-sentence and a paraphrase of it will be part of the data we include in the probing task. Then we will also need to generate a set of sentences that use a key word from the idiom in a literal manner, and a set of sentences the contain the corresponding paraphrased key word in typical usage. We will likely use a large free online corpus, such as the British National Corpus or the Corpus of Contemporary American English to help generate these sentences lists.
-
-\subsection{Evaluation}
-
-\subsection{Idiom Paraphrase Probing}
-\comment{Compare classification accuracy to human annotators. As a stretch goal, potentially compare classification accuracy on idiom/literal sentences with classification accuracy on literal/literal sentences.}
-
-\subsection{Vector Similarity}
-\vspace{5mm}
-[insert description here!]
-
-\vspace{15mm}
 
 
 
@@ -113,9 +104,17 @@ As discussed in 2.3.1 above, we also have a specific dataset in mind that will o
 
 
 \section{Possible Results}
-\comment{arg1}
-\vspace{5mm}
+
+\subsection{Idiom Paraphrase Probing}
 [insert description here!]
+
+\subsection{Vector Similarity Comparison}
+One possible outcome is that when we compare the average cosine similarity between the word embedding for the usage of the word used figuratively in the context of an idiom with the similar paraphrased word (e.g. ``cat" in the context of ``let the cat out of the bag" with a paraphrase like ``secret")  it will be substantially higher than the average cosine similarity for the word in its common literal use (e.g. ``cat" in sentences such as ``the cat was on the roof"). If this is the case, we believe it is evidence that the word embeddings are capturing some semantic information about the idiomatic meaning of the word in context. 
+
+Secondly, if we do observe such a pattern of higher cosine similarity between figurative word use in idioms and their paraphrase correlates, then we may be able to draw some further conclusions based on comparison with the results from our probing task. Specifically, if we find that idiom/paraphrase pairs where the cosine similarity is higher also tend to be predicted more accurately in the classification task, we believe this correlation would be evidence that vector cosine similarity in this context is a potentially useful intrinsic proxy for predicting downstream performance or, at least, that it suggests that the relationship between vector cosine similarity and paraphrase task performance deserves deeper analysis. 
+
+If, on the other hand, we observe no meaningful increase in cosine similarity between words used in idioms over their literal usages when each is compared with the paraphrased word---but the idiom paraphrase probing task has high enough accuracy to suggest that something about idiom usage is being captured in these word embeddings---then we will take this as evidence that vector cosine similarity is not a useful measure of contextual semantic correlation.
+
 
 \vspace{15mm}
 
@@ -151,7 +150,7 @@ Our goal is to have a solid concept of our experiment as well as a robust datase
 Experiment implementation\// running & Write code to read in data, train the diagnostic classifier, do vector space similarity measures for word embeddings, and produce accuracy results (potentially for multiple different base NNs)
 
   &  implementation by 2/20 \newline \newline
-  training, testing, and accuracy results by 2/23 & Josh, Daniel \\
+  training, testing, and accuracy results by 2/23 & Josh, Daniel, Paige \\
   
    \hline
  Data analysis & Analyze results from experiment
@@ -162,7 +161,7 @@ Experiment implementation\// running & Write code to read in data, train the dia
   &  3/5 & Paige, Wes \\
    \hline
 Special Topic Presentation & Speaker
-  &  2/20 & Wes + ?? \\
+  &  2/20 & Wes, Daniel \\
      \hline
 Colloquium Presentation
  & Speaker
