@@ -1,8 +1,71 @@
 \bibliography{anthology,acl2020}
 \bibliographystyle{acl_natbib}
-
-
-
+@misc{mikolov2013distributed,
+    title={Distributed Representations of Words and Phrases and their Compositionality},
+    author={Tomas Mikolov and Ilya Sutskever and Kai Chen and Greg Corrado and Jeffrey Dean},
+    year={2013},
+    eprint={1310.4546},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL}
+}
+@inproceedings{Pennington2014GloveGV,
+  title={Glove: Global Vectors for Word Representation},
+  author={Jeffrey Pennington and Richard Socher and Christopher D. Manning},
+  booktitle={EMNLP},
+  year={2014}
+}
+@article{Peters2018DeepCW,
+  title={Deep contextualized word representations},
+  author={Matthew E. Peters and Mark Neumann and Mohit Iyyer and Matt Gardner and Christopher Clark and Kenton Lee and Luke Zettlemoyer},
+  journal={ArXiv},
+  year={2018},
+  volume={abs/1802.05365}
+}
+@inproceedings{Radford2018ImprovingLU,
+  title={Improving Language Understanding by Generative Pre-Training},
+  author={Alec Radford},
+  year={2018}
+}
+@inproceedings{Devlin2019BERTPO,
+  title={BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  author={Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
+  booktitle={NAACL-HLT},
+  year={2019}
+}
+@misc{devlin2018bert,
+    title={BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+    author={Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
+    year={2018},
+    eprint={1810.04805},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL}
+}
+@inproceedings{Wang2018GLUEAM,
+  title={GLUE: A Multi-Task Benchmark and Analysis Platform for Natural Language Understanding},
+  author={Alex Wang and Amanpreet Singh and Julian Michael and Felix Hill and Omer Levy and Samuel R. Bowman},
+  booktitle={BlackboxNLP@EMNLP},
+  year={2018}
+}
+@inproceedings{Rajpurkar2016SQuAD10,
+  title={SQuAD: 100, 000+ Questions for Machine Comprehension of Text},
+  author={Pranav Rajpurkar and Jian Zhang and Konstantin Lopyrev and Percy Liang},
+  booktitle={EMNLP},
+  year={2016}
+}
+@article{Bowman2015ALA,
+  title={A large annotated corpus for learning natural language inference},
+  author={Samuel R. Bowman and Gabor Angeli and Christopher Potts and Christopher D. Manning},
+  journal={ArXiv},
+  year={2015},
+  volume={abs/1508.05326}
+}
+@article{Straka2019EvaluatingCE,
+  title={Evaluating Contextualized Embeddings on 54 Languages in POS Tagging, Lemmatization and Dependency Parsing},
+  author={Milan Straka and Jana Strakov{\'a} and Jan Hajic},
+  journal={ArXiv},
+  year={2019},
+  volume={abs/1908.07448}
+}
 @article{Belinkov_2019,
 author = {Belinkov, Yonatan and Glass, James},
 title = {Analysis Methods in Neural Language Processing: A Survey},
@@ -21,26 +84,19 @@ eprint = {
         https://doi.org/10.1162/tacl_a_00254
     
 }
-,
-    abstract = { The field of natural language processing has seen impressive progress in recent years, with neural network models replacing many of the traditional systems. A plethora of new models have been proposed, many of which are thought to be opaque compared to their feature-rich counterparts. This has led researchers to analyze, interpret, and evaluate neural networks in novel and more fine-grained ways. In this survey paper, we review analysis methods in neural language processing, categorize them according to prominent research trends, highlight existing limitations, and point to potential directions for future work. }
 }
-
-
-@inproceedings{bizzoni-lappin-2018-predicting,
-    title = "Predicting Human Metaphor Paraphrase Judgments with Deep Neural Networks",
-    author = {Bizzoni, Yuri  and
-      Lappin, Shalom},
-    booktitle = "Proceedings of the Workshop on Figurative Language Processing",
-    month = jun,
-    year = "2018",
-    address = "New Orleans, Louisiana",
-    publisher = "Association for Computational Linguistics",
-    url = "https://www.aclweb.org/anthology/W18-0906",
-    doi = "10.18653/v1/W18-0906",
-    pages = "45--55",
-    abstract = "We propose a new annotated corpus for metaphor interpretation by paraphrase, and a novel DNN model for performing this task. Our corpus consists of 200 sets of 5 sentences, with each set containing one reference metaphorical sentence, and four ranked candidate paraphrases. Our model is trained for a binary classification of paraphrase candidates, and then used to predict graded paraphrase acceptability. It reaches an encouraging 75{\%} accuracy on the binary classification task, and high Pearson (.75) and Spearman (.68) correlations on the gradient judgment prediction task.",
+@inproceedings{Jochim2018SLIDEA,
+  title={SLIDE - a Sentiment Lexicon of Common Idioms},
+  author={Charles Jochim and Francesca Bonin and Roy Bar-Haim and Noam Slonim},
+  booktitle={LREC},
+  year={2018}
 }
-
+@inproceedings{Carmona2018BehaviorAO,
+  title={Behavior Analysis of NLI Models: Uncovering the Influence of Three Factors on Robustness},
+  author={Vicente Iv{\'a}n S{\'a}nchez Carmona and Jeff Mitchell and Sebastian Riedel},
+  booktitle={NAACL-HLT},
+  year={2018}
+}
 @misc{shwartz2019pain,
     title={Still a Pain in the Neck: Evaluating Text Representations on Lexical Composition},
     author={Vered Shwartz and Ido Dagan},
@@ -49,7 +105,6 @@ eprint = {
     archivePrefix={arXiv},
     primaryClass={cs.CL}
 }
-
 @article{van_Aken_2019,
    title={How Does BERT Answer Questions?},
    ISBN={9781450369763},
@@ -60,8 +115,6 @@ eprint = {
    author={van Aken, Betty and Winter, Benjamin and Löser, Alexander and Gers, Felix A.},
    year={2019}
 }
-
-
 @article{Wang_2019,
    title={Evaluating word embedding models: methods and experimental results},
    volume={8},
@@ -73,14 +126,7 @@ eprint = {
    author={Wang, Bin and Wang, Angela and Chen, Fenxiao and Wang, Yuncheng and Kuo, C.-C. Jay},
    year={2019}
 }
-
-
 @article{wang_wang_chen_wang_kuo_2019, title={Evaluating word embedding models: methods and experimental results}, volume={8}, DOI={10.1017/ATSIP.2019.12}, journal={APSIPA Transactions on Signal and Information Processing}, publisher={Cambridge University Press}, author={Wang, Bin and Wang, Angela and Chen, Fenxiao and Wang, Yuncheng and Kuo, C.-C. Jay}, year={2019}, pages={e19}}
-
-
-
-
-
 @misc{zhou2019evaluating,
     title={Evaluating Commonsense in Pre-trained Language Models},
     author={Zhou, Xuhui and Zhang, Yue and Cui, Leyang and Huang, Dandan },
@@ -89,34 +135,7 @@ eprint = {
     archivePrefix={arXiv},
     primaryClass={cs.CL}
 }
-
-@misc{devlin2018bert,
-    title={BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
-    author={Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
-    year={2018},
-    eprint={1810.04805},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
-}
-
 @misc{huang_cho_bowman_2020, title={Can we identify word senses from deep contextualized word embeddings without supervision?}, url={https://medium.com/@leslie_huang/automatic-extraction-of-word-senses-from-deep-contextualized-word-embeddings-2f09f16e820}, journal={Medium}, author={Huang, Leslie and Cho, Kyunghyun and Bowman, Sam}, year={2020}, month={Jan}}
-
-@inproceedings{faruqui-etal-2016-problems,
-    title = "Problems With Evaluation of Word Embeddings Using Word Similarity Tasks",
-    author = "Faruqui, Manaal  and
-      Tsvetkov, Yulia  and
-      Rastogi, Pushpendre  and
-      Dyer, Chris",
-    booktitle = "Proceedings of the 1st Workshop on Evaluating Vector-Space Representations for {NLP}",
-    month = aug,
-    year = "2016",
-    address = "Berlin, Germany",
-    publisher = "Association for Computational Linguistics",
-    url = "https://www.aclweb.org/anthology/W16-2506",
-    doi = "10.18653/v1/W16-2506",
-    pages = "30--35",
-}
-
 @misc{ethayarajh2019contextual,
     title={How Contextual are Contextualized Word Representations? Comparing the Geometry of BERT, ELMo, and GPT-2 Embeddings},
     author={Kawin Ethayarajh},
@@ -125,7 +144,6 @@ eprint = {
     archivePrefix={arXiv},
     primaryClass={cs.CL}
 }
-
 @misc{wolf2019huggingfaces,
     title={HuggingFace's Transformers: State-of-the-art Natural Language Processing},
     author={Thomas Wolf and Lysandre Debut and Victor Sanh and Julien Chaumond and Clement Delangue and Anthony Moi and Pierric Cistac and Tim Rault and Rémi Louf and Morgan Funtowicz and Jamie Brew},
@@ -134,7 +152,6 @@ eprint = {
     archivePrefix={arXiv},
     primaryClass={cs.CL}
 }
-
 @misc{mccoy2019right,
     title={Right for the Wrong Reasons: Diagnosing Syntactic Heuristics in Natural Language Inference},
     author={R. Thomas McCoy and Ellie Pavlick and Tal Linzen},
@@ -143,7 +160,6 @@ eprint = {
     archivePrefix={arXiv},
     primaryClass={cs.CL}
 }
-
 @misc{niven2019probing,
     title={Probing Neural Network Comprehension of Natural Language Arguments},
     author={Timothy Niven and Hung-Yu Kao},
