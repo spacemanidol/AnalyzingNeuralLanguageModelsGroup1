@@ -1,4 +1,5 @@
 # data
+.vscode/
 RC_2011-08
 data/*
 # Build and Release Folders
