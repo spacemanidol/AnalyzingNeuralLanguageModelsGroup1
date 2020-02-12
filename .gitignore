@@ -1,4 +1,5 @@
 # data
+*/.cache/
 .vscode/
 RC_2011-08
 data/*
