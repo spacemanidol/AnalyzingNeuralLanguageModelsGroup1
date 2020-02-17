@@ -41,6 +41,33 @@ class Dataset(ABC):
                 for tensor, indices in ((x.sentence.transpose(0, 1), x.index)
                 for x in data.BucketIterator(encoded_data, batch_size, sort_key=lambda x: len(x.sentence))))
 
+
+    @staticmethod
+    def aggregate_data(sentences, batch_sentences, indices, batch_indices, inputs, batch_inputs):
+        # padding solution is pretty hacky and probably not the most space efficient, but it works for what
+        # we want to do
+        if sentences is None and indices is None and inputs is None:
+            sentences = batch_sentences
+            indices = batch_indices
+            inputs = batch_inputs
+        else:
+            indices = torch.cat((indices, batch_indices))
+            if sentences.shape[1] > batch_sentences.shape[1]:
+                #existing tensor is bigger, pad inputs
+                batch_sentences = torch.nn.functional.pad(batch_sentences,
+                                                          (0, 0, 0, sentences.shape[1] - batch_sentences.shape[1]))
+                batch_inputs = torch.nn.functional.pad(batch_inputs, (0, inputs.shape[1] - batch_inputs.shape[1]))
+            elif sentences.shape[1] < batch_sentences.shape[1]:
+                #inputs are bigger, pad existing
+                sentences = torch.nn.functional.pad(sentences,
+                                                          (0, 0, 0, batch_sentences.shape[1] - sentences.shape[1]))
+                inputs = torch.nn.functional.pad(inputs, (0, batch_inputs.shape[1] - inputs.shape[1]))
+
+            sentences = torch.cat((sentences, batch_sentences))
+            inputs = torch.cat((inputs, batch_inputs))
+
+        return sentences, indices, inputs
+
     def bert_word_embeddings(self, bert_model, encoded_data, batch_size):
         sentences = None
         indices = None
@@ -49,10 +76,11 @@ class Dataset(ABC):
             with torch.no_grad():
                 out = bert_model(**batch)[0]
                 batch_inputs = batch['input_ids']
-                #TODO: can't just cat sentences (or probably inputs) as different batches will have different dimensions
-                sentences = out if sentences is None else torch.cat((sentences, out))
-                indices = batch_indices if indices is None else torch.cat((indices, batch_indices))
-                inputs = batch_inputs if inputs is None else torch.cat((inputs, batch_inputs))
+                sentences, indices, inputs = self.aggregate_data(sentences, out, indices, batch_indices,
+                                                                 inputs, batch_inputs)
+
+            print('processed {}/{} sentences, current max sentence length {}'
+                  .format(sentences.shape[0], len(encoded_data), sentences.shape[1]))
 
         return self.reorder(sentences, inputs, indices)
 
