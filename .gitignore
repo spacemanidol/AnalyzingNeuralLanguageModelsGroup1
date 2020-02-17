@@ -3,6 +3,8 @@
 .vscode/
 RC_2011-08
 data/*
+probe/*.txt
+.idea/*
 # Build and Release Folders
 bin-debug/
 bin-release/

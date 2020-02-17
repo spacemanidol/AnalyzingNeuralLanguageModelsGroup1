@@ -45,13 +45,14 @@ class Dataset(ABC):
         sentences = None
         indices = None
         inputs = None
-        for batch, ids in tqdm(self.bert_iter(encoded_data, batch_size), desc="Feature extraction"):
+        for batch, batch_indices in tqdm(self.bert_iter(encoded_data, batch_size), desc="Feature extraction"):
             with torch.no_grad():
                 out = bert_model(**batch)[0]
-                mask = batch['input_ids']
-                sentences = out if not sentences else torch.cat((sentences, out))
-                indices = ids if not indices else torch.cat((indices, ids))
-                inputs = mask if not inputs else torch.cat((inputs, mask))
+                batch_inputs = batch['input_ids']
+                #TODO: can't just cat sentences (or probably inputs) as different batches will have different dimensions
+                sentences = out if sentences is None else torch.cat((sentences, out))
+                indices = batch_indices if indices is None else torch.cat((indices, batch_indices))
+                inputs = batch_inputs if inputs is None else torch.cat((inputs, batch_inputs))
 
         return self.reorder(sentences, inputs, indices)
 
@@ -128,7 +129,7 @@ class ParaphraseDataset(Dataset):
             path=self.filename,
             format="tsv",  skip_header=True,
             fields=field_array,
-            csv_reader_params={'strict': True}
+            csv_reader_params={'strict': True, 'quotechar':None}
         )
 
     # take X examples of sentence pairs and convert them into 2X rows of encoded single sentences with pair IDS so they
@@ -180,7 +181,7 @@ class WordInspectionDataset(Dataset):
             path=self.filename,
             format="tsv",  skip_header=True,
             fields=fields,
-            csv_reader_params={'strict': True}
+            csv_reader_params={'strict': True, 'quotechar': None}
         )
 
     def __compute_encoded(self):
