@@ -1,103 +1,192 @@
 import torch
-import numpy as np
-import codecs
-from torch.utils.data import ConcatDataset
+from functools import reduce
 from torchtext import data
 from tqdm.autonotebook import tqdm
+from abc import ABC, abstractmethod
 
 #TODO: download the data if it's not here
 MSRP_URLS = ['https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_train.txt',
              'https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_test.txt']
 
 
-def load_paraphrase_data(filename, tokenizer, indices=(0, 1, 2), csv_reader_params=None):
-    if csv_reader_params is None:
-        csv_reader_params = {'strict': True}
+class Dataset(ABC):
+    def get_data(self):
+        if self.data is None:
+            self.load()
 
-    pad_index = tokenizer.convert_tokens_to_ids(tokenizer.pad_token)
-    sentence_field = data.Field(use_vocab=False,
-            tokenize=lambda x: tokenizer.encode(x, add_special_tokens=True), pad_token=pad_index)
-    label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
+        return self.data
 
-    field_array = [('unused', None)] * (max(indices) + 1)
-    field_array[indices[0]] = ("label", label_field)
-    field_array[indices[1]] = ("sentence_1", sentence_field)
-    field_array[indices[2]] = ("sentence_2", sentence_field)
-
-    paraphrases = data.TabularDataset(
-        path=filename,
-        format="tsv",  skip_header=True,
-        fields=field_array,
-        csv_reader_params=csv_reader_params
-    )
-
-    return paraphrases, sentence_field
-
-# take X examples of sentence pairs and conver them into 2X rows of single sentences with pair IDS so they can be
-# processed separately
-def flatten_data_for_feature_extraction(paraphrase_data, sentence_field):
-    fields = [('sentence', sentence_field), ('pair_id', data.LabelField(use_vocab=False))]
-    return data.Dataset(
-        [data.Example.fromlist([row.sentence_1, [index, 0]], fields) for index, row in enumerate(paraphrase_data)] +
-        [data.Example.fromlist([row.sentence_2, [index, 1]], fields) for index, row in enumerate(paraphrase_data)],
-        fields)
-
-# take a tensor of shape [sentence count] x [sentence length] x [embedding length] and return a tensor of shape
-# [sentence count] x [embedding length] by aggregating all included word embeddings into a single sentence embedding
-# inclusion_matrix allows us to specify embeddings that we don't want aggregated (such as those that are generated
-# from padding tokens). for Bert, we expect this to be the attention mask
-def aggregate_sentence_embeddings(embeddings_matrix, inclusion_matrix=None, aggregation_metric=torch.mean):
-    if inclusion_matrix is None:
-        inclusion_matrix = torch.ones(embeddings_matrix.shape[0], embeddings_matrix.shape[1])
-
-    selection_matrix = inclusion_matrix.type(torch.BoolTensor)
-    return torch.stack([
-        aggregation_metric(sentence_row[selection_matrix[row_index]], axis=0)
-        for row_index, sentence_row in enumerate(embeddings_matrix)
-    ])
-
-# unshuffle the sentence pairs and return a tensor of shape [pair counnt] x [2] x [embedding size]
-def recover_sentence_pairs(sentence_embeddings, pair_ids):
-    pairs = torch.zeros([sentence_embeddings.shape[0] // 2, 2, sentence_embeddings.shape[1]])
-    for index, pair_id in enumerate(pair_ids):
-        pairs[tuple(pair_id)] = sentence_embeddings[index]
-    return pairs
-
-# takes pairs of sentences from recover_sentence_pairs and combines them
-def combine_sentence_embeddings(sentence_embedding_pairs, combination_metric=torch.sub):
-    return torch.stack([combination_metric(pair[0], pair[1]) for pair in sentence_embedding_pairs])
+    def __init__(self, filename, tokenizer):
+        self.filename = filename
+        self.tokenizer = tokenizer
+        self.data = None
+        self.encoded_sentence_field = ('sentence',
+                                       data.Field(use_vocab=False, tokenize=self.encode, pad_token=self.tokenizer.pad_token_id))
+        self.index_field = ('index', data.LabelField(use_vocab=False))
+        self.encoded_fields = [self.encoded_sentence_field, self.index_field]
 
 
-def get_msrp_combined_embeddings(tokenizer, feature_extraction_model):
-    batch_size = 20
-    paraphrases_data, sentence_field = load_paraphrase_data('test_head.txt', tokenizer, indices=(0, 3, 4))
-    # labels must be floats (not ints) or the function to compute loss gags
-    labels = torch.tensor([x.label for x in paraphrases_data], dtype=torch.float32)
-    flattened_data = flatten_data_for_feature_extraction(paraphrases_data, sentence_field)
+    def encode(self, sentence):
+        return self.tokenizer.encode(sentence, add_special_tokens=True)
 
-    # BucketIterator transposes the sentence data, we have to transpose it back
-    # pair ID data does not need to be transposed (perhaps because it is one dimensional?)
-    batch_ids_iterator = (({'input_ids': tensor,
-                           'attention_mask': (tensor != 0) * 1}, pair_ids)
-                        for tensor, pair_ids in ((x.sentence.transpose(0, 1), x.pair_id)
-                        for x in data.BucketIterator(flattened_data, batch_size, sort_key=lambda x: len(x.sentence))))
+    @abstractmethod
+    def load(self):
+        raise Exception("Not implemented on for this class")
 
-    embeddings = None
-    pair_ids = None
-    attention_masks = None
-    for batch, ids in tqdm(batch_ids_iterator, desc="Feature extraction"):
-        with torch.no_grad():
-            out = feature_extraction_model(**batch)[0]
-            mask = batch['attention_mask']
-            embeddings = out if not embeddings else torch.cat((embeddings, out))
-            pair_ids = ids if not pair_ids else torch.cat((pair_ids, ids))
-            attention_masks = mask if not attention_masks else torch.cat((attention_masks, mask))
+    def bert_iter(self, encoded_data, batch_size):
+        # BucketIterator transposes the sentence data, we have to transpose it back
+        # pair ID data does not need to be transposed (perhaps because it is one dimensional?)
+        return (({'input_ids': tensor,
+                  'attention_mask': (tensor != self.tokenizer.pad_token_id) * 1}, indices)
+                for tensor, indices in ((x.sentence.transpose(0, 1), x.index)
+                for x in data.BucketIterator(encoded_data, batch_size, sort_key=lambda x: len(x.sentence))))
 
-    sentence_embeddings = aggregate_sentence_embeddings(embeddings, attention_masks)
-    pairs = recover_sentence_pairs(sentence_embeddings, pair_ids)
-    paraphrase_embeddings = combine_sentence_embeddings(pairs)
+    def bert_word_embeddings(self, bert_model, encoded_data, batch_size):
+        sentences = None
+        indices = None
+        inputs = None
+        for batch, ids in tqdm(self.bert_iter(encoded_data, batch_size), desc="Feature extraction"):
+            with torch.no_grad():
+                out = bert_model(**batch)[0]
+                mask = batch['input_ids']
+                sentences = out if not sentences else torch.cat((sentences, out))
+                indices = ids if not indices else torch.cat((indices, ids))
+                inputs = mask if not inputs else torch.cat((inputs, mask))
 
-    return paraphrase_embeddings, labels
+        return self.reorder(sentences, inputs, indices)
 
+    @staticmethod
+    def reorder(sentences, inputs, indices):
+        if len(indices.shape) > 1:
+            grouping_length = indices.shape[1]
+            # dealing with a grouping of sentences, like pairs
+            ordered_sentences = torch.zeros([sentences.shape[0] // grouping_length, grouping_length,
+                                             sentences.shape[1], sentences.shape[2]])
+            ordered_inputs = torch.zeros(inputs.shape[0] // grouping_length, grouping_length, inputs.shape[1])
+            indices = [tuple(x) for x in indices]
+            ordered_indices = sorted(indices)
+        else:
+            ordered_sentences = torch.zeros(sentences.shape)
+            ordered_inputs = torch.zeros(inputs.shape)
+            ordered_indices = range(0, sentences.shape[0])
+
+        for current_index, original_index in enumerate(indices):
+            ordered_sentences[original_index] = sentences[current_index]
+            ordered_inputs[original_index] = inputs[current_index]
+
+        return ordered_sentences, ordered_inputs, ordered_indices
+
+
+    def aggregate_sentence_embeddings(self, ordered_sentences, ordered_inputs, ordered_indices,
+                                      aggregation_metric=torch.mean):
+        selection_matrix = reduce(lambda x,y: x & y, (ordered_inputs != x for x in self.tokenizer.all_special_ids))
+
+        output_dimensions = list(ordered_sentences.shape)
+        del output_dimensions[-2] # remove the second last to dimensions, which is the token count
+        output = torch.zeros(torch.Size(output_dimensions))
+
+        for index in ordered_indices:
+            output[index] = aggregation_metric(ordered_sentences[index][selection_matrix[index]], axis=0)
+
+        return output
+
+
+
+# for MSR paraphrase data and our paraphrase data
+class ParaphraseDataset(Dataset):
+    def __init__(self, filename, tokenizer, indices=(0, 1, 2)):
+        super().__init__(filename, tokenizer)
+        self.flattened_encoded_data = None
+        self.encoded_data = None
+        self.labels = None
+        self.indices = indices
+
+    def get_flattened_encoded(self):
+        if self.flattened_encoded_data is None:
+            self.__compute_flattened_encoded()
+
+        return self.flattened_encoded_data
+
+    def get_labels(self):
+        if self.labels is None:
+            # labels must be floats (not ints) or the function to compute loss gags
+            self.labels = torch.tensor([x.label for x in self.get_data()], dtype=torch.float32)
+
+        return self.labels
+
+    def load(self):
+        indices = self.indices
+        tokenized_field = data.Field(use_vocab=False, tokenize=lambda x: self.tokenizer.tokenize(x))
+        label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
+
+        field_array = [('unused', None)] * (max(indices) + 1)
+        field_array[indices[0]] = ("label", label_field)
+        field_array[indices[1]] = ("sentence_1", tokenized_field)
+        field_array[indices[2]] = ("sentence_2", tokenized_field)
+
+        self.data = data.TabularDataset(
+            path=self.filename,
+            format="tsv",  skip_header=True,
+            fields=field_array,
+            csv_reader_params={'strict': True}
+        )
+
+    # take X examples of sentence pairs and convert them into 2X rows of encoded single sentences with pair IDS so they
+    # can be processed separately by bert
+    def __compute_flattened_encoded(self):
+        paraphrase_data = self.get_data()
+        self.flattened_encoded_data =  data.Dataset(
+            [data.Example.fromlist([self.encode(row.sentence_1), [index, 0]], self.encoded_fields) for index, row in
+             enumerate(paraphrase_data)] +
+            [data.Example.fromlist([self.encode(row.sentence_2), [index, 1]], self.encoded_fields) for index, row in
+             enumerate(paraphrase_data)],
+            self.encoded_fields)
+
+    @staticmethod
+    def combine_sentence_embeddings(sentence_embedding_pairs, combination_metric=torch.sub):
+        return torch.stack([combination_metric(pair[0], pair[1]) for pair in sentence_embedding_pairs])
+
+
+# for Paige's word vector similarity
+class WordInspectionDataset(Dataset):
+    def __init__(self, filename, tokenizer):
+        super().__init__(filename, tokenizer)
+        self.data = None
+        self.encoded_data = None
+
+    def get_data(self):
+        if self.data is None:
+            self.load()
+
+        return self.data
+
+    def get_encoded(self):
+        if self.encoded_data is None:
+            self.__compute_encoded()
+
+        return self.encoded_data
+
+    def load(self):
+        tokenized_field = data.Field(use_vocab=False, tokenize=lambda x: self.tokenizer.tokenize(x))
+        label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
+        fields = [
+            ('sentence_id', label_field),
+            ('pair_id', label_field),
+            ('sentence', tokenized_field),
+            ('word', tokenized_field)
+        ]
+
+        self.data = data.TabularDataset(
+            path=self.filename,
+            format="tsv",  skip_header=True,
+            fields=fields,
+            csv_reader_params={'strict': True}
+        )
+
+    def __compute_encoded(self):
+        self.encoded_data = data.Dataset(
+            [data.Example.fromlist([self.encode(row.sentence), index], self.encoded_fields) for index, row in
+             enumerate(self.get_data())],
+            self.encoded_fields)
 
 
