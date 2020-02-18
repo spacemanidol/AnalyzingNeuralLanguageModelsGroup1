@@ -2,8 +2,7 @@ from transformers import BertTokenizer, BertModel
 from torch.autograd import Variable
 import torch
 from load_data import ParaphraseDataset
-import numpy as np
-
+import sys
 #TODO: this file is mostly still just testcode, please take with a grain of salt
 
 class LinearRegression(torch.nn.Module):
@@ -17,12 +16,13 @@ class LinearRegression(torch.nn.Module):
 
 
 
-def run_probe():
+def train_probe():
     tokenizer = BertTokenizer.from_pretrained("bert-large-uncased", do_lower_case=True)
     feature_extraction_model = BertModel.from_pretrained('bert-large-uncased')
 
     batch_size = 128
-    msr_train = ParaphraseDataset('msr_paraphrase_train.txt', tokenizer, indices=(0, 3, 4))
+    #msr_train = ParaphraseDataset('msr_paraphrase_train.txt', tokenizer, indices=(0, 3, 4))
+    msr_train = ParaphraseDataset('train_head_200.txt', tokenizer, indices=(0, 3, 4))
     labels = msr_train.get_labels()
     pairs, inputs, indices = msr_train.bert_word_embeddings(feature_extraction_model, msr_train.get_flattened_encoded(),
                                                             batch_size)
@@ -60,28 +60,45 @@ def run_probe():
 
     torch.save(model.state_dict(), 'test_model.pt')
 
-    msr_test = ParaphraseDataset('msr_paraphrase_train.txt', tokenizer, indices=(0, 3, 4))
+
+def test_probe():
+    tokenizer = BertTokenizer.from_pretrained("bert-large-uncased", do_lower_case=True)
+    feature_extraction_model = BertModel.from_pretrained('bert-large-uncased')
+
+    batch_size = 128
+    msr_test = ParaphraseDataset('msr_paraphrase_test.txt', tokenizer, indices=(0, 3, 4))
+    #msr_test = ParaphraseDataset('test_head_100.txt', tokenizer, indices=(0, 3, 4))
     labels = msr_test.get_labels()
     pairs, inputs, indices = msr_test.bert_word_embeddings(feature_extraction_model, msr_test.get_flattened_encoded(),
                                                             batch_size)
     paraphrase_embeddings = msr_test.combine_sentence_embeddings(msr_test.aggregate_sentence_embeddings(pairs, inputs,
                                                                                                           indices))
 
+    model = LinearRegression(paraphrase_embeddings.shape[1], 1)
+    model.load_state_dict(torch.load('msr_model.pt'))
+    model.eval()
+
     with torch.no_grad():
         inputs = Variable(paraphrase_embeddings)
         labels = Variable(labels)
 
-        # get output from the model, given the inputs
         outputs = model(inputs)
 
-        # get loss for the predicted output
-        loss = criterion(outputs, labels)
+        predicted_outputs = torch.squeeze(outputs)
 
-        print('test loss {}'.format(loss.item()))
+    total = len(predicted_outputs)
+    correct = int(torch.sum((torch.round(predicted_outputs) == labels) * 1))
+    print("{}/{} correct for an accuracy of {}".format(correct, total, correct/total))
+
 
 if __name__ == '__main__':
-    run_probe()
-
+    cmd = sys.argv[1]
+    if cmd == 'train':
+        train_probe()
+    elif cmd == 'test':
+        test_probe()
+    else:
+        raise Exception("Unknown command")
 
 
 
