@@ -202,7 +202,8 @@ class WordInspectionDataset(Dataset):
             ('sentence_id', label_field),
             ('pair_id', label_field),
             ('sentence', tokenized_field),
-            ('word', tokenized_field)
+            ('word', tokenized_field),
+            ('figurative', label_field)
         ]
 
         self.data = data.TabularDataset(
