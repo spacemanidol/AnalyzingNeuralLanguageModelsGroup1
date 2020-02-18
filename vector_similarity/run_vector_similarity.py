@@ -3,11 +3,9 @@ sys.path.append('../')
 from transformers import BertTokenizer, BertModel
 import torch
 import itertools
-from load_data import WordInspectionDataset
+from probe.load_data import WordInspectionDataset
 from scipy.spatial.distance import cosine
 from statistics import mean 
-
-
 
 def main():
     tokenizer = BertTokenizer.from_pretrained("bert-large-uncased", do_lower_case=True)
@@ -22,9 +20,8 @@ def main():
                                                               aggregation_metric=torch.mean)
 
     idiom_sentence_indexes = get_idiom_sentences(dataset)
-
-    cosine_metrics = [calculate_similarity_metrics(idiom_sent_idx, tokenizer, dataset, embedding_outputs, encoded_inputs) 
-                        for idiom_sent_idx in idiom_sentence_indexes]
+    word_cosine_metrics = [calculate_similarity_metrics(idiom_sent_idx, tokenizer, dataset, embedding_outputs, encoded_inputs) 
+                            for idiom_sent_idx in idiom_sentence_indexes]
 
 
 def calculate_similarity_metrics(idiom_sent_index, tokenizer, dataset, embedding_outputs, encoded_inputs):
@@ -45,7 +42,14 @@ def calculate_similarity_metrics(idiom_sent_index, tokenizer, dataset, embedding
     cosine_similarity_metrics['literal_to_literal'] = calculate_cosine_similarity_average(literal_usage_embeddings)
     cosine_similarity_metrics['fig_to_paraphrase'] = calculate_cosine_similarity_average([idiom_word_embedding], paraphrase_embeddings)
     cosine_similarity_metrics['literal_to_paraphrase'] = calculate_cosine_similarity_average(literal_usage_embeddings, paraphrase_embeddings)
-    return cosine_similarity_metrics
+    
+    return {
+        'sentence_id': idiom_ex.sentence_id,
+        'sentence': idiom_ex.sentence,
+        'word': idiom_ex.word,
+        'paraphrase_word': dataset[paraphrase_sents[0]].word,
+        'cosine_similarities': cosine_similarity_metrics,
+    }
 
 def get_idiom_sentences(dataset):
     return [i for i, ex in enumerate(dataset) if ex.figurative]
@@ -72,6 +76,11 @@ def calculate_cosine_similarity_average(embeddings_1, embeddings_2=None):
 
     cosine_similarities = [1 - cosine(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
     return mean(cosine_similarities)
+
+
+#TODO: calculate cosine similarity on a sentence level
+
+#TODO: write averaging methods for generalizing about the overall cosine similarity relations
 
 if __name__ =='__main__':
     main()
