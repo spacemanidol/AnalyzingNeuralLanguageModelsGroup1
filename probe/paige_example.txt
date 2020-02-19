@@ -1,3 +1,0 @@
-sentence_id	pair_id	sentence	word
-1	1	The cat is out of the bag.	cat
-2	1	I would never eat my cat.	cat
