@@ -6,7 +6,7 @@ def load_comment_idioms(filename):
     with open(filename,'r') as f:
         f.readline()
         for l in f:
-            l = l.strip().split('\t')
+            l = l.strip().replace('\n','').split('\t')
             if len(l) == 3:
                 samples.append((l[0].strip(),l[1].strip(),l[2].strip()))
     return samples
@@ -35,22 +35,29 @@ def create_annotation(idiom, comment, context):
     while satisfied != 'y':
         if satisfied == 's':
             return 0,0,0,0
-        nonparaphrase2 = input("Write your Secpmd Non Paraphrase\n")
+        nonparaphrase2 = input("Write your Second Non Paraphrase\n")
         satisfied = input("You wrote:\n{}\nAre you satisfied? Type y to proceed and s to skip current example\n".format(nonparaphrase2))
     return paraphrase1, paraphrase2, nonparaphrase1, nonparaphrase2
     
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print('Usage: annotate.py <input_file> <output> ')
+    if len(sys.argv) != 4:
+        print('Usage: annotate.py <input_file> <output> <target_samples>')
         exit()
     samples = load_comment_idioms(sys.argv[1])
     print("{} samples found".format(len(samples)))
+    count = 0
+    target_count = int(sys.argv[3])
     with open(sys.argv[2],'w') as w:
-        w.write("Idiom\tContextSentence\tFullComment\tTextParaphrase\tParaphraseValue") # for Paraphrase Value 0 = non paraphrase, 1 = paraphrase
+        w.write("Idiom\tContextSentence\tFullComment\tTextParaphrase\tParaphraseValue\n") # for Paraphrase Value 0 = non paraphrase, 1 = paraphrase
         for sample in samples:
+            if count == target_count:
+                print("You have reached your goal to create {} samples. SICK!".format(target_count))
+                break
+            print("You have written {} samples".format(count))
             paraphrase1, paraphrase2, nonparaphrase1, nonparaphrase2 = create_annotation(sample[0],sample[1],sample[2])
             if paraphrase1 != 0:
+                count += 1
                 w.write("{}\t{}\t{}\t{}\t{}\n".format(sample[0],sample[1],sample[2],paraphrase1,1))
                 w.write("{}\t{}\t{}\t{}\t{}\n".format(sample[0],sample[1],sample[2],paraphrase2,1))
                 w.write("{}\t{}\t{}\t{}\t{}\n".format(sample[0],sample[1],sample[2],nonparaphrase1,0))
