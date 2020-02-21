@@ -23,6 +23,8 @@ def main():
     word_cosine_metrics = [calculate_similarity_metrics(idiom_sent_idx, tokenizer, dataset, embedding_outputs, encoded_inputs) 
                             for idiom_sent_idx in idiom_sentence_indexes]
 
+    
+
 
 def calculate_similarity_metrics(idiom_sent_index, tokenizer, dataset, embedding_outputs, encoded_inputs):
     idiom_ex = dataset[idiom_sent_index]
