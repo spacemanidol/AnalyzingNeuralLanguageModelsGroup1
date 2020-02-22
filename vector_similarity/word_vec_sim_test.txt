@@ -1,0 +1,61 @@
+sentence_id	pair_id	sentence	word	figurative
+1	1	The cat is out of the bag.	cat	1
+2	1	we saw a cat yesterday.	cat	0
+3	1	the cat is a afraid of dogs.	cat	0
+4	1	there was a cat on the roof.	cat	0
+5	1	how many hours a day will a cat sleep.	cat	0
+6	1	she thought she heard a cat crying.	cat	0
+7	1	nobody wanted to keep the cat.	cat	0
+8	1	the cat had bright blue eyes.	cat	0
+9	1	he asked for a cat for his birthday.	cat	0
+10	1	that is probably just the neighbor's cat.	cat	0
+11	1	everyone knows the secret.	secret	0
+12	1	i want to tell you a secret.	secret	0
+13	1	her guilty secret would soon be revealed.	secret	0
+14	1	she whispered as though imparting a secret.	secret	0
+15	1	you secret is safe with me.	secret	0
+16	1	this secret could not be shared with anyone.	secret	0
+17	1	it wasn't my secret to divulge.	secret	0
+18	1	her past until now has remained a secret.	secret	0
+19	1	there is a secret to their victory.	secret	0
+20	1	mark swore to keep it a secret.	secret	0
+21	2	Soon we're going to hit the sack.	sack	1
+22	2	He slung it over one shoulder like a sack of cornmeal.	sack	0
+23	2	They said he had wrapped a garbage sack around his head.	sack	0
+24	2	The man pulled a syringe from a brown paper lunch sack.	sack	0
+25	2	I said, lifting the sack off his shoulder.	sack	0
+26	2	The human body is essentially a meat sack full of goo.	sack	0
+27	2	A sack of rice now costs $18 in U.S. dollars.	sack	0
+28	2	Frank is walking on the snow with a big sack on his back.	sack	0
+29	2	On the lid of every box was a paper sack.	sack	0
+30	2	But you can be aerobically fit, yet unable to pick up a sack of groceries.	sack	0
+31	2	We will go to bed before long.	bed	0
+32	2	To lie in bed with one's lover is not to be anonymous but to be known.	bed	0
+33	2	Stay in bed.	bed	0
+34	2	Muddy, also smoking, is sitting on his bed.	bed	0
+35	2	Sleep in one bed, and in the morning you'll both be warm and happy as before.	bed	0
+36	2	She lays it down on the bed between herself and the berry picker.	bed	0
+37	2	I want a job, TV, and a bed with green sheets.	bed	0
+38	2	I would have difficulty going to bed at night without knowing.	bed	0
+39	2	This bed was never meant to be slept on.	bed	0
+40	2	The surface of the bed was firm.	bed	0
+41	3	It is time to bite the bullet.	bullet	1
+42	3	These extreme speeds are similar to a fired bullet.	bullet	0
+43	3	Officers found a bullet hole in the driver's seat.	bullet	0
+44	3	Lopez was hit in the leg, apparently by the same bullet that struck Ortiz.	bullet	0
+45	3	He said she was clipped by a bullet during river patrol.	bullet	0
+46	3	Jones was killed by a bullet through his heart.	bullet	0
+47	3	The bullet tore through a major artery and lodged in her spine.	bullet	0
+48	3	But the bullet is still in the arm.	bullet	0
+49	3	Bullet holes were visible on the brick exterior.	bullet	0
+50	3	The implant feels like a bullet lodged in his palate.	bullet	0
+51	3	The unpleasant situation must be dealt with.	situation	0
+52	3	high W-Y ratios that might be considered similar to the current situation.	situation	0
+53	3	This is because the situation is different from one country to another.	situation	0
+54	3	This situation seems optimistic.	situation	0
+55	3	We also considered the common situation of having only the clinical block.	situation	0
+56	3	This was not a fair account of the situation.	situation	0
+57	3	As discussed earlier, this situation will become increasingly dire.	situation	0
+58	3	This is not a situation unique to the Nordic Heritage Museum.	situation	0
+59	3	It is an uneasy situation for the Palestinians inside the refugee camps.	situation	0
+60	3	The opposite situation was observed for the coastal region of the Northeast.	situation	0
