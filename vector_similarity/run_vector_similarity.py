@@ -3,7 +3,8 @@ sys.path.append('../')
 from transformers import BertTokenizer, BertModel
 import torch
 import itertools
-from probe.load_data import WordInspectionDataset
+from collections import defaultdict
+from probe.load_data import WordInspectionDataset, SentenceParaphraseInspectionDataset
 from scipy.spatial.distance import cosine
 from statistics import mean 
 
@@ -12,21 +13,57 @@ def main():
     feature_extraction_model = BertModel.from_pretrained('bert-large-uncased')
     batch_size = 20  # totally arbitrarily chosen
 
-    pdata = WordInspectionDataset('vec_sim_test.txt', tokenizer)
+    print(word_similarity_comparisons(tokenizer, feature_extraction_model, batch_size))
+    print(setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size))
+
+
+def setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size):
+    pdata = SentenceParaphraseInspectionDataset('paraphrase_pair_vec_sim_test.txt', tokenizer)
     dataset = pdata.get_data()
     embedding_outputs, encoded_inputs, indices = pdata.bert_word_embeddings(feature_extraction_model,
                                                                             pdata.get_encoded(), batch_size)
     sentence_embeddings = pdata.aggregate_sentence_embeddings(embedding_outputs, encoded_inputs, indices,
                                                               aggregation_metric=torch.mean)
 
-    idiom_sentence_indexes = get_idiom_sentences(dataset)
-    word_cosine_metrics = [calculate_similarity_metrics(idiom_sent_idx, tokenizer, dataset, embedding_outputs, encoded_inputs) 
-                            for idiom_sent_idx in idiom_sentence_indexes]
-
+    paraphrase_pairs = get_paraphrase_pairs(dataset)
+    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(pair_sents, tokenizer, dataset, embedding_outputs, encoded_inputs, sentence_embeddings) 
+                            for pair_id, pair_sents in paraphrase_pairs.items()]
     
+    return paraphrase_cosine_metrics
 
+def word_similarity_comparisons(tokenizer, feature_extraction_model, batch_size):
+    pdata = WordInspectionDataset('word_vec_sim_test.txt', tokenizer)
+    dataset = pdata.get_data()
+    embedding_outputs, encoded_inputs, _indices = pdata.bert_word_embeddings(feature_extraction_model,
+                                                                            pdata.get_encoded(), batch_size)
+    idiom_sentence_indexes = get_idiom_sentences(dataset)
+    word_cosine_metrics = [calculate_word_similarity_metrics(idiom_sent_idx, tokenizer, dataset, embedding_outputs, encoded_inputs) 
+                            for idiom_sent_idx in idiom_sentence_indexes]
+    return word_cosine_metrics
 
-def calculate_similarity_metrics(idiom_sent_index, tokenizer, dataset, embedding_outputs, encoded_inputs):
+def get_paraphrase_pairs(dataset):
+    paraphrase_pairs = defaultdict(list)
+    for i, sent in enumerate(dataset):
+        paraphrase_pairs[sent.pair_id].append((i, sent))
+    return paraphrase_pairs
+
+def calculate_paraphrase_pair_similarity(pair, tokenizer, dataset, embedding_outputs, encoded_inputs, sentence_embeddings):
+    sent_1 = pair[0]
+    sent_2 = pair[1]
+    sent_1_index = sent_1[0]
+    sent_2_index = sent_2[0]
+    cosine_sim = 1 - cosine(sentence_embeddings[sent_1_index], sentence_embeddings[sent_2_index])
+    
+    return {
+        'pair_id': sent_1[1].pair_id,
+        'sent_1': tokenizer.decode(encoded_inputs[sent_1_index].tolist()),
+        'sent_2': tokenizer.decode(encoded_inputs[sent_2_index].tolist()),
+        'paraphrase': dataset[sent_1_index].paraphrase,
+        'judgment': dataset[sent_1_index].classifier_judgment,
+        'cosine_similarity': cosine_sim
+    }    
+
+def calculate_word_similarity_metrics(idiom_sent_index, tokenizer, dataset, embedding_outputs, encoded_inputs):
     idiom_ex = dataset[idiom_sent_index]
     idiom_word_embedding = get_word_embedding(tokenizer, dataset, embedding_outputs, encoded_inputs, idiom_sent_index)
     cosine_similarity_metrics = {}
@@ -47,7 +84,7 @@ def calculate_similarity_metrics(idiom_sent_index, tokenizer, dataset, embedding
     
     return {
         'sentence_id': idiom_ex.sentence_id,
-        'sentence': idiom_ex.sentence,
+        'sentence': tokenizer.decode(encoded_inputs[idiom_sent_index].tolist()),
         'word': idiom_ex.word,
         'paraphrase_word': dataset[paraphrase_sents[0]].word,
         'cosine_similarities': cosine_similarity_metrics,
@@ -79,8 +116,6 @@ def calculate_cosine_similarity_average(embeddings_1, embeddings_2=None):
     cosine_similarities = [1 - cosine(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
     return mean(cosine_similarities)
 
-
-#TODO: calculate cosine similarity on a sentence level
 
 #TODO: write averaging methods for generalizing about the overall cosine similarity relations
 

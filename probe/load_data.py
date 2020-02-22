@@ -220,3 +220,22 @@ class WordInspectionDataset(Dataset):
             self.encoded_fields)
 
 
+class SentenceParaphraseInspectionDataset(WordInspectionDataset):
+    def load(self):
+        tokenized_field = data.Field(use_vocab=False, tokenize=lambda x: self.tokenizer.tokenize(x))
+        label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
+        fields = [
+            ('sentence_id', label_field),
+            ('pair_id', label_field),
+            ('sentence', tokenized_field),
+            ('paraphrase', label_field),
+            ('classifier_judgment', label_field)
+        ]
+
+        self.data = data.TabularDataset(
+            path=self.filename,
+            format="tsv",  skip_header=True,
+            fields=fields,
+            csv_reader_params={'strict': True, 'quotechar': None}
+        )
+
