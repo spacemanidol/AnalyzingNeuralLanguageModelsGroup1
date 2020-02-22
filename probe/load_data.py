@@ -3,13 +3,26 @@ from functools import reduce
 from torchtext import data
 from tqdm.autonotebook import tqdm
 from abc import ABC, abstractmethod
+import logging
+import time
+import os.path
+
 
 #TODO: download the data if it's not here
 MSRP_URLS = ['https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_train.txt',
              'https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_test.txt']
 
+logging.basicConfig(level=logging.DEBUG)
+LOAD_DATA_LOGGER = 'data_loading'
+module_logger = logging.getLogger(LOAD_DATA_LOGGER)
+module_logger.setLevel(logging.DEBUG)
 
 class Dataset(ABC):
+
+    sentences_filename = 'sentences.pt'
+    inputs_filename = 'inputs.pt'
+    indices_filename = 'indices.pt'
+
     def get_data(self):
         if self.data is None:
             self.load()
@@ -68,6 +81,29 @@ class Dataset(ABC):
 
         return sentences, indices, inputs
 
+    def _save(self, tensor, name, folder):
+        module_logger.info('Caching {} in {}'.format(name, folder))
+        torch.save(tensor, os.path.join(folder, name))
+
+    def _load(self, name, folder):
+        module_logger.info('Loading {} from {}'.format(name, folder))
+        return torch.load(os.path.join(folder, name))
+
+    def save_computed_embeddings(self, sentences, inputs, indices):
+        folder = os.path.join('cache', 'run_{}'.format((int(time.time()))))
+        module_logger.info('Caching info for this run in {}'.format(folder))
+        module_logger.info('Please pass this folder in to future invocations to use cached data')
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        self._save(sentences, self.sentences_filename, folder)
+        self._save(inputs, self.inputs_filename, folder)
+        self._save(indices, self.indices_filename, folder)
+
+    def load_saved_embeddings(self, folder):
+        module_logger.info('Loading embedding data from {}...'.format(folder))
+        return self._load(self.sentences_filename, folder), self._load(self.indices_filename, folder),\
+               self._load(self.inputs_filename, folder)
+
     def bert_word_embeddings(self, bert_model, encoded_data, batch_size):
         sentences = None
         indices = None
@@ -79,10 +115,12 @@ class Dataset(ABC):
                 sentences, indices, inputs = self.aggregate_data(sentences, out, indices, batch_indices,
                                                                  inputs, batch_inputs)
 
-            print('processed {}/{} sentences, current max sentence length {}'
+            module_logger.info('processed {}/{} sentences, current max sentence length {}'
                   .format(sentences.shape[0], len(encoded_data), sentences.shape[1]))
 
-        return self.reorder(sentences, inputs, indices)
+        ordered_sentences, ordered_inputs, ordered_indices = self.reorder(sentences, inputs, indices)
+        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_inputs)
+        return ordered_sentences, ordered_inputs, ordered_indices
 
     @staticmethod
     def reorder(sentences, inputs, indices):

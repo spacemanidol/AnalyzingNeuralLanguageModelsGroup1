@@ -3,6 +3,7 @@ from torch.autograd import Variable
 import torch
 from load_data import ParaphraseDataset
 import sys
+import argparse
 #TODO: this file is mostly still just testcode, please take with a grain of salt
 
 class LinearRegression(torch.nn.Module):
