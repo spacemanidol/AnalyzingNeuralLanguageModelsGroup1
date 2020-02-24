@@ -4,8 +4,10 @@ from torchtext import data
 from tqdm.autonotebook import tqdm
 from abc import ABC, abstractmethod
 import logging
-import time
 import os.path
+import json
+from transformers import AutoTokenizer, BertModel
+
 
 
 #TODO: download the data if it's not here
@@ -13,9 +15,7 @@ MSRP_URLS = ['https://raw.githubusercontent.com/wasiahmad/paraphrase_identificat
              'https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_test.txt']
 
 logging.basicConfig(level=logging.DEBUG)
-LOAD_DATA_LOGGER = 'data_loading'
-module_logger = logging.getLogger(LOAD_DATA_LOGGER)
-module_logger.setLevel(logging.DEBUG)
+module_logger = logging.getLogger('data_loading')
 
 class Dataset(ABC):
 
@@ -29,9 +29,12 @@ class Dataset(ABC):
 
         return self.data
 
-    def __init__(self, filename, tokenizer):
+    def __init__(self, filename, model_label, batch_size, run_name):
+        self.run_name = run_name
         self.filename = filename
-        self.tokenizer = tokenizer
+        self.model_label = model_label
+        self.batch_size = batch_size
+        self.tokenizer = AutoTokenizer.from_pretrained(model_label, do_lower_case=True)
         self.data = None
         self.encoded_sentence_field = ('sentence',
                                        data.Field(use_vocab=False, tokenize=self.encode, pad_token=self.tokenizer.pad_token_id))
@@ -89,26 +92,42 @@ class Dataset(ABC):
         module_logger.info('Loading {} from {}'.format(name, folder))
         return torch.load(os.path.join(folder, name))
 
-    def save_computed_embeddings(self, sentences, inputs, indices):
-        folder = os.path.join('cache', 'run_{}'.format((int(time.time()))))
+    def get_metadata(self):
+        return {
+            'file': self.filename,
+            'model': self.model_label,
+            'batch_size': self.batch_size,
+            'run_name': self.run_name
+        }
+
+    def save_computed_embeddings(self, sentences, inputs, indices, metadata):
+        folder = os.path.join('cache', self.run_name)
         module_logger.info('Caching info for this run in {}'.format(folder))
         module_logger.info('Please pass this folder in to future invocations to use cached data')
         if not os.path.exists(folder):
             os.makedirs(folder)
+
+        if metadata is not None:
+            with open(os.path.join(folder, 'metadata.json'), 'w+') as metadata_file:
+                metadata_file.write(json.dumps(metadata)+'\n')
+
         self._save(sentences, self.sentences_filename, folder)
         self._save(inputs, self.inputs_filename, folder)
         self._save(indices, self.indices_filename, folder)
 
     def load_saved_embeddings(self, folder):
         module_logger.info('Loading embedding data from {}...'.format(folder))
-        return self._load(self.sentences_filename, folder), self._load(self.indices_filename, folder),\
-               self._load(self.inputs_filename, folder)
+        return self._load(self.sentences_filename, folder), self._load(self.inputs_filename, folder),\
+               self._load(self.indices_filename, folder),
 
-    def bert_word_embeddings(self, bert_model, encoded_data, batch_size):
+    def bert_word_embeddings(self, encoded_data):
+        module_logger.info("Loading '{}' model".format(self.model_label))
+        bert_model = BertModel.from_pretrained(self.model_label)
+
         sentences = None
         indices = None
         inputs = None
-        for batch, batch_indices in tqdm(self.bert_iter(encoded_data, batch_size), desc="Feature extraction"):
+        for batch, batch_indices in tqdm(self.bert_iter(encoded_data, self.batch_size), desc="Feature extraction"):
             with torch.no_grad():
                 out = bert_model(**batch)[0]
                 batch_inputs = batch['input_ids']
@@ -119,7 +138,7 @@ class Dataset(ABC):
                   .format(sentences.shape[0], len(encoded_data), sentences.shape[1]))
 
         ordered_sentences, ordered_inputs, ordered_indices = self.reorder(sentences, inputs, indices)
-        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_inputs)
+        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_indices, self.get_metadata())
         return ordered_sentences, ordered_inputs, ordered_indices
 
     @staticmethod
@@ -161,8 +180,8 @@ class Dataset(ABC):
 
 # for MSR paraphrase data and our paraphrase data
 class ParaphraseDataset(Dataset):
-    def __init__(self, filename, tokenizer, indices=(0, 1, 2)):
-        super().__init__(filename, tokenizer)
+    def __init__(self, filename, model_label, batch_size, run_name, indices=(0, 1, 2)):
+        super().__init__(filename, model_label, batch_size, run_name)
         self.flattened_encoded_data = None
         self.encoded_data = None
         self.labels = None
@@ -216,8 +235,8 @@ class ParaphraseDataset(Dataset):
 
 # for Paige's word vector similarity
 class WordInspectionDataset(Dataset):
-    def __init__(self, filename, tokenizer):
-        super().__init__(filename, tokenizer)
+    def __init__(self, filename, model_label, batch_size, run_name):
+        super().__init__(filename, model_label, batch_size, run_name)
         self.data = None
         self.encoded_data = None
 
