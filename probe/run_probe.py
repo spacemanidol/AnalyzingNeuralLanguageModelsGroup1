@@ -68,15 +68,15 @@ def train_probe(args):
 
 def test_probe(args):
 
-    msr_test = ParaphraseDataset(args.input, args.embeddings_model, args.embedding_batch_size, args.run_name,
+    test_data = ParaphraseDataset(args.input, args.embeddings_model, args.embedding_batch_size, args.run_name,
                                  indices=(0, 3, 4)) #TODO: hardcoding MSRP data indices atm
-    labels = msr_test.get_labels()
+    labels = test_data.get_labels()
     if args.embeddings_cache is None:
-        pairs, inputs, indices = msr_test.bert_word_embeddings(msr_test.get_flattened_encoded())
+        pairs, inputs, indices = test_data.bert_word_embeddings(test_data.get_flattened_encoded())
     else:
-        pairs, inputs, indices = msr_test.load_saved_embeddings(args.embeddings_cache)
+        pairs, inputs, indices = test_data.load_saved_embeddings(args.embeddings_cache)
 
-    paraphrase_embeddings = msr_test.combine_sentence_embeddings(msr_test.aggregate_sentence_embeddings(pairs, inputs,
+    paraphrase_embeddings = test_data.combine_sentence_embeddings(test_data.aggregate_sentence_embeddings(pairs, inputs,
                                                                                                           indices))
 
     model = LinearRegression(paraphrase_embeddings.shape[1], 1)
@@ -120,7 +120,10 @@ if __name__ == '__main__':
     parser.add_argument('--run_name', type=str, default='run_{}'.format((int(time.time()))),
                         help='A label for the run, used to name output and cache directories')
 
+    #TODO: only require this for test
     parser.add_argument('--model', type=str, required=True, help='Name of the model')
+
+    #TODO: take option(s) to determine how we encode sentence pairs
 
     args = parser.parse_args()
 

@@ -29,6 +29,12 @@ class Dataset(ABC):
 
         return self.data
 
+    def get_encoded(self):
+        if self.encoded_data is None:
+            self._compute_encoded()
+
+        return self.encoded_data
+
     def __init__(self, filename, model_label, batch_size, run_name):
         self.run_name = run_name
         self.filename = filename
@@ -41,13 +47,17 @@ class Dataset(ABC):
         self.index_field = ('index', data.LabelField(use_vocab=False))
         self.encoded_fields = [self.encoded_sentence_field, self.index_field]
 
-
-    def encode(self, sentence):
-        return self.tokenizer.encode(sentence, add_special_tokens=True)
+    def encode(self, sentence, second_sentence=None):
+        return self.tokenizer.encode(sentence, second_sentence, add_special_tokens=True)
 
     @abstractmethod
     def load(self):
         raise Exception("Not implemented on for this class")
+
+    @abstractmethod
+    def _compute_encoded(self):
+        raise Exception("Not implemented on for this class")
+
 
     def bert_iter(self, encoded_data, batch_size):
         # BucketIterator transposes the sentence data, we have to transpose it back
@@ -189,7 +199,7 @@ class ParaphraseDataset(Dataset):
 
     def get_flattened_encoded(self):
         if self.flattened_encoded_data is None:
-            self.__compute_flattened_encoded()
+            self._compute_flattened_encoded()
 
         return self.flattened_encoded_data
 
@@ -219,14 +229,22 @@ class ParaphraseDataset(Dataset):
 
     # take X examples of sentence pairs and convert them into 2X rows of encoded single sentences with pair IDS so they
     # can be processed separately by bert
-    def __compute_flattened_encoded(self):
+    def _compute_flattened_encoded(self):
         paraphrase_data = self.get_data()
-        self.flattened_encoded_data =  data.Dataset(
+        self.flattened_encoded_data = data.Dataset(
             [data.Example.fromlist([self.encode(row.sentence_1), [index, 0]], self.encoded_fields) for index, row in
              enumerate(paraphrase_data)] +
             [data.Example.fromlist([self.encode(row.sentence_2), [index, 1]], self.encoded_fields) for index, row in
              enumerate(paraphrase_data)],
             self.encoded_fields)
+
+    def _compute_encoded(self):
+        paraphrase_data = self.get_data()
+        self.encoded_data = data.Dataset(
+            [data.Example.fromlist([self.encode(row.sentence_1, row.sentence_2), index], self.encoded_fields)
+             for index, row in enumerate(paraphrase_data)],
+            self.encoded_fields)
+
 
     @staticmethod
     def combine_sentence_embeddings(sentence_embedding_pairs, combination_metric=torch.sub):
@@ -240,17 +258,6 @@ class WordInspectionDataset(Dataset):
         self.data = None
         self.encoded_data = None
 
-    def get_data(self):
-        if self.data is None:
-            self.load()
-
-        return self.data
-
-    def get_encoded(self):
-        if self.encoded_data is None:
-            self.__compute_encoded()
-
-        return self.encoded_data
 
     def load(self):
         tokenized_field = data.Field(use_vocab=False, tokenize=lambda x: self.tokenizer.tokenize(x))
@@ -270,7 +277,7 @@ class WordInspectionDataset(Dataset):
             csv_reader_params={'strict': True, 'quotechar': None}
         )
 
-    def __compute_encoded(self):
+    def _compute_encoded(self):
         self.encoded_data = data.Dataset(
             [data.Example.fromlist([self.encode(row.sentence), index], self.encoded_fields) for index, row in
              enumerate(self.get_data())],
