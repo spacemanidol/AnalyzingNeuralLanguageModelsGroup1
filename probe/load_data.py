@@ -250,6 +250,11 @@ class ParaphraseDataset(Dataset):
     def combine_sentence_embeddings(sentence_embedding_pairs, combination_metric=torch.sub):
         return torch.stack([combination_metric(pair[0], pair[1]) for pair in sentence_embedding_pairs])
 
+    @staticmethod
+    def bert_cls_embeddings(sentence_embeddings):
+        return sentence_embeddings[0,:]
+
+
 
 # for Paige's word vector similarity
 class WordInspectionDataset(Dataset):
