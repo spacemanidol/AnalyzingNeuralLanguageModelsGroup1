@@ -13,8 +13,13 @@ def main():
     feature_extraction_model = BertModel.from_pretrained('bert-large-uncased')
     batch_size = 20  # totally arbitrarily chosen
 
-    print(word_similarity_comparisons(tokenizer, feature_extraction_model, batch_size))
-    print(setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size))
+    word_sim_results = word_similarity_comparisons(tokenizer, feature_extraction_model, batch_size)
+    print(word_sim_results)
+    print(summarize_word_similarity_comp(word_sim_results))
+
+    sentence_sim_results = setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size)
+    print(sentence_sim_results)
+    print(summarize_sentence_similarity_comp(sentence_sim_results))
 
 
 def setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size):
@@ -116,8 +121,38 @@ def calculate_cosine_similarity_average(embeddings_1, embeddings_2=None):
     cosine_similarities = [1 - cosine(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
     return mean(cosine_similarities)
 
+# This computes the average difference in cosine similarity between:
+# 1.) literal to literal usages versus figurative to literal usage
+# 2.) figurative to paraphrase usages versus literal to paraphrase useage
+def summarize_word_similarity_comp(results):
+    literal_sim_advantage = [result['cosine_similarities']['literal_to_literal'] - result['cosine_similarities']['fig_to_literal'] for result in results]
+    fig_to_paraphrase_advantage = [result['cosine_similarities']['fig_to_paraphrase'] - result['cosine_similarities']['literal_to_paraphrase'] for result in results]
+    
+    summary_stats = {
+        'lit_to_lit_improvement_over_fig_to_lit': mean(literal_sim_advantage),
+        'fig_to_paraphrase_improvement_over_lit_to_paraphrase': mean(fig_to_paraphrase_advantage)
+    }
+    return summary_stats
 
-#TODO: write averaging methods for generalizing about the overall cosine similarity relations
+# This computes the average cosine similarity scores between paraphrase pairs,
+# grouped into 4 categories based on gold label (i.e. true paraphrase or not) and classifier judgment
+def summarize_sentence_similarity_comp(results):
+    correctly_judged_paraphrases = [result['cosine_similarity'] for result in results if result['paraphrase'] and result['judgment']]
+    correctly_judged_non_paraphrases = [result['cosine_similarity'] for result in results if not result['paraphrase'] and not result['judgment']]
+    incorrectly_judged_paraphrases =  [result['cosine_similarity'] for result in results if result['paraphrase'] and not result['judgment']]
+    incorrectly_judged_non_paraphrases =  [result['cosine_similarity'] for result in results if not result['paraphrase'] and result['judgment']]
+
+    return {
+        'average_cosine_sim_for_correctly_judged_paraphrases': handle_zero_case(correctly_judged_paraphrases),
+        'average_cosine_sim_for_correctly_judged_non_paraphrases': handle_zero_case(correctly_judged_non_paraphrases),
+        'average_cosine_sim_for_incorrectly_judged_paraphrases': handle_zero_case(incorrectly_judged_paraphrases),
+        'average_cosine_sim_for_incorrectly_judged_non_paraphrases': handle_zero_case(incorrectly_judged_non_paraphrases)
+    }
+
+def handle_zero_case(category_results):
+    if not category_results:
+        return 'N/A'
+    return mean(category_results)
 
 if __name__ =='__main__':
     main()
