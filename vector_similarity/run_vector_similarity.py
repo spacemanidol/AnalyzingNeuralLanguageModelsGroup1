@@ -7,6 +7,10 @@ from collections import defaultdict
 from probe.load_data import WordInspectionDataset, SentenceParaphraseInspectionDataset
 from scipy.spatial.distance import cosine
 from statistics import mean 
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.decomposition import PCA
+import numpy as np
 
 def main():
     tokenizer = BertTokenizer.from_pretrained("bert-large-uncased", do_lower_case=True)
@@ -17,12 +21,14 @@ def main():
     print(word_sim_results)
     print(summarize_word_similarity_comp(word_sim_results))
 
-    sentence_sim_results = setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size)
+    sentence_sim_results = sentence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size)
     print(sentence_sim_results)
     print(summarize_sentence_similarity_comp(sentence_sim_results))
 
+    PCA_comparisions(tokenizer, feature_extraction_model, batch_size)
 
-def setence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size):
+
+def sentence_paraphrase_comparisons(tokenizer, feature_extraction_model, batch_size):
     pdata = SentenceParaphraseInspectionDataset('paraphrase_pair_vec_sim_test.txt', tokenizer)
     dataset = pdata.get_data()
     embedding_outputs, encoded_inputs, indices = pdata.bert_word_embeddings(feature_extraction_model,
@@ -153,6 +159,60 @@ def handle_zero_case(category_results):
     if not category_results:
         return 'N/A'
     return mean(category_results)
+
+
+# PCA visualization code
+# TODO: figure out what we actually want to include/disclude here and clean up
+
+def PCA_comparisions(tokenizer, feature_extraction_model, batch_size):
+    pdata = WordInspectionDataset('word_vec_sim_test.txt', tokenizer)
+    dataset = pdata.get_data()
+    embedding_outputs, encoded_inputs, _indices = pdata.bert_word_embeddings(feature_extraction_model,
+                                                                            pdata.get_encoded(), batch_size)
+
+    idiom_sentence_indexes = get_idiom_sentences(dataset)
+    for idiom_sent_index in idiom_sentence_indexes:
+        idiom_ex = dataset[idiom_sent_index]
+        idiom_word_embedding = get_word_embedding(tokenizer, dataset, embedding_outputs, encoded_inputs, idiom_sent_index)
+        literal_usage_sents = [i for i, ex in enumerate(dataset) if ex.pair_id == idiom_ex.pair_id and 
+                                                                ex.word == idiom_ex.word and not 
+                                                                ex.sentence_id == idiom_ex.sentence_id ]
+        paraphrase_sents = [i for i, ex in enumerate(dataset) if ex.pair_id == idiom_ex.pair_id 
+                                                                and not ex.word == idiom_ex.word]
+
+        literal_usage_embeddings = [get_word_embedding(tokenizer, dataset, embedding_outputs, encoded_inputs, lit_idx) for lit_idx in literal_usage_sents]
+        paraphrase_embeddings = [get_word_embedding(tokenizer, dataset, embedding_outputs, encoded_inputs, para_idx) for para_idx in paraphrase_sents]
+
+        title = 'PCA for {}: Fig usage {} Paraphrase word: {}'.format(idiom_ex.word[0], " ".join(idiom_ex.sentence), dataset[paraphrase_sents[0]].word)
+        targets = {
+            'labels': ['figurative', 'literal'],
+            'values': [0, 1] ,
+            'colors': ['turquoise', 'navy'],
+        }
+        labels =  np.array(len(literal_usage_embeddings) * [1] + [0])
+        show_PCS(literal_usage_embeddings + [idiom_word_embedding], labels, targets, title)
+
+        title = 'PCA for {}: Fig usage {}'.format(idiom_ex.word[0], " ".join(idiom_ex.sentence))
+        targets = {
+            'labels': ['figurative', 'literal', 'paraphrase'],
+            'values': [0, 1, 2] ,
+            'colors': ['turquoise', 'navy', 'orangered'],
+        }
+        embeddings = literal_usage_embeddings + [idiom_word_embedding] + paraphrase_embeddings
+        labels =  np.array(len(literal_usage_embeddings) * [1] + [0] + len(paraphrase_embeddings) * [2])
+        show_PCS(embeddings, labels, targets, title)
+
+def show_PCS(embeddings, labels, targets, title):
+    X = torch.stack(embeddings)
+    pca = PCA(2)  
+    projected = pca.fit_transform(X)
+
+    for color, i, target_name in zip(targets['colors'], targets['values'], targets['labels']):
+        plt.scatter(projected[labels == i, 0], projected[labels == i, 1], color=color,  lw=2,
+                    label=target_name)
+    plt.legend(loc='best', shadow=False, scatterpoints=1)
+    plt.title(title)
+    plt.show()
 
 if __name__ =='__main__':
     main()
