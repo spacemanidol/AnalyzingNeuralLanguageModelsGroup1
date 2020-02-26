@@ -4,6 +4,7 @@
 RC_2011-08
 data/*
 probe/*.txt
+probe/*.tsv
 .idea/*
 probe/cache/*
 probe/output/*

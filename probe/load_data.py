@@ -6,13 +6,8 @@ from abc import ABC, abstractmethod
 import logging
 import os.path
 import json
+import csv
 from transformers import AutoTokenizer, BertModel
-
-
-
-#TODO: download the data if it's not here
-MSRP_URLS = ['https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_train.txt',
-             'https://raw.githubusercontent.com/wasiahmad/paraphrase_identification/master/dataset/msr-paraphrase-corpus/msr_paraphrase_test.txt']
 
 logging.basicConfig(level=logging.DEBUG)
 module_logger = logging.getLogger('data_loading')
@@ -22,6 +17,13 @@ class Dataset(ABC):
     sentences_filename = 'sentences.pt'
     inputs_filename = 'inputs.pt'
     indices_filename = 'indices.pt'
+
+    def get_raw(self):
+        with open(self.filename, 'r') as f:
+            out = [x for x in csv.reader(f, delimiter='\t', quotechar=None, strict=True)]
+
+        return out
+
 
     def get_data(self):
         if self.data is None:
@@ -197,6 +199,16 @@ class ParaphraseDataset(Dataset):
         self.labels = None
         self.indices = indices
 
+    def get_raw_for_output(self):
+        indices = self.indices
+        raw_data = self.get_raw()
+        row_1 = ('true_label', 'sentence_1', 'sentence_2') + tuple(x for index, x in enumerate(raw_data[0])
+                                                              if index not in indices)
+        return [row_1] + [
+            (row[indices[0]], row[indices[1]], row[indices[2]]) +
+            tuple(x for index, x in enumerate(row) if index not in indices) for row in raw_data[1:]
+        ]
+
     def get_flattened_encoded(self):
         if self.flattened_encoded_data is None:
             self._compute_flattened_encoded()
@@ -206,7 +218,7 @@ class ParaphraseDataset(Dataset):
     def get_labels(self):
         if self.labels is None:
             # labels must be floats (not ints) or the function to compute loss gags
-            self.labels = torch.tensor([x.label for x in self.get_data()], dtype=torch.float32)
+            self.labels = torch.tensor([x.label for x in self.get_data()], dtype=torch.float32).unsqueeze(1)
 
         return self.labels
 
@@ -252,7 +264,7 @@ class ParaphraseDataset(Dataset):
 
     @staticmethod
     def bert_cls_embeddings(sentence_embeddings):
-        return sentence_embeddings[0,:]
+        return sentence_embeddings[:,0]
 
 
 
