@@ -63,6 +63,7 @@ def train_probe(input_args):
             if prev_loss - loss < min_loss_reduction:
                 module_logger.info('epoch {}, loss {}'.format(epoch, loss.item()))
                 module_logger.info('Minimum loss reduction not achieved, aborting')
+                epochs = epoch
                 break
 
         prev_loss = loss
@@ -72,9 +73,15 @@ def train_probe(input_args):
     eval_model(model, paraphrase_embeddings, labels, input_args, train_data.get_raw_for_output())
     output_file(input_args.run_name, 'model_metadata.json', json.dumps({
         'learning_rate': learning_rate,
-        'epochs': epochs
+        'epochs': epochs,
+        'seed': input_args.rand_seed,
+        'training_file': input_args.input,
+        'embedding_paradigm': input_args.embedding_paradigm
+
     }))
-    torch.save(model.state_dict(), os.path.join('output', input_args.run_name, model_name))
+    model_loc = os.path.join('output', input_args.run_name, model_name)
+    module_logger.info("Saving model as {}".format(model_loc))
+    torch.save(model.state_dict(), model_loc)
 
 
 def get_embeddings(data, input_args):
@@ -139,6 +146,7 @@ def output_file(run_name, filename, content):
     if not os.path.exists(folder):
         os.makedirs(folder)
 
+    module_logger.info('Writing {} to {}'.format(filename, folder))
     with open(os.path.join(folder, filename), 'w+') as outfile:
         outfile.writelines(content)
 
