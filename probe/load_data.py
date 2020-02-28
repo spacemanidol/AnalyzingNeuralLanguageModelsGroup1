@@ -52,6 +52,12 @@ class Dataset(ABC):
     def encode(self, sentence, second_sentence=None):
         return self.tokenizer.encode(sentence, second_sentence, add_special_tokens=True)
 
+    def decode(self, sentence):
+        return self.tokenizer.decode(sentence)
+
+    def get_decoded_tokens(self, ids):
+        return self.tokenizer.convert_ids_to_tokens(ids)
+
     @abstractmethod
     def load(self):
         raise Exception("Not implemented on for this class")
