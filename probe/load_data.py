@@ -198,6 +198,11 @@ class Dataset(ABC):
 
 # for MSR paraphrase data and our paraphrase data
 class ParaphraseDataset(Dataset):
+    label_field_name = "label"
+    sent1_field_name = "sentence_1"
+    sent2_field_name = "sentence_2"
+
+
     def __init__(self, filename, model_label, batch_size, run_name, indices=(0, 1, 2)):
         super().__init__(filename, model_label, batch_size, run_name)
         self.flattened_encoded_data = None
@@ -234,9 +239,9 @@ class ParaphraseDataset(Dataset):
         label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
 
         field_array = [('unused', None)] * (max(indices) + 1)
-        field_array[indices[0]] = ("label", label_field)
-        field_array[indices[1]] = ("sentence_1", tokenized_field)
-        field_array[indices[2]] = ("sentence_2", tokenized_field)
+        field_array[indices[0]] = (self.label_field_name, label_field)
+        field_array[indices[1]] = (self.sent1_field_name, tokenized_field)
+        field_array[indices[2]] = (self.sent2_field_name, tokenized_field)
 
         self.data = data.TabularDataset(
             path=self.filename,
@@ -307,7 +312,11 @@ class WordInspectionDataset(Dataset):
             self.encoded_fields)
 
 
-class SentenceParaphraseInspectionDataset(WordInspectionDataset):
+class SentenceParaphraseInspectionDataset(ParaphraseDataset):
+
+    def __init__(self, filename, model_label, batch_size, run_name):
+        super().__init__(filename, model_label, batch_size, run_name, None)  # indices unused
+
     def load(self):
         tokenized_field = data.Field(use_vocab=False, tokenize=lambda x: self.tokenizer.tokenize(x))
         label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
@@ -315,9 +324,9 @@ class SentenceParaphraseInspectionDataset(WordInspectionDataset):
         fields = [
             ('classifier_prob', prob_field),
             ('classifier_judgment', label_field),
-            ('true_label', label_field),
-            ('sentence_1', tokenized_field),
-            ('sentence_2', tokenized_field),
+            (self.label_field_name, label_field),
+            (self.sent1_field_name, tokenized_field),
+            (self.sent2_field_name, tokenized_field),
             ('Idiom', tokenized_field)
         ]
 
@@ -327,10 +336,3 @@ class SentenceParaphraseInspectionDataset(WordInspectionDataset):
             fields=fields,
             csv_reader_params={'strict': True, 'quotechar': None}
         )
-
-    def _compute_encoded(self):
-        paraphrase_data = self.get_data()
-        self.encoded_data = data.Dataset(
-            [data.Example.fromlist([self.encode(row.sentence_1, row.sentence_2), index], self.encoded_fields)
-             for index, row in enumerate(paraphrase_data)],
-            self.encoded_fields)
