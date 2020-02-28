@@ -1,20 +1,16 @@
 import sys
 sys.path.append('../')
-from transformers import BertTokenizer, BertModel
 import torch
 import itertools
-from collections import defaultdict
 from probe.load_data import WordInspectionDataset, SentenceParaphraseInspectionDataset
 from scipy.spatial.distance import cosine
 from statistics import mean 
 import matplotlib.pyplot as plt
-from sklearn import datasets
 from sklearn.decomposition import PCA
 import numpy as np
 import argparse
 import time
 
-combined, cls = 'combined', 'cls'
 words, paraphrase_sent_pairs = 'words', 'para_pairs'
 
 def main(input_args):
@@ -23,26 +19,23 @@ def main(input_args):
     else:
         sentence_paraphrase_comparisons(input_args)
 
-
 def sentence_paraphrase_comparisons(input_args):
     dataset = SentenceParaphraseInspectionDataset(input_args.input, input_args.embedding_model, 
                                                 input_args.embedding_batch_size, input_args.run_name)
-
-    embeddings = get_embeddings(dataset, input_args.embedding_cache)
+    embeddings = get_embeddings(dataset, input_args.embedding_cache, flattened=True)
     embedding_outputs, encoded_inputs, _indices = embeddings
+    sentence_embeddings = get_sentence_embeddings(embeddings, dataset)
 
-    sentence_embeddings = get_sentence_embeddings(embeddings, dataset, input_args.embedding_paradigm)
     paraphrase_cosine_metrics = calculate_sentence_paraphrase_cosine_metrics(dataset, embedding_outputs, 
                                                                             encoded_inputs, sentence_embeddings)
-    
-    print(paraphrase_cosine_metrics)
+    # print(paraphrase_cosine_metrics)
     print(summarize_sentence_similarity_comp(paraphrase_cosine_metrics))
 
 
 def word_usage_comparisons(input_args):
     dataset = WordInspectionDataset(input_args.input, input_args.embedding_model, 
                                     input_args.embedding_batch_size, input_args.run_name)
-    embeddings = get_embeddings(dataset, input_args.embedding_cache)
+    embeddings = get_embeddings(dataset, input_args.embedding_cache, flattened=False)
     embedding_outputs, encoded_inputs, _indices = embeddings
     data = dataset.get_data()
     idiom_sentence_indexes = get_idiom_sentences(data)
@@ -53,24 +46,23 @@ def word_usage_comparisons(input_args):
 
     PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
 
-
-def get_embeddings(data, embedding_cache):
+def get_embeddings(data, embedding_cache, flattened):
     if embedding_cache is None:
-        encoded_data = data.get_encoded()
+        if flattened:
+            encoded_data = data.get_flattened_encoded()
+        else:
+            encoded_data = data.get_encoded()
         return data.bert_word_embeddings(encoded_data)
     return data.load_saved_embeddings(embedding_cache)
 
-def get_sentence_embeddings(embeddings, data, embedding_paradigm):
+def get_sentence_embeddings(embeddings, data):
     embedding_outputs, encoded_inputs, indices = embeddings
-    if embedding_paradigm == combined:
-        return data.aggregate_sentence_embeddings(embedding_outputs, encoded_inputs, indices)
-    return data.bert_cls_embeddings(embeddings)
+    return data.aggregate_sentence_embeddings(embedding_outputs, encoded_inputs, indices)
 
 def calculate_sentence_paraphrase_cosine_metrics(dataset, embedding_outputs, encoded_inputs, sentence_embeddings):
     data = dataset.get_data()
-    paraphrase_pairs = get_paraphrase_pairs(data)
-    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(pair_sents, dataset, data, embedding_outputs, encoded_inputs, sentence_embeddings) 
-                            for pair_sents in paraphrase_pairs]
+    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(i, pair_sents, dataset, encoded_inputs, sentence_embeddings) 
+                            for i, pair_sents in enumerate(data)]
     return paraphrase_cosine_metrics
 
 def calculate_word_cosine_metrics(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes):
@@ -78,25 +70,14 @@ def calculate_word_cosine_metrics(dataset, embedding_outputs, encoded_inputs, id
                             for idiom_sent_idx in idiom_sentence_indexes]
     return word_cosine_metrics
 
-def get_paraphrase_pairs(dataset):
-    paraphrase_pairs = []
-    for i, sent in enumerate(dataset):
-        paraphrase_pairs.append((i, sent))
-    return paraphrase_pairs
-
-def calculate_paraphrase_pair_similarity(pair, dataset, data, embedding_outputs, encoded_inputs, sentence_embeddings):
-    sent_1 = pair[0]
-    sent_2 = pair[1]
-    sent_1_index = sent_1[0]
-    sent_2_index = sent_2[0]
-    cosine_sim = 1 - cosine(sentence_embeddings[sent_1_index], sentence_embeddings[sent_2_index])
-    
+def calculate_paraphrase_pair_similarity(index, classifier_out, dataset, encoded_inputs, sentence_embeddings):
+    cosine_sim = 1 - cosine(sentence_embeddings[index][0], sentence_embeddings[index][1])
     return {
-        'pair_id': sent_1[1].pair_id,
-        'sent_1': dataset.decode(encoded_inputs[sent_1_index].tolist()),
-        'sent_2': dataset.decode(encoded_inputs[sent_2_index].tolist()),
-        'paraphrase': data[sent_1_index].true_label,
-        'judgment': data[sent_1_index].classifier_judgment,
+        'pair_index': index,
+        'sent_1': " ".join(classifier_out.sentence_1),
+        'sent_2': " ".join(classifier_out.sentence_2),
+        'paraphrase': classifier_out.label,
+        'judgment': classifier_out.classifier_judgment,
         'cosine_similarity': cosine_sim
     }    
 
@@ -175,11 +156,16 @@ def summarize_sentence_similarity_comp(results):
     incorrectly_judged_paraphrases =  [result['cosine_similarity'] for result in results if result['paraphrase'] and not result['judgment']]
     incorrectly_judged_non_paraphrases =  [result['cosine_similarity'] for result in results if not result['paraphrase'] and result['judgment']]
 
+    paraphrases = [result['cosine_similarity'] for result in results if result['paraphrase']]
+    non_paraphrases = [result['cosine_similarity'] for result in results if not result['paraphrase']]
+
     return {
         'average_cosine_sim_for_correctly_judged_paraphrases': handle_zero_case(correctly_judged_paraphrases),
         'average_cosine_sim_for_correctly_judged_non_paraphrases': handle_zero_case(correctly_judged_non_paraphrases),
         'average_cosine_sim_for_incorrectly_judged_paraphrases': handle_zero_case(incorrectly_judged_paraphrases),
-        'average_cosine_sim_for_incorrectly_judged_non_paraphrases': handle_zero_case(incorrectly_judged_non_paraphrases)
+        'average_cosine_sim_for_incorrectly_judged_non_paraphrases': handle_zero_case(incorrectly_judged_non_paraphrases),
+        'average_cosine_for_paraphrases': handle_zero_case(paraphrases),
+        'average_cosine_for_non_paraphrases': handle_zero_case(non_paraphrases)
     }
 
 def handle_zero_case(category_results):
@@ -241,8 +227,6 @@ if __name__ =='__main__':
     parser.add_argument('--embedding_cache', type=str, help='Directory to load cached embeddings from')
     parser.add_argument('--embedding_model', type=str, default='bert-large-uncased',
                         help='The model used to transform text into word embeddings')
-    parser.add_argument('--embedding_paradigm', type=str, choices=[combined, cls], default=combined,
-                        help='Whether to combine sentence embeddings or take the CLS token of joint embeddings')
     parser.add_argument('--input', type=str, required=True)
     parser.add_argument('--run_name', type=str, default='run_{}'.format((int(time.time()))),
                         help='A label for the run, used to name output and cache directories')
