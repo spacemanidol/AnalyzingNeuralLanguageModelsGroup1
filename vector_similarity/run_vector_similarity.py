@@ -15,15 +15,18 @@ import argparse
 import time
 
 combined, cls = 'combined', 'cls'
+words, paraphrase_sent_pairs = 'words', 'para_pairs'
 
 def main(input_args):
-    word_usage_comparisons(input_args)
+    if input_args.comparison_type == words:
+        word_usage_comparisons(input_args)
+    else:
+        sentence_paraphrase_comparisons(input_args)
 
 
 def sentence_paraphrase_comparisons(input_args):
-    dataset = SentenceParaphraseInspectionDataset('paraphrase_pair_vec_sim_test.txt', "bert-large-uncased", 20, 'run_name')
-    # pdata = SentenceParaphraseInspectionDataset(input_args.input, input_args.embedding_model, 
-    #                                             input_args.embedding_batch_size, input_args.run_name)
+    dataset = SentenceParaphraseInspectionDataset(input_args.input, input_args.embedding_model, 
+                                                input_args.embedding_batch_size, input_args.run_name)
 
     embeddings = get_embeddings(dataset, input_args.embedding_cache)
     embedding_outputs, encoded_inputs, _indices = embeddings
@@ -36,9 +39,9 @@ def sentence_paraphrase_comparisons(input_args):
     print(summarize_sentence_similarity_comp(paraphrase_cosine_metrics))
 
 
-
 def word_usage_comparisons(input_args):
-    dataset = WordInspectionDataset('word_vec_sim_test.txt', "bert-large-uncased", 20, 'run_name')
+    dataset = WordInspectionDataset(input_args.input, input_args.embedding_model, 
+                                    input_args.embedding_batch_size, input_args.run_name)
     embeddings = get_embeddings(dataset, input_args.embedding_cache)
     embedding_outputs, encoded_inputs, _indices = embeddings
     data = dataset.get_data()
@@ -51,7 +54,6 @@ def word_usage_comparisons(input_args):
     PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
 
 
-
 def get_embeddings(data, embedding_cache):
     if embedding_cache is None:
         encoded_data = data.get_encoded()
@@ -61,15 +63,14 @@ def get_embeddings(data, embedding_cache):
 def get_sentence_embeddings(embeddings, data, embedding_paradigm):
     embedding_outputs, encoded_inputs, indices = embeddings
     if embedding_paradigm == combined:
-        return data.combine_sentence_embeddings(data.aggregate_sentence_embeddings(embedding_outputs, encoded_inputs,
-                                                                                    indices))
+        return data.aggregate_sentence_embeddings(embedding_outputs, encoded_inputs, indices)
     return data.bert_cls_embeddings(embeddings)
 
-
 def calculate_sentence_paraphrase_cosine_metrics(dataset, embedding_outputs, encoded_inputs, sentence_embeddings):
-    paraphrase_pairs = get_paraphrase_pairs(dataset)
-    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(pair_sents, dataset, embedding_outputs, encoded_inputs, sentence_embeddings) 
-                            for pair_id, pair_sents in paraphrase_pairs.items()]
+    data = dataset.get_data()
+    paraphrase_pairs = get_paraphrase_pairs(data)
+    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(pair_sents, dataset, data, embedding_outputs, encoded_inputs, sentence_embeddings) 
+                            for pair_sents in paraphrase_pairs]
     return paraphrase_cosine_metrics
 
 def calculate_word_cosine_metrics(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes):
@@ -78,12 +79,12 @@ def calculate_word_cosine_metrics(dataset, embedding_outputs, encoded_inputs, id
     return word_cosine_metrics
 
 def get_paraphrase_pairs(dataset):
-    paraphrase_pairs = defaultdict(list)
+    paraphrase_pairs = []
     for i, sent in enumerate(dataset):
-        paraphrase_pairs[sent.pair_id].append((i, sent))
+        paraphrase_pairs.append((i, sent))
     return paraphrase_pairs
 
-def calculate_paraphrase_pair_similarity(pair, dataset, embedding_outputs, encoded_inputs, sentence_embeddings):
+def calculate_paraphrase_pair_similarity(pair, dataset, data, embedding_outputs, encoded_inputs, sentence_embeddings):
     sent_1 = pair[0]
     sent_2 = pair[1]
     sent_1_index = sent_1[0]
@@ -94,8 +95,8 @@ def calculate_paraphrase_pair_similarity(pair, dataset, embedding_outputs, encod
         'pair_id': sent_1[1].pair_id,
         'sent_1': dataset.decode(encoded_inputs[sent_1_index].tolist()),
         'sent_2': dataset.decode(encoded_inputs[sent_2_index].tolist()),
-        'paraphrase': dataset[sent_1_index].paraphrase,
-        'judgment': dataset[sent_1_index].classifier_judgment,
+        'paraphrase': data[sent_1_index].true_label,
+        'judgment': data[sent_1_index].classifier_judgment,
         'cosine_similarity': cosine_sim
     }    
 
@@ -236,7 +237,7 @@ def show_PCS(embeddings, labels, targets, title):
 
 if __name__ =='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--embedding_batch_size', type=int, default=64)
+    parser.add_argument('--embedding_batch_size', type=int, default=20)
     parser.add_argument('--embedding_cache', type=str, help='Directory to load cached embeddings from')
     parser.add_argument('--embedding_model', type=str, default='bert-large-uncased',
                         help='The model used to transform text into word embeddings')
@@ -245,7 +246,8 @@ if __name__ =='__main__':
     parser.add_argument('--input', type=str, required=True)
     parser.add_argument('--run_name', type=str, default='run_{}'.format((int(time.time()))),
                         help='A label for the run, used to name output and cache directories')
-    
+    parser.add_argument('--comparison_type', type=str, required=True)
+
     input_args = parser.parse_args()
     main(input_args)
 

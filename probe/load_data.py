@@ -311,12 +311,14 @@ class SentenceParaphraseInspectionDataset(WordInspectionDataset):
     def load(self):
         tokenized_field = data.Field(use_vocab=False, tokenize=lambda x: self.tokenizer.tokenize(x))
         label_field = data.LabelField(preprocessing=lambda x: int(x), use_vocab=False)
+        prob_field = data.LabelField(preprocessing=lambda x: float(x), use_vocab=False)
         fields = [
-            ('sentence_id', label_field),
-            ('pair_id', label_field),
-            ('sentence', tokenized_field),
-            ('paraphrase', label_field),
-            ('classifier_judgment', label_field)
+            ('classifier_prob', prob_field),
+            ('classifier_judgment', label_field),
+            ('true_label', label_field),
+            ('sentence_1', tokenized_field),
+            ('sentence_2', tokenized_field),
+            ('Idiom', tokenized_field)
         ]
 
         self.data = data.TabularDataset(
@@ -326,3 +328,9 @@ class SentenceParaphraseInspectionDataset(WordInspectionDataset):
             csv_reader_params={'strict': True, 'quotechar': None}
         )
 
+    def _compute_encoded(self):
+        paraphrase_data = self.get_data()
+        self.encoded_data = data.Dataset(
+            [data.Example.fromlist([self.encode(row.sentence_1, row.sentence_2), index], self.encoded_fields)
+             for index, row in enumerate(paraphrase_data)],
+            self.encoded_fields)
