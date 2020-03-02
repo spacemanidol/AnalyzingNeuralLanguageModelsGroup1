@@ -2,7 +2,6 @@
 */.cache/
 .vscode/
 RC_2011-08
-data/*
 probe/*.txt
 probe/*.tsv
 .idea/*
@@ -29,7 +28,4 @@ bin-release/
 
 
 # Project specific ignores
-data/*
-models
 __pycache__
-runs
