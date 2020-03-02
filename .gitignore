@@ -7,6 +7,8 @@ probe/*.tsv
 .idea/*
 probe/cache/*
 probe/output/*
+#Model
+*/pytorch_model.bin
 # Build and Release Folders
 bin-debug/
 bin-release/
