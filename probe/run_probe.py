@@ -170,8 +170,8 @@ if __name__ == '__main__':
     parser.add_argument('--input', type=str, required=True)
 
     # mrpc indices = 0.3.4
-    # our dataset indices = 4.1.3
-    parser.add_argument('--indices', type=str, default='4.1.3')
+    # our dataset indices = 4.2.3
+    parser.add_argument('--indices', type=str, default='4.2.3')
 
     parser.add_argument('--run_name', type=str, default='run_{}'.format((int(time.time()))),
                         help='A label for the run, used to name output and cache directories')
