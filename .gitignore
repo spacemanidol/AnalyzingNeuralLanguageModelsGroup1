@@ -2,12 +2,13 @@
 */.cache/
 .vscode/
 RC_2011-08
-data/*
 probe/*.txt
 probe/*.tsv
 .idea/*
 probe/cache/*
 probe/output/*
+#Model
+*/pytorch_model.bin
 # Build and Release Folders
 bin-debug/
 bin-release/
@@ -29,7 +30,4 @@ bin-release/
 
 
 # Project specific ignores
-data/*
-models
 __pycache__
-runs
