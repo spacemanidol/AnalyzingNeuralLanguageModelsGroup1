@@ -9,6 +9,10 @@ probe/cache/*
 probe/output/*
 #Model
 */pytorch_model.bin
+*/*/pytorch_model.bin
+pytorch_model.bin
+*/*/checkpoint-*
+runs
 # Build and Release Folders
 bin-debug/
 bin-release/
