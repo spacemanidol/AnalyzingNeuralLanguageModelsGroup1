@@ -7,7 +7,7 @@ import logging
 import os.path
 import json
 import csv
-from transformers import AutoTokenizer, BertModel
+from transformers import BertTokenizer, BertModel
 
 logging.basicConfig(level=logging.DEBUG)
 module_logger = logging.getLogger('data_loading')
@@ -42,7 +42,7 @@ class Dataset(ABC):
         self.filename = filename
         self.model_label = model_label
         self.batch_size = batch_size
-        self.tokenizer = AutoTokenizer.from_pretrained(model_label, do_lower_case=True)
+        self.tokenizer = BertTokenizer.from_pretrained(model_label, do_lower_case=True)
         self.data = None
         self.encoded_sentence_field = ('sentence',
                                        data.Field(use_vocab=False, tokenize=self.encode, pad_token=self.tokenizer.pad_token_id))
