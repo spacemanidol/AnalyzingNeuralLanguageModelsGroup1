@@ -127,9 +127,8 @@ sentence_id	pair_id	sentence	word	figurative
 135	486	Decapitated animals left on road side.	road	0
 136	486	Wilmington memorialized his visit by naming a road in Landfall for the explorer. But he didn't stick around.	road	0
 137	486	We walk back along the road, the sun in our eyes, so we squint against the light.	road	0
-138	486	The road is gravel.	road	0
+138	486	They could at the very least least snap to the nearest road connecting to the city.	road	0
 139	486	He is on a rural road and knows that the land on both sides is private property.	road	0
-140	486	They could at the very least least snap to the nearest road connecting to the city.	road	0
 100	486	That's not to say you won't see this familiar look for the foreseeable future though, as any changes are quite a ways off.	future	0
 101	486	Perhaps in the future they should, and probably will, add more sources for reputation.	future	0
 102	486	At least understand these aspects of a business so when I went to start my own company in the future I would know how to make it great.	future	0
@@ -221,25 +220,25 @@ sentence_id	pair_id	sentence	word	figurative
 188	379	My own intent is to finish at least one small XNA project by myself.	finish	0
 189	379	When you finish the paperwork, you clean your desk.	finish	0
 190	81	Isn't the elephant in the room how the f he's typing without arms?	elephant	1
-191	82	Harry Houdini once made an elephant disappear.	elephant	0
-192	82	Though the elephant loaded with gifts idea was pretty hilarious, I have to say I was pretty disappointed Newt bought into an MSM narrative.	elephant	0
-193	82	The scrotal torsion alone from that amount of spin could sterilise an elephant.	elephant	0
-194	82	I'd put big money down that if I used a crayon to draw an elephant and a donkey I'd get at least a B+.	elephant	0
-195	82	These include bear, dog, cat, horse, and elephant shaped creatures with no biological relation whatsoever.	elephant	0
-196	82	Like the problems Africans are having with elephant herds, only 1,000 times worse.	elephant	0
-197	82	The ideas came when her staff was riding an elephant or a race horse or a motorcycle.	elephant	0
-198	82	You will begin by caring for a monkey and an elephant.	elephant	0
-199	82	There are few animals on this planet more magnificent than the elephant, and getting up close and personal with one of these giants is a real treat.	elephant	0
-200	82	So in a way the unspoken subtext in the US is " You want to cook food for me?	unspoken	0
-201	82	There are unspoken wishes, hopes and desires that go along with the hard statistics.	unspoken	0
-202	82	We have a sort of unspoken communication when we're making music and what we're influenced by.	unspoken	0
-203	82	He doesn't get the unspoken rules even when you try to explain them to him.	unspoken	0
-204	82	You are just slobbering a smiley face message while witholding the unspoken threat of eternal torture for those who decline it.	unspoken	0
-205	82	We love our pets and you're so right that it is unspoken.	unspoken	0
-206	82	Unspoken codes meant that American dealers did not encroach on the territory of their European counterparts, and vice versa.	unspoken	0
-207	82	Sometimes the little, unspoken but understood things he does for me mean more than the big stuff.	unspoken	0
-208	82	I am thrilled to finally have the unspoken agenda out on the table.	unspoken	0
-209	82	So, the topic of resource depletion is unspoken other than using the words " energy security. "	unspoken	0
+191	81	Harry Houdini once made an elephant disappear.	elephant	0
+192	81	Though the elephant loaded with gifts idea was pretty hilarious, I have to say I was pretty disappointed Newt bought into an MSM narrative.	elephant	0
+193	81	The scrotal torsion alone from that amount of spin could sterilise an elephant.	elephant	0
+194	81	I'd put big money down that if I used a crayon to draw an elephant and a donkey I'd get at least a B+.	elephant	0
+195	81	These include bear, dog, cat, horse, and elephant shaped creatures with no biological relation whatsoever.	elephant	0
+196	81	Like the problems Africans are having with elephant herds, only 1,000 times worse.	elephant	0
+197	81	The ideas came when her staff was riding an elephant or a race horse or a motorcycle.	elephant	0
+198	81	You will begin by caring for a monkey and an elephant.	elephant	0
+199	81	There are few animals on this planet more magnificent than the elephant, and getting up close and personal with one of these giants is a real treat.	elephant	0
+200	81	So in a way the unspoken subtext in the US is " You want to cook food for me?	unspoken	0
+201	81	There are unspoken wishes, hopes and desires that go along with the hard statistics.	unspoken	0
+202	81	We have a sort of unspoken communication when we're making music and what we're influenced by.	unspoken	0
+203	81	He doesn't get the unspoken rules even when you try to explain them to him.	unspoken	0
+204	81	You are just slobbering a smiley face message while witholding the unspoken threat of eternal torture for those who decline it.	unspoken	0
+205	81	We love our pets and you're so right that it is unspoken.	unspoken	0
+206	81	Unspoken codes meant that American dealers did not encroach on the territory of their European counterparts, and vice versa.	unspoken	0
+207	81	Sometimes the little, unspoken but understood things he does for me mean more than the big stuff.	unspoken	0
+208	81	I am thrilled to finally have the unspoken agenda out on the table.	unspoken	0
+209	81	So, the topic of resource depletion is unspoken other than using the words " energy security. "	unspoken	0
 9951	999	I'm also not a fan of the keyboard layout.	keyboard	0
 9952	999	I remember sitting at a keyboard and just weeping as I wrote this piece.	keyboard	0
 9953	999	I do like how the software keyboard auto-suggests words.	keyboard	0
