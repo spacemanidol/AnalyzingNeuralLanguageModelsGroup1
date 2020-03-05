@@ -17,6 +17,7 @@ class Dataset(ABC):
     sentences_filename = 'sentences.pt'
     inputs_filename = 'inputs.pt'
     indices_filename = 'indices.pt'
+    pools_filename = 'pools.pt'
 
     def get_raw(self):
         with open(self.filename, 'r') as f:
@@ -77,13 +78,14 @@ class Dataset(ABC):
 
 
     @staticmethod
-    def aggregate_data(sentences, batch_sentences, indices, batch_indices, inputs, batch_inputs):
+    def aggregate_data(sentences, batch_sentences, indices, batch_indices, inputs, batch_inputs, pools, batch_pools):
         # padding solution is pretty hacky and probably not the most space efficient, but it works for what
         # we want to do
-        if sentences is None and indices is None and inputs is None:
+        if sentences is None and indices is None and inputs is None and pools is None:
             sentences = batch_sentences
             indices = batch_indices
             inputs = batch_inputs
+            pools = batch_pools
         else:
             indices = torch.cat((indices, batch_indices))
             if sentences.shape[1] > batch_sentences.shape[1]:
@@ -99,8 +101,9 @@ class Dataset(ABC):
 
             sentences = torch.cat((sentences, batch_sentences))
             inputs = torch.cat((inputs, batch_inputs))
+            pools = torch.cat((pools, batch_pools))
 
-        return sentences, indices, inputs
+        return sentences, indices, inputs, pools
 
     def _save(self, tensor, name, folder):
         module_logger.info('Caching {} in {}'.format(name, folder))
@@ -118,7 +121,7 @@ class Dataset(ABC):
             'run_name': self.run_name
         }
 
-    def save_computed_embeddings(self, sentences, inputs, indices, metadata):
+    def save_computed_embeddings(self, sentences, inputs, indices, pools, metadata):
         folder = os.path.join('cache', self.run_name)
         module_logger.info('Caching info for this run in {}'.format(folder))
         module_logger.info('Please pass this folder in to future invocations to use cached data')
@@ -132,11 +135,12 @@ class Dataset(ABC):
         self._save(sentences, self.sentences_filename, folder)
         self._save(inputs, self.inputs_filename, folder)
         self._save(indices, self.indices_filename, folder)
+        self._save(pools, self.pools_filename, folder)
 
     def load_saved_embeddings(self, folder):
         module_logger.info('Loading embedding data from {}...'.format(folder))
         return self._load(self.sentences_filename, folder), self._load(self.inputs_filename, folder),\
-               self._load(self.indices_filename, folder),
+               self._load(self.indices_filename, folder), self._load(self.pools_filename, folder)
 
     def bert_word_embeddings(self, encoded_data):
         module_logger.info("Loading '{}' model".format(self.model_label))
@@ -145,40 +149,46 @@ class Dataset(ABC):
         sentences = None
         indices = None
         inputs = None
+        pools = None
         for batch, batch_indices in tqdm(self.bert_iter(encoded_data, self.batch_size), desc="Feature extraction"):
             with torch.no_grad():
-                out = bert_model(**batch)[0]
+                model_out = bert_model(**batch)
+                batch_sentences = model_out[0]
+                batch_pools = model_out[1]
                 batch_inputs = batch['input_ids']
-                sentences, indices, inputs = self.aggregate_data(sentences, out, indices, batch_indices,
-                                                                 inputs, batch_inputs)
+                sentences, indices, inputs, pools = self.aggregate_data(sentences, batch_sentences, indices,
+                                                        batch_indices, inputs, batch_inputs, pools, batch_pools)
 
-            module_logger.info('processed {}/{} sentences, current max sentence length {}'
-                  .format(sentences.shape[0], len(encoded_data), sentences.shape[1]))
+            module_logger.info('processed {}/{} sentences, batch max sentence length {}, total max sentence length {}'
+                  .format(sentences.shape[0], len(encoded_data), batch_sentences.shape[1], sentences.shape[1]))
 
-        ordered_sentences, ordered_inputs, ordered_indices = self.reorder(sentences, inputs, indices)
-        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_indices, self.get_metadata())
-        return ordered_sentences, ordered_inputs, ordered_indices
+        ordered_sentences, ordered_inputs, ordered_indices, ordered_pools = self.reorder(sentences, inputs, indices, pools)
+        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_indices, ordered_pools, self.get_metadata())
+        return ordered_sentences, ordered_inputs, ordered_indices, ordered_pools
 
     @staticmethod
-    def reorder(sentences, inputs, indices):
+    def reorder(sentences, inputs, indices, pools):
         if len(indices.shape) > 1:
             grouping_length = indices.shape[1]
             # dealing with a grouping of sentences, like pairs
             ordered_sentences = torch.zeros([sentences.shape[0] // grouping_length, grouping_length,
                                              sentences.shape[1], sentences.shape[2]])
             ordered_inputs = torch.zeros(inputs.shape[0] // grouping_length, grouping_length, inputs.shape[1])
+            ordered_pools = torch.zeros(pools.shape[0] // grouping_length, grouping_length, pools.shape[1])
             indices = [tuple(x) for x in indices]
             ordered_indices = sorted(indices)
         else:
             ordered_sentences = torch.zeros(sentences.shape)
             ordered_inputs = torch.zeros(inputs.shape)
+            ordered_pools = torch.zeros(pools.shape)
             ordered_indices = range(0, sentences.shape[0])
 
         for current_index, original_index in enumerate(indices):
             ordered_sentences[original_index] = sentences[current_index]
             ordered_inputs[original_index] = inputs[current_index]
+            ordered_pools[original_index] = pools[current_index]
 
-        return ordered_sentences, ordered_inputs, ordered_indices
+        return ordered_sentences, ordered_inputs, ordered_indices, ordered_pools
 
 
     def aggregate_sentence_embeddings(self, ordered_sentences, ordered_inputs, ordered_indices,

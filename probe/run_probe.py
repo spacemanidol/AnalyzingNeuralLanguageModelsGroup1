@@ -8,7 +8,7 @@ import time
 import os.path
 
 train, test = 'train', 'test'
-combined, cls = 'combined', 'cls'
+combined, cls, pool = 'combined', 'cls', 'cls_pool'
 module_logger = logging.getLogger('probe')
 
 class LinearRegression(torch.nn.Module):
@@ -90,15 +90,19 @@ def get_embeddings(data, input_args):
             encoded_data = data.get_flattened_encoded()
         else:
             encoded_data = data.get_encoded()
-        embeddings, inputs, indices = data.bert_word_embeddings(encoded_data)
+        embeddings, inputs, indices, pools = data.bert_word_embeddings(encoded_data)
     else:
-        embeddings, inputs, indices = data.load_saved_embeddings(input_args.embedding_cache)
+        embeddings, inputs, indices, pools = data.load_saved_embeddings(input_args.embedding_cache)
 
     if input_args.embedding_paradigm == combined:
         final_embeddings = data.combine_sentence_embeddings(data.aggregate_sentence_embeddings(embeddings, inputs,
-                                                                                                  indices))
-    else:
+                                                                                                   indices))
+    elif input_args.embedding_paradigm == cls:
         final_embeddings = data.bert_cls_embeddings(embeddings)
+    elif input_args.embedding_paradigm == pool:
+        final_embeddings = pools
+    else:
+        raise Exception("Unknown embedding paradigm")
 
     return final_embeddings
 
@@ -164,14 +168,14 @@ if __name__ == '__main__':
     parser.add_argument('--embedding_cache', type=str, help='Directory to load cached embeddings from')
     parser.add_argument('--embedding_model', type=str, default='bert-large-uncased',
                         help='The model used to transform text into word embeddings')
-    parser.add_argument('--embedding_paradigm', type=str, choices=[combined, cls], default=combined,
+    parser.add_argument('--embedding_paradigm', type=str, choices=[combined, cls, pool], default=combined,
                         help='Whether to combine sentence embeddings or take the CLS token of joint embeddings')
     parser.add_argument('--run', type=str, choices=[train, test], required=True)
     parser.add_argument('--input', type=str, required=True)
 
     # mrpc indices = 0.3.4
-    # our dataset indices = 4.2.3
-    parser.add_argument('--indices', type=str, default='4.2.3')
+    # our dataset indices = 1.4.5
+    parser.add_argument('--indices', type=str, default='1.4.5')
 
     parser.add_argument('--run_name', type=str, default='run_{}'.format((int(time.time()))),
                         help='A label for the run, used to name output and cache directories')
