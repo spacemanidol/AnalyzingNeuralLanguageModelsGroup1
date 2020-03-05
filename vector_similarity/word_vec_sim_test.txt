@@ -1,24 +1,24 @@
 sentence_id	pair_id	sentence	word	figurative
-1	1	The cat is out of the bag.	cat	1
-2	1	we saw a cat yesterday.	cat	0
-3	1	the cat is a afraid of dogs.	cat	0
-4	1	there was a cat on the roof.	cat	0
-5	1	how many hours a day will a cat sleep.	cat	0
-6	1	she thought she heard a cat crying.	cat	0
-7	1	nobody wanted to keep the cat.	cat	0
-8	1	the cat had bright blue eyes.	cat	0
-9	1	he asked for a cat for his birthday.	cat	0
-10	1	that is probably just the neighbor's cat.	cat	0
-11	1	everyone knows the secret.	secret	0
-12	1	i want to tell you a secret.	secret	0
-13	1	her guilty secret would soon be revealed.	secret	0
-14	1	she whispered as though imparting a secret.	secret	0
-15	1	you secret is safe with me.	secret	0
-16	1	this secret could not be shared with anyone.	secret	0
-17	1	it wasn't my secret to divulge.	secret	0
-18	1	her past until now has remained a secret.	secret	0
-19	1	there is a secret to their victory.	secret	0
-20	1	mark swore to keep it a secret.	secret	0
+1	61	The point was that once I let the cat out of the bag, the secret ceases to be a secret anymore and defeats more than one purpose.	cat	1
+2	61	we saw a cat yesterday.	cat	0
+3	61	the cat is a afraid of dogs.	cat	0
+4	61	there was a cat on the roof.	cat	0
+5	61	how many hours a day will a cat sleep.	cat	0
+6	61	she thought she heard a cat crying.	cat	0
+7	61	nobody wanted to keep the cat.	cat	0
+8	61	the cat had bright blue eyes.	cat	0
+9	61	he asked for a cat for his birthday.	cat	0
+10	61	that is probably just the neighbor's cat.	cat	0
+11	61	everyone knows the secret.	secret	0
+12	61	i want to tell you a secret.	secret	0
+13	61	her guilty secret would soon be revealed.	secret	0
+14	61	she whispered as though imparting a secret.	secret	0
+15	61	you secret is safe with me.	secret	0
+16	61	this secret could not be shared with anyone.	secret	0
+17	61	it wasn't my secret to divulge.	secret	0
+18	61	her past until now has remained a secret.	secret	0
+19	61	there is a secret to their victory.	secret	0
+20	61	mark swore to keep it a secret.	secret	0
 21	2	Soon we're going to hit the sack.	sack	1
 22	2	He slung it over one shoulder like a sack of cornmeal.	sack	0
 23	2	They said he had wrapped a garbage sack around his head.	sack	0
@@ -39,23 +39,234 @@ sentence_id	pair_id	sentence	word	figurative
 38	2	I would have difficulty going to bed at night without knowing.	bed	0
 39	2	This bed was never meant to be slept on.	bed	0
 40	2	The surface of the bed was firm.	bed	0
-41	3	It is time to bite the bullet.	bullet	1
-42	3	These extreme speeds are similar to a fired bullet.	bullet	0
-43	3	Officers found a bullet hole in the driver's seat.	bullet	0
-44	3	Lopez was hit in the leg, apparently by the same bullet that struck Ortiz.	bullet	0
-45	3	He said she was clipped by a bullet during river patrol.	bullet	0
-46	3	Jones was killed by a bullet through his heart.	bullet	0
-47	3	The bullet tore through a major artery and lodged in her spine.	bullet	0
-48	3	But the bullet is still in the arm.	bullet	0
-49	3	Bullet holes were visible on the brick exterior.	bullet	0
-50	3	The implant feels like a bullet lodged in his palate.	bullet	0
-51	3	The unpleasant situation must be dealt with.	situation	0
-52	3	high W-Y ratios that might be considered similar to the current situation.	situation	0
-53	3	This is because the situation is different from one country to another.	situation	0
-54	3	This situation seems optimistic.	situation	0
-55	3	We also considered the common situation of having only the clinical block.	situation	0
-56	3	This was not a fair account of the situation.	situation	0
-57	3	As discussed earlier, this situation will become increasingly dire.	situation	0
-58	3	This is not a situation unique to the Nordic Heritage Museum.	situation	0
-59	3	It is an uneasy situation for the Palestinians inside the refugee camps.	situation	0
-60	3	The opposite situation was observed for the coastal region of the Northeast.	situation	0
+41	134	You're just going to have to bite the bullet and get through it.	bullet	1
+42	134	These extreme speeds are similar to a fired bullet.	bullet	0
+43	134	Officers found a bullet hole in the driver's seat.	bullet	0
+44	134	Lopez was hit in the leg, apparently by the same bullet that struck Ortiz.	bullet	0
+45	134	He said she was clipped by a bullet during river patrol.	bullet	0
+46	134	Jones was killed by a bullet through his heart.	bullet	0
+47	134	The bullet tore through a major artery and lodged in her spine.	bullet	0
+48	134	But the bullet is still in the arm.	bullet	0
+49	134	Bullet holes were visible on the brick exterior.	bullet	0
+50	134	The implant feels like a bullet lodged in his palate.	bullet	0
+51	134	The unpleasant situation must be dealt with.	situation	0
+52	134	high W-Y ratios that might be considered similar to the current situation.	situation	0
+53	134	This is because the situation is different from one country to another.	situation	0
+54	134	This situation seems optimistic.	situation	0
+55	134	We also considered the common situation of having only the clinical block.	situation	0
+56	134	This was not a fair account of the situation.	situation	0
+57	134	As discussed earlier, this situation will become increasingly dire.	situation	0
+58	134	This is not a situation unique to the Nordic Heritage Museum.	situation	0
+59	134	It is an uneasy situation for the Palestinians inside the refugee camps.	situation	0
+60	134	The opposite situation was observed for the coastal region of the Northeast.	situation	0
+61	483	It's not always easy making decisions on the fly as a DM but here's what he probably should have done so that it wasn't obvious.	fly	1
+62	483	The birds weren't able to fly and were lying on the ground wailing in pain.	fly	0
+63	483	The Wildcats' run-heavy attack likely won't fly Saturday against Houston, which boasts one of the country's best rush defenses.	fly	0
+64	483	Though, he did fly from Santa Monica to Pasadena in a helicopter and then picked up the motorcade there.	fly	0
+65	483	Even within an hour and forty minutes of the airport, to fly a thousand or two thousand kilometers north for lucrative jobs on mine sites that allow.	fly	0
+66	483	He'd fly over India on Google Earth for as much as six hours at a time, sometimes until three or four a.m.	fly	0
+67	483	I was supposed to fly from Venice to Rome but Ryannair cancelled our flight.	fly	0
+68	483	But after it's all over, wouldn't it be awesome to fly to Chicago to meet the President and have a front-row seat for his Election Night speech.	fly	0
+69	483	I have to fly this coming Sunday, although I am not looking forward to it.	fly	0
+70	483	She didn't spontaneously remember, you had to remind her.	spontaneously	0
+71	483	Grace and Fran, as a sort of summing up of our conversation, spontaneously sang together part of John McCutcheon's Happy Adoption Day song.	spontaneously	0
+72	483	As global ocean-atmosphere models improved, they began to spontaneously generate their own El Nio-like cycles.	spontaneously	0
+73	483	I love when I hear them speak spontaneously after going for so long being prompted to speak.	spontaneously	0
+74	483	The events spontaneously happened in church during a song, a moment of meditation, or prayer.	spontaneously	0
+75	483	Other reasons offered spontaneously by at least 9% of the respondents included diversion, the quality of shows, social interaction, and arousal. 	spontaneously	0
+76	483	The mentor did not continue to seek the beginning teacher in his or her classroom, but rather the meetings occurred more spontaneously.	spontaneously	0
+77	483	Hugo described it as the sound of a block of ice spontaneously splitting in two.	spontaneously	0
+78	483	They often go away spontaneously -- and stay away for long periods.	spontaneously	0
+79	483	As confidence builds, the economy could spontaneously and surprisingly accelerate.	spontaneously	0
+80	483	This would agree with the evolutionist idea that since life arose spontaneously on earth, it is likely that it would arise elsewhere as well.	spontaneously	0
+81	454	I dunno, what's the opportunity cost in the long run?	run	1
+82	454	His body told him not to do it again, but his mind told him he could run faster.	run	0
+83	454	Last February, after flying to Atlanta and then driving all night to New Orleans for the Super Bowl -- his uncle, Dick Cass, is president of the Baltimore Ravens -- he immediately went for a 12-mile run.	run	0
+84	454	We used to run hills, the one by our house, when we were kids.	run	0
+85	454	I chose for my students to perform the mile run. 	run	0
+86	454	Now I wanted only to get away, to run to my mother.	run	0
+87	454	My first impulse was to shout " NO! DO N'T! " and run out the door.	run	0
+88	454	I'd pull them up over my head and run around the house and bump into everything, knock stuff over.	run	0
+89	454	When she laughed that she'll never be able to run across the country.	run	0
+90	454	You're not supposed to run across the street!	run	0
+100	454	That's not to say you won't see this familiar look for the foreseeable future though, as any changes are quite a ways off.	future	0
+101	454	Perhaps in the future they should, and probably will, add more sources for reputation.	future	0
+102	454	At least understand these aspects of a business so when I went to start my own company in the future I would know how to make it great.	future	0
+103	454	But maybe something to consider in future?	future	0
+104	454	Then this would reduce future impacts from extreme events like Sandy.	future	0
+105	454	Let's focus on a better, brighter future that is possible once the blight of Regan is gone.	future	0
+106	454	Let's talk about your future.	future	0
+107	454	But there's no inclination that the new channel will turbocharge your business into future riches.	future	0
+108	454	Your future depends on yourself, not on me.	future	0
+109	454	That seems likely to be promulgated in future federal surveys.	future	0
+110	270	Lafayette, on the other hand, is one of the more culturally diverse cities I know.	hand	1
+111	270	Yeah, this hand.	hand	0
+112	270	From its description, a crystal fitting into the palm of the hand, we surmised it could very well be the Tox Uthat.	hand	0
+113	270	When the mom let go of the girl's hand, the girl sprang up and ran again to the stage.	hand	0
+114	270	Raise your hand.	hand	0
+115	270	Grab his hand!	hand	0
+116	270	I count 11 scars on this hand.	hand	0
+117	270	Chiropractors can loosen up hand and finger joints, they can free up stuck shoulders sometimes too.	hand	0
+118	270	If you merely suffer from hand sweating - be thankful it's not the feet! 	hand	0
+119	270	With her one functioning hand and special fat-handled spoon, she resolutely spaded off each morsel of biscuit.	hand	0
+120	270	And he whistled blithely while laying out his things for the official inspection, comparing his belongings carefully with a list in his hand.	hand	0
+121	270	From a cinematic perspective, does anyone else agree that this movie would have been just as successful if the characters were faced with all the REAL horrors of their situation?	perspective	0
+122	270	We are pleased to welcome Alfred Thompson to today's Daily Edventure as he shares his unique perspective on the current state of technology education.	perspective	0
+123	270	Everyone looks at the effect of an interest rate cut from their own self-interested perspective.	perspective	0
+124	270	This article is about lessons that can be learned from a business perspective that can keep your marketing and communications online.	perspective	0
+125	270	From my perspective as someone who has been an employer, I would say this.	perspective	0
+126	270	I think that most people that have seen the world will agree with your perspective.	perspective	0
+127	270	From this perspective, wanting things to be other than how they are is often about evading looking at the source of our own perceptions	perspective	0
+128	270	This is a valid perspective on human alienation.	perspective	0
+129	270	I will never know every perspective or be able to fashion what is going on in any given minute.	perspective	0
+130	486	I think I'm going to hold on to it and maybe I'll find something to do with it later down the road.	road	1
+131	486	Before you learn the tender gravity of kindness, you must travel where the Indian in a white poncho lies dead by the side of the road.	road	0
+132	486	I drove back up the coulee, and as I was going through the switchbacks that lead down to the lake and our county road, the local fire chief passed me going in the opposite direction.	road	0
+133	486	This whole road will be redesigned.	road	0
+134	486	We had a fire start right across the road from our sub-division yesterday afternoon.	road	0
+135	486	Decapitated animals left on road side.	road	0
+136	486	Wilmington memorialized his visit by naming a road in Landfall for the explorer. But he didn't stick around.	road	0
+137	486	We walk back along the road, the sun in our eyes, so we squint against the light.	road	0
+138	486	The road is gravel.	road	0
+139	486	He is on a rural road and knows that the land on both sides is private property.	road	0
+140	486	They could at the very least least snap to the nearest road connecting to the city.	road	0
+100	486	That's not to say you won't see this familiar look for the foreseeable future though, as any changes are quite a ways off.	future	0
+101	486	Perhaps in the future they should, and probably will, add more sources for reputation.	future	0
+102	486	At least understand these aspects of a business so when I went to start my own company in the future I would know how to make it great.	future	0
+103	486	But maybe something to consider in future?	future	0
+104	486	Then this would reduce future impacts from extreme events like Sandy.	future	0
+105	486	Let's focus on a better, brighter future that is possible once the blight of Regan is gone.	future	0
+106	486	Let's talk about your future.	future	0
+107	486	But there's no inclination that the new channel will turbocharge your business into future riches.	future	0
+108	486	Your future depends on yourself, not on me.	future	0
+109	486	That seems likely to be promulgated in future federal surveys.	future	0
+110	293	Razor is aiming for that same market corner and they have set the bar rather high for it based on speculation.	bar	1
+111	293	I ended up going out with a beautiful young lady I haven't seen in way too long to a bar in Palo Alto.	bar	0
+112	293	I'm going to go to the bar, and have clean clothes.	bar	0
+113	293	We get to the bar, and her and her cousin and her cousin's husband were the only ones in costume.	bar	0
+114	293	He loved to pick up some conversation in a bar or on the train or in a restaurant and somehow later to incorporate that.	bar	0
+115	293	And here's Sam doing the opposite: kicking up a ruckus in a bar room brawl.	bar	0
+116	293	I have been looking forever for a bar cart, and I never see them.	bar	0
+117	293	Now I have to cut my own bar tab.	bar	0
+118	293	But the lounge is quite nice, the bar is open, the Wi-Fi's on the house and there's a respectable duty free shop.	bar	0
+119	293	Your dad could be the milkman or a bad bar hook-up.	bar	0
+120	293	If they responded inappropriately, they were reminded of the standard and told that after the grace week, they will receive a consequence for that kind of a response.	standard	0
+121	293	We would only have to work about 45 minutes every 2 weeks to have the same standard of living we have now.	standard	0
+122	293	Portland currently uses a level of service standard, but it is a local policy issue whether they use an LOS.	standard	0
+123	293	It's sort of standard protocol here at Martinsville.	standard	0
+124	293	Relevant to what standard?	standard	0
+125	293	Since they are raising the standard again next year, and we are never going to be able to get children.	standard	0
+126	293	It is, however, presently the standard of care for his condition.	standard	0
+127	293	But, like with everything, the hard part always lies in securing the quality and standard of the school of your choosing.	standard	0
+128	293	But they did not have enough skill to meet the standard for armoring Humvees.	standard	0
+129	293	Firstly, the work they do is, to put it bluntly, poor -- far below the standard expected of us. 	standard	0
+131	498	I feel like we're on the same page; tho you're much further along in badass status. 	page	1
+130	498	This page shows a bound, semi-nude woman with duct tape over her mouth. 	page	0
+132	498	Some voters said they didn't realize there was even a second page because they were stuck together. 	page	0
+133	498	Whenever I smell or page or hold the worn pages it feels so familiar. 	page	0
+134	498	Bookmark this page and pick one night of the month (i.e. second Tuesday) to watch a video. 	page	0
+135	498	You'll note my name at the top of the page as a co-author of this article. 	page	0
+136	498	But when I saw that SBI was $299, I quickly closed the page as no way in the world can I afford that.	page	0
+137	498	I just noticed that one of the pictures on the front page is of a woman measuring herself with a measuring tape. 	page	0
+138	498	Out of the twenty-plus teens, only two admitted to reading a printed newspaper on a regular basis and that was just the sports page. 	page	0
+139	498	Don't think you are expected to generate a 600 page monster novel in three days. 	page	0
+140	498	Mutual understanding makes any relationship better. 	understanding	0
+141	498	When a new understanding of the nature of creation, of reality, becomes an issue of practical application, the old religions will change their names. 	understanding	0
+142	498	And anyone's understanding of what it really means is dependent upon their previous understanding of how the system of government finance actually works. 	understanding	0
+143	498	Though his understanding of communism was different from that of Mao and other leaders, Deng still followed the labor theory of value. 	understanding	0
+144	498	The problem is that, as far as my understanding is, the physical switches have no visibility into the underlying VXLAN encapsulation. 	understanding	0
+145	498	There's actually one other point that I want to make, and that is that my understanding is tomorrow is Speaker Boehner's birthday. 	understanding	0
+146	498	Our understanding of what it means to be a woman or a man is changing. 	understanding	0
+147	498	So it is with this understanding that I approach life. 	understanding	0
+148	498	My understanding of the historical development and spread of Buddhism, and of human nature in general, is that there has never been a large number of people. 	understanding	0
+149	498	The goal of the current study is to gain a better understanding of how aquatic bacteria utilize caffeine as a source of carbon.	understanding	0
+150	389	I think he has bigger fish to fry.	fish	1
+151	389	It's famous for its fisherman, its fresh fish sandwiches, and its location between the cultural region of Sultanahmet and the modern Galata.	fish	0
+152	389	You could even catch a fish and then have it prepared for you at the park's restaurant for $1.	fish	0
+153	389	They can kill more than half the fish, and the fish they get are the larger-sized half.	fish	0
+154	389	Even urban streams are showing the benefit of restoration work, with fish returning to their home waters.	fish	0
+155	389	Might think about fish again -- fried this time -- whitebait, clams, calamari.	fish	0
+156	389	Do we have the abundant fish and game of the 18th century?	fish	0
+157	389	The men have been forced to leave and look for fish hundreds of miles away.	fish	0
+158	389	Because there aren't any fish left here.	fish	0
+159	389	And we both loved to fish and fished a lot together.	fish	0
+160	389	Because if they choose the wrong employee, there will be many problems related to the job of that employee.	problems	0
+161	389	Spending time with a technical person gives you insight into what engineers value and how they approach problems.	problems	0
+162	389	Mr. Forstall refused to sign a public apology over the matter, dismissing the problems as exaggerated.	problems	0
+163	389	Success as the new head of Egypt will depend on his ability to solve urgent problems rather then skills in political debate.	problems	0
+164	389	We have to see this windfall as buying time for us to tackle the harder energy problems, not as a substitute.	problems	0
+165	389	But it makes every one of her medical problems worse.	problems	0
+166	389	I knew this would cause other, separate problems.	problems	0
+167	389	In addition to autism, I will wager that teens who got the Gardisil shot will have fertility problems in the future.	problems	0
+168	389	There are still many potential problems to address.	problems	0
+169	389	They are not only helping us solve some of our problems, but they are actually helping us with some of our opportunities.	problems	0
+170	379	And if you've resorted to name-calling, maybe you should just call it a day, as you have obviously run out of actual *arguments*.	day	1
+171	379	The other day, a friend and I were discussing a political subject about which we (mostly) agree.	day	0
+172	379	I've been able to keep the commitment to exercise every day, so much better than the world where I could always go to the gym.	day	0
+173	379	At one point two men are running alongside a riverbank in the middle of the day.	day	0
+174	379	Even though it was a nice warm day in May, the water in the lake was still pretty cold.	day	0
+175	379	I had dreamed of this day for years.	day	0
+176	379	The first stop will be from 8 a.m. to noon Saturday at the Ocean View Farmers Market, followed later that day at the Kau Resource and Distance Learning Center.	day	0
+177	379	I said, " Yes, " and was summarily removed the next day.	day	0
+178	379	Atlanta is a different kind of city, only about 200,000 actually lives in the city of Atlanta but about a few million work there each day.	day	0
+179	379	The following day focused on the common core and the public library and provided practical suggestions to assist parents and educators with navigating these standards.	day	0
+180	379	I mean they're so easy to finish.	finish	0
+181	379	I won't be under as much pressure to finish the estate planning before my Thanksgiving goal, so I can be patient.	finish	0
+182	379	You didn't let me finish.	finish	0
+183	379	I will be working with Bill Dunkelberg on a book on the future of employment over the next few months, hoping to finish it shortly after the first of the year.	finish	0
+184	379	According to the authorities we (the teachers) should take our cars and drive to the studens' home and force them to come back to school and finish their work!	finish	0
+185	379	Hurd said he was unable to finish his 50 hours of field training at Tech.	finish	0
+186	379	I came to finish this race with you.	finish	0
+187	379	From start to finish, Little J's bedtime routine took all of 10 minutes.	finish	0
+188	379	My own intent is to finish at least one small XNA project by myself.	finish	0
+189	379	When you finish the paperwork, you clean your desk.	finish	0
+190	81	Isn't the elephant in the room how the f he's typing without arms?	elephant	1
+191	82	Harry Houdini once made an elephant disappear.	elephant	0
+192	82	Though the elephant loaded with gifts idea was pretty hilarious, I have to say I was pretty disappointed Newt bought into an MSM narrative.	elephant	0
+193	82	The scrotal torsion alone from that amount of spin could sterilise an elephant.	elephant	0
+194	82	I'd put big money down that if I used a crayon to draw an elephant and a donkey I'd get at least a B+.	elephant	0
+195	82	These include bear, dog, cat, horse, and elephant shaped creatures with no biological relation whatsoever.	elephant	0
+196	82	Like the problems Africans are having with elephant herds, only 1,000 times worse.	elephant	0
+197	82	The ideas came when her staff was riding an elephant or a race horse or a motorcycle.	elephant	0
+198	82	You will begin by caring for a monkey and an elephant.	elephant	0
+199	82	There are few animals on this planet more magnificent than the elephant, and getting up close and personal with one of these giants is a real treat.	elephant	0
+200	82	So in a way the unspoken subtext in the US is " You want to cook food for me?	unspoken	0
+201	82	There are unspoken wishes, hopes and desires that go along with the hard statistics.	unspoken	0
+202	82	We have a sort of unspoken communication when we're making music and what we're influenced by.	unspoken	0
+203	82	He doesn't get the unspoken rules even when you try to explain them to him.	unspoken	0
+204	82	You are just slobbering a smiley face message while witholding the unspoken threat of eternal torture for those who decline it.	unspoken	0
+205	82	We love our pets and you're so right that it is unspoken.	unspoken	0
+206	82	Unspoken codes meant that American dealers did not encroach on the territory of their European counterparts, and vice versa.	unspoken	0
+207	82	Sometimes the little, unspoken but understood things he does for me mean more than the big stuff.	unspoken	0
+208	82	I am thrilled to finally have the unspoken agenda out on the table.	unspoken	0
+209	82	So, the topic of resource depletion is unspoken other than using the words " energy security. "	unspoken	0
+9951	999	I'm also not a fan of the keyboard layout.	keyboard	0
+9952	999	I remember sitting at a keyboard and just weeping as I wrote this piece.	keyboard	0
+9953	999	I do like how the software keyboard auto-suggests words.	keyboard	0
+9954	999	The keyboard gives a slightly cramped feeling.	keyboard	0
+9955	999	They' ll collapse if you exert too much forward pressure, crashing the keyboard.	keyboard	0
+9956	999	He used the keyboard to control the arrow and direct the game.	keyboard	0
+9957	999	Because he thought the wireless mechanical keyboard market was full of junk.	keyboard	0
+9958	999	Still, as I sit at the keyboard, I feel I have failed to live up to my youthful potential.	keyboard	0
+9961	899	He never even touched my hands on the keyboard.	keyboard	0
+9959	999	I could hear the soft patter of a computer keyboard.	keyboard	0
+9960	899	When he passed back through Roskilde around noon it had become just another town, men in shirtsleeves and women going to market.	market	0
+9962	899	We have a farmers market back home that's much the same.	market	0
+9963	899	Today Baru went to market with a new joy: the joy of plots.	market	0
+9964	899	I'm scared I'll end up with' the greatest flea market on earth.	market	0
+9965	899	Ever been to the street market in Kowloon?	market	0
+9966	899	Strolling through the Saturday market near the river in Portland (assuming it's still going on).	market	0
+9967	899	Eventually he was able to quit his job at the market and pursue his passion full time.	market	0
+9968	899	Yeah, right, the market place.	market	0
+9969	899	I had to go to the market the other day, and there were people at the register talking about it.	market	0
+9970	899	He even noticed the market down the street with pleasure.	market	0
+9971	799	After a time Yining took out her phone and began scrolling through the dozens of pictures.	phone	0
+9972	799	Honestly it's such a joy to be able to set the phone down somewhere.	phone	0
+9973	799	So, I called him and he actually answered his phone.	phone	0
+9974	799	But within minutes I got a phone call from Andy Card, the chief of staff.	phone	0
+9975	799	I say, holding the glowing phone up to him.	phone	0
+9976	799	I do nt need any more, its a phone not a computer or an ipod.	phone	0
+9970	799	And when she's home, is her phone ever not within arm's reach?	phone	0
+9978	799	I did take the precaution of taking my cell phone out of my saddle back and putting it in my pocket.	phone	0
+9979	799	The footprint is the same, though, and it's a fairly good-sized phone in terms of length and width.	phone	0
+9980	799	He wiped his fingertips on a soft yellow rag and peered with concentration at the LED displays of the cordless phone, a present from Roger.	phone	0
