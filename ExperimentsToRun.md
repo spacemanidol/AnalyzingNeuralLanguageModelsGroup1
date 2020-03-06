@@ -1,38 +1,42 @@
 Experiments
-Full Size
-1. Train and Test on all our data(random sample) (2000 samples) 80:20 Split
-2. Train and Test on all our data(idioms in Dev not in train) (2000 samples) 80:20 Split
-3. Train and test on MRPC(all data) ( 5802 samples) 80:20 Split
-4. Train on MRPC and test on ours(Random sample) (6076 samples) 67:33 split
-5. Train on MRPC and test on ours(Random sample) (5802 samples) 80:20 Split
-6. Train on MRPC and test on ours(idioms in Dev not in train) (6076 samples) 67:33 split
-7. Train on MRPC and test on ours(idioms in Dev not in train) (5802 samples) 80:20 Split
-8. Train on ours Test on MRPC (Random sample) (7800 samples) ? split
-9. Train on ours Test on MRPC (Random sample) (2500 samples) 80:20 split
+We broadly have a few pools of dev and train to sample from
+
+TrainMRPC is 4076 and sampled at random. Call T1. Produces a downsampled 1600 sample called T1, and a downsampled 800 sample called T1,,
+TrainIdiomRandom is 1600 and sampled at random. Call T2. Produces a downsampled 800 sample  called T2,,
+TrainIdiomSorted is 1600 and sampled so none of its idioms are in its dev. Call T3. Produces a downsampled 800 sample called T3,
+TrainIdiomDaniel is 800 and sampled at random. Call T4
+TrainIdiomElena is 800 and sampled at random. Call T5
+
+DevMRPC is 1726 and sampled at random. Call D1. Produces a downsampled 400 sample called D1, and a downsampled 200 sample called D1,,
+DevIdiomRandom is 400 and sampled at random. Call D2. Produces a downsampled 200 sample  called D2,
+DevIdiomSorted is 400 and sampled so none of its idioms are in its Train. Call D3. Produces a downsampled 200 sample called D3,
+DevIdiomDaniel is 200 and sampled at random. Call D4
+DevIdiomElena is D5 and sampled at random. Call D5
 
 
-2k Sample
-1. Train and Test on all our data(random sample) (2000 samples) 80:20 Split
-2. Train and Test on all our data(idioms in Dev not in train) (2000 samples)80:20 Split
-3. Train and test on MRPC(2000 samples) 80:20 Split
-4. Train on MRPC and test on ours(3600 samples) 44:66 Split
-5. Train on MRPC and test on ours(2000 samples) 80:20 Split
-6. Train on MRPC and test on ours(idioms in Dev not in train) (3600 samples) 67:33 split
-7. Train on MRPC and test on ours(idioms in Dev not in train) (2000 samples) 80:20 Split
+Experiment to test effect of training set size
+1. Train and test on full MRPC(4076 Train 1726 Dev )  T1 D1
+2. Train and test on MRPC (1600 Train 400 Dev ) T1, D1,
+3. Train and test on MRPC (800 Train 200 Dev) T1,, D1,,
 
-1K sample
-1. Train and Test on all our data(random sample) (1000 samples) 80:20 Split
-2. Train and Test on all our data(idioms in Dev not in train) (1000 samples)80:20 Split
-3. Train and test on MRPC(1000 samples) 80:20 Split
-4. Train on MRPC and test on all ours(random sample) (3000 samples) 28:72 Split
-5. Train on MRPC and test sampled ours ours(random sample) (1000 samples) 80:20 Split
-4. Train on MRPC and test on all ours(idioms in Dev not in train)(3000 samples) 28:72 Split
-5. Train on MRPC and test sampled ours ours(idioms in Dev not in train)(1000 samples) 80:20 Split
-6. Train and Test on elena data(random sample) (1000 samples) 80:20 Split
-7. Train and Test on Daniel data(random sample) (1000 samples) 80:20 Split
-8. Train on elena and Test on daniel data(random sample) (1000 samples) 80:20 Split
-9. Train on daniel and Test on elena data(random sample) (1000 samples) 80:20 Split
-10. Train on MRPC and Test on daniel data(random sample) (1000 samples) 80:20 Split
-11. Train on MRPC and Test on daniel data(random sample) (1600 samples) 37.5:62.5 Split
-12. Train on MRPC and Test on elena data(random sample) (1000 samples) 80:20 Split
-13. Train on MRPC and Test on elena data(random sample) (1600 samples) 37.5:62.5 Split
+4. Train and Test on all our data(random sample) (1600 Train 400 Dev)  T2 D2
+5. Train and Test on our data(random sample) (800 Train 200 Dev) T2, D2,
+
+6. Train and Test on our data(idioms in Dev not in train)(1600 Train 400 Dev)  T3 D3
+7. rain and Test on our data(idioms in Dev not in train)(800 Train 200 Dev)  T3, D3,
+
+Experiment to test performance across samples
+7. Train T1, test on D2
+8. Train on T1, test on D3
+9. Train on T1,, Test on D2,
+10. Train on T1,, Test on D3,
+11. Train on T1,, Test on D4
+12. Train on T1,, Test on D5
+
+Experiments on Agreement cross data
+13. Train on T2, test on D1,,
+14. Train on T3, test on D1,,
+15. Train on T4 test on D5
+16. Train on T4 test on D1,,
+17. Train on T5 test on D4
+18. Train on T5 test on D1,,
