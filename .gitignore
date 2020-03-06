@@ -12,7 +12,7 @@ probe/output/*
 */*/pytorch_model.bin
 pytorch_model.bin
 */*/checkpoint-*
-runs
+runs/
 # Build and Release Folders
 bin-debug/
 bin-release/
