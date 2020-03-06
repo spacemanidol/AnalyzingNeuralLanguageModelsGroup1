@@ -17,3 +17,10 @@ with open('all.tsv','w') as w:
             s2 = l[3]
             w.write("{}\tNULL\tNULL\t{}\t{}\n".format(q, s1, s2))
 
+
+with open('dev.tsv','w') as w:
+    w.write("Quality #1\tID   #2\tID   #1\tString       #2\tString target\n")
+
+
+with open('train.tsv','w') as w:
+    w.write("Quality #1\tID   #2\tID   #1\tString       #2\tString target\n")
