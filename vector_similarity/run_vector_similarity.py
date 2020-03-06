@@ -1,17 +1,18 @@
+import os.path
 import sys
 sys.path.append('../')
 import torch
 import itertools
-from probe.load_data import WordInspectionDataset, SentenceParaphraseInspectionDataset
-from scipy.spatial.distance import cosine
-from statistics import mean 
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-import numpy as np
 import argparse
 import time
 import random
 import logging
+from statistics import mean 
+import numpy as np
+from scipy.spatial.distance import cosine
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from probe.load_data import WordInspectionDataset, SentenceParaphraseInspectionDataset
 
 words, paraphrase_sent_pairs = 'words', 'para_pairs'
 
@@ -42,10 +43,25 @@ def word_usage_comparisons(input_args):
     idiom_sentence_indexes = get_idiom_sentences(data)
 
     word_sim_results = calculate_word_cosine_metrics(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
-    # print(word_sim_results)
-    print(summarize_word_similarity_comp(word_sim_results))
+    avergages = summarize_word_similarity_comp(word_sim_results)
+    
+    individual_word_sims = list(itertools.chain.from_iterable([format_for_output(result) for result in word_sim_results]))
+    embedding_meta_data_info_lines = run_information(input_args)
+    output_lines = embedding_meta_data_info_lines + individual_word_sims + ["\nAverages:\n"] + format_for_output(avergages)
+    output_file(input_args.run_name, '{}_word_similarity_results.tsv'.format(input_args.run_name), output_lines)
 
     PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
+
+def run_information(input_args):
+    return [
+        'Run name: {} \n'.format(input_args.run_name),
+        'Embedding model: {}\n'.format(input_args.embedding_model),
+        'Embedding cache: {}\n'.format(input_args.embedding_cache),
+        'Input file: {}\n\n\n'.format(input_args.input)
+    ]
+
+def format_for_output(metric_dict):
+    return ["{}: {}\n".format(k, v) for k, v in metric_dict.items()] + ["\n"]
 
 def get_embeddings(data, embedding_cache, flattened):
     if embedding_cache is None:
@@ -117,7 +133,7 @@ def calculate_word_similarity_metrics(idiom_sent_index_group, dataset, embedding
 
     return {
         'pair_id': pair_id,
-        'sentences': [dataset.decode(encoded_inputs[idiom_sent_index].tolist()) for idiom_sent_index in idiom_sent_index_group],
+        'idiom_sentences': [dataset.decode(encoded_inputs[idiom_sent_index].tolist()) for idiom_sent_index in idiom_sent_index_group],
         'word': idiom_word,
         'paraphrase_word': data[paraphrase_sents[0]].word,
         'cosine_similarities': cosine_similarity_metrics,
@@ -291,6 +307,14 @@ def show_PCS(embeddings, labels, targets, title):
     plt.legend(loc='best', shadow=False, scatterpoints=1)
     plt.title(title)
     plt.show()
+
+def output_file(run_name, filename, content):
+    folder = os.path.join('output', run_name)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    with open(os.path.join(folder, filename), 'w+') as outfile:
+        outfile.writelines(content)
+
 
 if __name__ =='__main__':
     parser = argparse.ArgumentParser()
