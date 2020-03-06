@@ -10,19 +10,31 @@ For a visual example of the usage and output, see the jupyter notebook file in t
 
 ### 1. Word-level embeddings 
 
-This model takes as input a data file with tab-separated fields as followed:
+This model takes as input a data file with tab-separated fields as follows:
+
 `sentence_id	pair_id	sentence	word	figurative`
-The data is grouped into sections by `pair_id` (this name is somewhat misleading because it actually refers to many sentences that make up one group focused around a single idiom phrase. In this group, some of the sentences will be denoted as figurative uses (i.e. the value for `figurative` is `1`), and these sentences will all contain the idiom phrase. From this idiom phrase, there will be one word (`word`) denoted from the idiom. A second section of sentences in the `pair_id` group will be "literal" sentences, that use this same word in a *literal* way. These sentences have the same `pair_id` and the same `word` value, but their `figurative` value is `0`. Finally, there is a third section in the `pair_id` group that is made up of sentences that include a *paraphrase* word for the idiom word used in a literal way. These sentences have the same `pair_id` but a different `word` value (i.e. the paraphrased word) and a `figurative` value of `0`.
+
+The data is grouped into sections by `pair_id` (this name is somewhat misleading because it actually refers to many sentences that make up one group focused around a single idiom phrase. 
+
+In this group, some of the sentences will be denoted as figurative uses (i.e. the value for `figurative` is `1`), and these sentences will all contain the idiom phrase. From this idiom phrase, there will be one word (`word`) denoted from the idiom. A second section of sentences in the `pair_id` group will be "literal" sentences, that use this same word in a *literal* way. These sentences have the same `pair_id` and the same `word` value, but their `figurative` value is `0`. Finally, there is a third section in the `pair_id` group that is made up of sentences that include a *paraphrase* word for the idiom word used in a literal way. These sentences have the same `pair_id` but a different `word` value (i.e. the paraphrased word) and a `figurative` value of `0`.
 
 Here's an abbreviated example for the idiom phrase "on the other hand":
 `sentence_id	 pair_id	 sentence 	 word	 figurative`
+
 `122	270	On the other hand, it is kind of distracting.	hand	1`
+
 `123	270	Samsung's hardware pioneering, on the other hand, needs more work.	hand	1`
+
 `127	270	When the mom let go of the girl's hand, the girl sprang up and ran again to the stage.	hand	0`
+
 `129	270	Grab his hand!	hand	0`
+
 `130	270	I count 11 scars on this hand.	hand	0`
+
 `142	270	This is a valid perspective on human alienation.	perspective	0`
+
 `139	270	From my perspective as someone who has been an employer, I would say this.	perspective	0`
+
 `140	270	I think that most people that have seen the world will agree with your perspective.	perspective	0`
 
 There are also some sets of `pair_id` sentences that are all literal, each based on a single entirely random word, that get used as a control group of sorts in the calculations.
@@ -33,13 +45,16 @@ For each `pair_id` group based on an idiom phrase, we calculate the average cosi
 We also compute the average *differences* between these scores over all of the groups, to try to ascertain patterns between the cosine similarity and euclidean distance in general.
 
 Finally, we also produce PCA visualizations for each `pair_id` group. We produce these PCA comparisons on three different sets from the data: 
+
 1.) figurative (the word used in the idiom context) and literal uses of the idiom word
+
 2.) figurative and literal (as in #1) plus the paraphrase usages with the same meaning as the idiom word in context
+
 3.) same as those in #2 plus embeddings for a randomly chosen word
 
 All of the results are stored in a folder with the `run_name` in the `output` directory in this current directory (`vector_similarity`). The PCA visualizations can be found in the run output folder under `PCA_images`.
 
-### Example usage
+#### Example usage
 
 The first time you run, you will not provide an argument for `embedding_cache` and the embeddings will be generated from scratch and stored for future use.
 
@@ -53,7 +68,7 @@ For detailed explanation of the command line arguments, see the **Command line a
 
 ### 2. Word-level embeddings 
 
-
+[add here]
 
 #### Command line arguments
 
