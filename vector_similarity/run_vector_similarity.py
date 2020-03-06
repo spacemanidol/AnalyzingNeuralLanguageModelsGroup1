@@ -50,7 +50,7 @@ def word_usage_comparisons(input_args):
     output_lines = embedding_meta_data_info_lines + individual_word_sims + ["\nAverages:\n"] + format_for_output(avergages)
     output_file(input_args.run_name, '{}_word_similarity_results.tsv'.format(input_args.run_name), output_lines)
 
-    PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
+    PCA_comparisions(input_args.run_name, dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
 
 def run_information(input_args):
     return [
@@ -214,7 +214,7 @@ def handle_zero_case(category_results):
 
 
 # PCA visualization code
-def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes):
+def PCA_comparisions(run_name, dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes):
     data = dataset.get_data()
     for num, idiom_sent_index_group in enumerate(idiom_sentence_indexes):
         idiom_exs = [data[idiom_sent_index] for idiom_sent_index in idiom_sent_index_group]
@@ -257,7 +257,8 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         }
 
         labels =  np.array(literal_labels + idiom_labels)
-        show_PCS(literal_usage_embeddings + idiom_word_embeddings, labels, targets, title)
+        image_filename = "pair_id_{}_fig_lit".format(pair_id)
+        generate_PCS(run_name, literal_usage_embeddings + idiom_word_embeddings, labels, targets, title, image_filename)
 
         # Second PCA graph: literal, figurative, and paraphrases
         title = 'PCA for: "{}"; Paraphrase word: {}'.format(idiom_word, data[paraphrase_sents[0]].word)
@@ -268,7 +269,8 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         }
         embeddings = literal_usage_embeddings + idiom_word_embeddings + paraphrase_embeddings
         labels =  np.array(literal_labels + idiom_labels + paraphrase_labels)
-        show_PCS(embeddings, labels, targets, title)
+        image_filename = "pair_id_{}_fig_lit_para".format(pair_id)
+        generate_PCS(run_name, embeddings, labels, targets, title, image_filename)
 
         # Third PCA graph: literal, figurative, paraphrases, and random word
         random_id = random.choice([999, 899, 799])
@@ -287,7 +289,8 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         
         embeddings = literal_usage_embeddings + idiom_word_embeddings + paraphrase_embeddings + random_word_embeddings
         labels =  np.array(literal_labels + idiom_labels + paraphrase_labels + len(random_word_embeddings) * [3])
-        show_PCS(embeddings, labels, targets, title)
+        image_filename = "pair_id_{}_fig_lit_para_rand".format(pair_id)
+        generate_PCS(run_name, embeddings, labels, targets, title, image_filename)
         
         word_cosine_results = calculate_word_similarity_metrics(idiom_sent_index_group, dataset,
                                                                 embedding_outputs, 
@@ -297,7 +300,8 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         for pair_type, cosine_val in word_cosine_results.items():
             print(pair_type, ": " + str(cosine_val))
 
-def show_PCS(embeddings, labels, targets, title):
+def generate_PCS(run_name, embeddings, labels, targets, title, save_filename=None):
+    create_PCS_output_folder(run_name)
     pca = PCA(2)  
     projected = pca.fit_transform(torch.stack(embeddings))
 
@@ -306,7 +310,17 @@ def show_PCS(embeddings, labels, targets, title):
                     label=target_name)
     plt.legend(loc='best', shadow=False, scatterpoints=1)
     plt.title(title)
-    plt.show()
+
+    if save_filename:
+        plt.savefig('output/{}/PCA_images/{}'.format(run_name, save_filename))
+        plt.clf()
+    else:
+        plt.show()
+
+def create_PCS_output_folder(run_name):
+    folder = os.path.join('output', run_name, 'PCA_images')
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
 def output_file(run_name, filename, content):
     folder = os.path.join('output', run_name)
