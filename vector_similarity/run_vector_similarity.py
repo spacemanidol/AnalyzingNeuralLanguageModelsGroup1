@@ -50,6 +50,10 @@ def word_usage_comparisons(input_args):
     output_lines = embedding_meta_data_info_lines + individual_word_sims + ["\nAverages:\n"] + format_for_output(avergages)
     output_file(input_args.run_name, '{}_word_similarity_results.tsv'.format(input_args.run_name), output_lines)
 
+    print("\n\nAverages")
+    for k, v in avergages.items():
+        print("{}: {}".format(k, v))
+
     PCA_comparisions(input_args.show_pca, input_args.run_name, dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
 
 def run_information(input_args):
@@ -108,7 +112,6 @@ def calculate_word_similarity_metrics(idiom_sent_index_group, dataset, embedding
     
     pair_id = idiom_exs[0].pair_id
     idiom_word = idiom_exs[0].word
-
     literal_usage_sents = [i for i, ex in enumerate(data) if ex.pair_id == pair_id and 
                                                             ex.word == idiom_word and not 
                                                             ex.figurative ]
@@ -120,9 +123,12 @@ def calculate_word_similarity_metrics(idiom_sent_index_group, dataset, embedding
     paraphrase_embeddings = [get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, para_idx) 
                              for para_idx in paraphrase_sents]
 
-    random_embeddings = None 
-    if random_indexes:
-        random_embeddings = [get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, random_idx) 
+    
+    if not random_indexes:
+        random_id = random.choice([999, 899, 799])
+        random_indexes = [i for i, ex in enumerate(data) if ex.pair_id == random_id]
+
+    random_embeddings = [get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, random_idx) 
                              for random_idx in random_indexes]
 
     return {
@@ -194,30 +200,39 @@ def calculate_dist_averages(measurement, inverse, embeddings_1, embeddings_2=Non
         distances = [measurement(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
     return mean(distances)
 
-
-# This computes the average difference in cosine similarity between:
-# 1.) literal to literal usages versus figurative to literal usage
-# 2.) figurative to paraphrase usages versus literal to paraphrase useage
 def summarize_word_similarity_comp(results):
+    """
+    This computes the average difference in cosine similarity between:
+    1.) literal to literal usages versus figurative to literal usage
+    2.) figurative to paraphrase usages versus literal to paraphrase useage
+    """
     cosine_literal_sim_advantage = [result['cosine_similarities']['literal_to_literal'] - result['cosine_similarities']['fig_to_literal'] for result in results]
     cosine_fig_to_paraphrase_advantage = [result['cosine_similarities']['fig_to_paraphrase'] - result['cosine_similarities']['literal_to_paraphrase'] for result in results]
+    cosine_fig_to_fig_advantage = [result['cosine_similarities']['fig_to_fig'] - result['cosine_similarities']['literal_to_literal'] for result in results]
 
     eud_literal_sim_advantage = [result['euclidean_distances']['fig_to_literal'] - result['euclidean_distances']['literal_to_literal']  for result in results]
     eud_fig_to_paraphrase_advantage = [result['euclidean_distances']['literal_to_paraphrase'] - result['euclidean_distances']['fig_to_paraphrase'] for result in results]
 
     summary_stats = {
-        'COSINE SIM- lit_to_lit_improvement_over_fig_to_lit': mean(cosine_literal_sim_advantage),
-        'COSINE SIM- fig_to_paraphrase_improvement_over_lit_to_paraphrase': mean(cosine_fig_to_paraphrase_advantage),
-        'EUCLIDEAN DIST- lit_to_lit_improvement_over_fig_to_lit': mean(eud_literal_sim_advantage),
-        'EUCLIDEAN DIST- fig_to_paraphrase_improvement_over_lit_to_paraphrase': mean(eud_fig_to_paraphrase_advantage)
-
+        'Average COSINE SIM- literal to literal': handle_zero_case([result['cosine_similarities']['literal_to_literal'] for result in results]),
+        'Average COSINE SIM- figurative to literal': handle_zero_case([result['cosine_similarities']['fig_to_literal'] for result in results]),
+        'Average COSINE SIM- figurative to figurative': handle_zero_case([result['cosine_similarities']['fig_to_fig'] for result in results]),
+        'Average COSINE SIM- figurative to paraphrase': handle_zero_case([result['cosine_similarities']['fig_to_paraphrase'] for result in results]),
+        'Average COSINE SIM- literal to paraphrase': handle_zero_case([result['cosine_similarities']['literal_to_paraphrase'] for result in results]),
+        'COSINE SIM avg improvement - lit_to_lit_improvement_over_fig_to_lit': handle_zero_case(cosine_literal_sim_advantage),
+        'COSINE SIM avg improvement - fig_to_paraphrase_improvement_over_lit_to_paraphrase': handle_zero_case(cosine_fig_to_paraphrase_advantage),
+        'COSINE SIM ave improvement- fig_to_fig_improvement_over_lit_to_lit': handle_zero_case(cosine_fig_to_fig_advantage),
+        # 'EUCLIDEAN DIST- lit_to_lit_improvement_over_fig_to_lit': handle_zero_case(eud_literal_sim_advantage),
+        # 'EUCLIDEAN DIST- fig_to_paraphrase_improvement_over_lit_to_paraphrase': handle_zero_case(eud_fig_to_paraphrase_advantage)
     }
     return summary_stats
 
 
-# This computes the average cosine similarity scores between paraphrase pairs,
-# grouped into 4 categories based on gold label (i.e. true paraphrase or not) and classifier judgment
 def summarize_sentence_similarity_comp(results):
+    """
+    This computes the average cosine similarity scores between paraphrase pairs,
+    grouped into 4 categories based on gold label (i.e. true paraphrase or not) and classifier judgment
+    """
     correctly_judged_paraphrases = [result['cosine_similarity'] for result in results if result['paraphrase'] and result['judgment']]
     correctly_judged_non_paraphrases = [result['cosine_similarity'] for result in results if not result['paraphrase'] and not result['judgment']]
     incorrectly_judged_paraphrases =  [result['cosine_similarity'] for result in results if result['paraphrase'] and not result['judgment']]
