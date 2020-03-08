@@ -1,0 +1,10 @@
+Dataset Description	Data file name (train)	Data file name (dev)
+Full MRPC 4076/1726	t1.tsv	d1.tsv
+MRPC 1600/400	t1,.tsv	d1,.tsv
+MRPC 800/200	t1,,.tsv	d1,,.tsv
+All our data 1600/400	t2.tsv	d2.tsv
+Our data 800/200	t2,.tsv	d2,.tsv
+Our data disjunct 1600/400	t3.tsv	d3.tsv
+Our data disjunct 800/200	t3,.tsv	d3,.tsv
+Daniel's Idioms	t4.tsv	d4.tsv
+Elena's Idioms	t5.tsv	d5.tsv

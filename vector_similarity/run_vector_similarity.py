@@ -9,7 +9,7 @@ import random
 import logging
 from statistics import mean 
 import numpy as np
-from scipy.spatial.distance import cosine
+from scipy.spatial.distance import cosine, euclidean
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from probe.load_data import WordInspectionDataset, SentenceParaphraseInspectionDataset
@@ -50,7 +50,11 @@ def word_usage_comparisons(input_args):
     output_lines = embedding_meta_data_info_lines + individual_word_sims + ["\nAverages:\n"] + format_for_output(avergages)
     output_file(input_args.run_name, '{}_word_similarity_results.tsv'.format(input_args.run_name), output_lines)
 
-    PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
+    print("\n\nAverages")
+    for k, v in avergages.items():
+        print("{}: {}".format(k, v))
+
+    PCA_comparisions(input_args.show_pca, input_args.run_name, dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes)
 
 def run_information(input_args):
     return [
@@ -105,11 +109,9 @@ def calculate_word_similarity_metrics(idiom_sent_index_group, dataset, embedding
     idiom_word_embeddings = [get_word_embedding(dataset, data, embedding_outputs, 
                                                encoded_inputs, idiom_sent_index) 
                             for idiom_sent_index in idiom_sent_index_group]
-    cosine_similarity_metrics = {}
     
     pair_id = idiom_exs[0].pair_id
     idiom_word = idiom_exs[0].word
-
     literal_usage_sents = [i for i, ex in enumerate(data) if ex.pair_id == pair_id and 
                                                             ex.word == idiom_word and not 
                                                             ex.figurative ]
@@ -121,24 +123,47 @@ def calculate_word_similarity_metrics(idiom_sent_index_group, dataset, embedding
     paraphrase_embeddings = [get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, para_idx) 
                              for para_idx in paraphrase_sents]
 
-    cosine_similarity_metrics['fig_to_literal'] = calculate_cosine_similarity_average(idiom_word_embeddings, literal_usage_embeddings)
-    cosine_similarity_metrics['literal_to_literal'] = calculate_cosine_similarity_average(literal_usage_embeddings)
-    cosine_similarity_metrics['fig_to_paraphrase'] = calculate_cosine_similarity_average(idiom_word_embeddings, paraphrase_embeddings)
-    cosine_similarity_metrics['literal_to_paraphrase'] = calculate_cosine_similarity_average(literal_usage_embeddings, paraphrase_embeddings)
     
-    if random_indexes:
-        random_embeddings = [get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, random_idx) 
+    if not random_indexes:
+        random_id = random.choice([999, 899, 799])
+        random_indexes = [i for i, ex in enumerate(data) if ex.pair_id == random_id]
+
+    random_embeddings = [get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, random_idx) 
                              for random_idx in random_indexes]
-        cosine_similarity_metrics['fig_to_random'] = calculate_cosine_similarity_average(idiom_word_embeddings, random_embeddings)
 
     return {
         'pair_id': pair_id,
         'idiom_sentences': [dataset.decode(encoded_inputs[idiom_sent_index].tolist()) for idiom_sent_index in idiom_sent_index_group],
         'word': idiom_word,
         'paraphrase_word': data[paraphrase_sents[0]].word,
-        'cosine_similarities': cosine_similarity_metrics,
+        'cosine_similarities': calculate_word_cosine_sim_metrics(idiom_word_embeddings, literal_usage_embeddings, paraphrase_embeddings, random_embeddings),
+        'euclidean_distances': calculate_word_euclidean_dists(idiom_word_embeddings, literal_usage_embeddings, paraphrase_embeddings, random_embeddings)
     }
 
+def calculate_word_cosine_sim_metrics(idiom_word_embeddings, literal_usage_embeddings, paraphrase_embeddings, random_embeddings=None):
+    cosine_similarity_metrics = {}
+    cosine_similarity_metrics['fig_to_literal'] = calculate_dist_averages(cosine, True, idiom_word_embeddings, literal_usage_embeddings)
+    cosine_similarity_metrics['literal_to_literal'] = calculate_dist_averages(cosine, True, literal_usage_embeddings)
+    cosine_similarity_metrics['fig_to_fig'] = calculate_dist_averages(cosine, True, idiom_word_embeddings)
+    cosine_similarity_metrics['fig_to_paraphrase'] = calculate_dist_averages(cosine, True, idiom_word_embeddings, paraphrase_embeddings)
+    cosine_similarity_metrics['literal_to_paraphrase'] = calculate_dist_averages(cosine, True, literal_usage_embeddings, paraphrase_embeddings)
+
+    if random_embeddings:
+        cosine_similarity_metrics['fig_to_random'] = calculate_dist_averages(cosine, True, idiom_word_embeddings, random_embeddings)
+    return cosine_similarity_metrics
+
+def calculate_word_euclidean_dists(idiom_word_embeddings, literal_usage_embeddings, paraphrase_embeddings, random_embeddings=None):
+    euclidean_dist_metrics = {}
+    euclidean_dist_metrics['fig_to_literal'] = calculate_dist_averages(euclidean, False, idiom_word_embeddings, literal_usage_embeddings)
+    euclidean_dist_metrics['literal_to_literal'] = calculate_dist_averages(euclidean, False, literal_usage_embeddings)
+    euclidean_dist_metrics['fig_to_fig'] = calculate_dist_averages(euclidean, False, idiom_word_embeddings)
+    euclidean_dist_metrics['fig_to_paraphrase'] = calculate_dist_averages(euclidean, False, idiom_word_embeddings, paraphrase_embeddings)
+    euclidean_dist_metrics['literal_to_paraphrase'] = calculate_dist_averages(euclidean, False, literal_usage_embeddings, paraphrase_embeddings)
+
+    if random_embeddings:
+        euclidean_dist_metrics['fig_to_random'] = calculate_dist_averages(euclidean, False, idiom_word_embeddings, random_embeddings)
+    return euclidean_dist_metrics
+    
 def get_idiom_sentences(dataset):
     idioms = [(i, ex) for i, ex in enumerate(dataset) if ex.figurative]
     values = set(map(lambda x:x[1].pair_id, idioms))
@@ -163,33 +188,51 @@ def get_word_embedding(dataset, data, embedding_outputs, encoded_inputs, dataset
     word_index = decoded_tokens.index(ex.word[0])
     return embedding_outputs[dataset_index][word_index]
 
-def calculate_cosine_similarity_average(embeddings_1, embeddings_2=None):
+def calculate_dist_averages(measurement, inverse, embeddings_1, embeddings_2=None):
     if embeddings_2:
         embedding_pairs = list(itertools.product(embeddings_1, embeddings_2))
     else:
         embedding_pairs = list(itertools.combinations(embeddings_1, 2))
 
-    cosine_similarities = [1 - cosine(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
-    return mean(cosine_similarities)
+    if inverse:
+        distances = [1 - measurement(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
+    else:
+        distances = [measurement(embedding_1, embedding_2) for embedding_1, embedding_2 in embedding_pairs]
+    return mean(distances)
 
-
-# This computes the average difference in cosine similarity between:
-# 1.) literal to literal usages versus figurative to literal usage
-# 2.) figurative to paraphrase usages versus literal to paraphrase useage
 def summarize_word_similarity_comp(results):
-    literal_sim_advantage = [result['cosine_similarities']['literal_to_literal'] - result['cosine_similarities']['fig_to_literal'] for result in results]
-    fig_to_paraphrase_advantage = [result['cosine_similarities']['fig_to_paraphrase'] - result['cosine_similarities']['literal_to_paraphrase'] for result in results]
-    
+    """
+    This computes the average difference in cosine similarity between:
+    1.) literal to literal usages versus figurative to literal usage
+    2.) figurative to paraphrase usages versus literal to paraphrase useage
+    """
+    cosine_literal_sim_advantage = [result['cosine_similarities']['literal_to_literal'] - result['cosine_similarities']['fig_to_literal'] for result in results]
+    cosine_fig_to_paraphrase_advantage = [result['cosine_similarities']['fig_to_paraphrase'] - result['cosine_similarities']['literal_to_paraphrase'] for result in results]
+    cosine_fig_to_fig_advantage = [result['cosine_similarities']['fig_to_fig'] - result['cosine_similarities']['literal_to_literal'] for result in results]
+
+    eud_literal_sim_advantage = [result['euclidean_distances']['fig_to_literal'] - result['euclidean_distances']['literal_to_literal']  for result in results]
+    eud_fig_to_paraphrase_advantage = [result['euclidean_distances']['literal_to_paraphrase'] - result['euclidean_distances']['fig_to_paraphrase'] for result in results]
+
     summary_stats = {
-        'lit_to_lit_improvement_over_fig_to_lit': mean(literal_sim_advantage),
-        'fig_to_paraphrase_improvement_over_lit_to_paraphrase': mean(fig_to_paraphrase_advantage)
+        'Average COSINE SIM- literal to literal': handle_zero_case([result['cosine_similarities']['literal_to_literal'] for result in results]),
+        'Average COSINE SIM- figurative to literal': handle_zero_case([result['cosine_similarities']['fig_to_literal'] for result in results]),
+        'Average COSINE SIM- figurative to figurative': handle_zero_case([result['cosine_similarities']['fig_to_fig'] for result in results]),
+        'Average COSINE SIM- figurative to paraphrase': handle_zero_case([result['cosine_similarities']['fig_to_paraphrase'] for result in results]),
+        'Average COSINE SIM- literal to paraphrase': handle_zero_case([result['cosine_similarities']['literal_to_paraphrase'] for result in results]),
+        'COSINE SIM avg improvement - lit_to_lit_improvement_over_fig_to_lit': handle_zero_case(cosine_literal_sim_advantage),
+        'COSINE SIM avg improvement - fig_to_paraphrase_improvement_over_lit_to_paraphrase': handle_zero_case(cosine_fig_to_paraphrase_advantage),
+        'COSINE SIM ave improvement- fig_to_fig_improvement_over_lit_to_lit': handle_zero_case(cosine_fig_to_fig_advantage),
+        # 'EUCLIDEAN DIST- lit_to_lit_improvement_over_fig_to_lit': handle_zero_case(eud_literal_sim_advantage),
+        # 'EUCLIDEAN DIST- fig_to_paraphrase_improvement_over_lit_to_paraphrase': handle_zero_case(eud_fig_to_paraphrase_advantage)
     }
     return summary_stats
 
 
-# This computes the average cosine similarity scores between paraphrase pairs,
-# grouped into 4 categories based on gold label (i.e. true paraphrase or not) and classifier judgment
 def summarize_sentence_similarity_comp(results):
+    """
+    This computes the average cosine similarity scores between paraphrase pairs,
+    grouped into 4 categories based on gold label (i.e. true paraphrase or not) and classifier judgment
+    """
     correctly_judged_paraphrases = [result['cosine_similarity'] for result in results if result['paraphrase'] and result['judgment']]
     correctly_judged_non_paraphrases = [result['cosine_similarity'] for result in results if not result['paraphrase'] and not result['judgment']]
     incorrectly_judged_paraphrases =  [result['cosine_similarity'] for result in results if result['paraphrase'] and not result['judgment']]
@@ -214,7 +257,7 @@ def handle_zero_case(category_results):
 
 
 # PCA visualization code
-def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes):
+def PCA_comparisions(show_image, run_name, dataset, embedding_outputs, encoded_inputs, idiom_sentence_indexes):
     data = dataset.get_data()
     for num, idiom_sent_index_group in enumerate(idiom_sentence_indexes):
         idiom_exs = [data[idiom_sent_index] for idiom_sent_index in idiom_sent_index_group]
@@ -257,7 +300,8 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         }
 
         labels =  np.array(literal_labels + idiom_labels)
-        show_PCS(literal_usage_embeddings + idiom_word_embeddings, labels, targets, title)
+        image_filename = "pair_id_{}_fig_lit".format(pair_id)
+        generate_PCS(run_name, literal_usage_embeddings + idiom_word_embeddings, labels, targets, title, image_filename, show_image)
 
         # Second PCA graph: literal, figurative, and paraphrases
         title = 'PCA for: "{}"; Paraphrase word: {}'.format(idiom_word, data[paraphrase_sents[0]].word)
@@ -268,7 +312,8 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         }
         embeddings = literal_usage_embeddings + idiom_word_embeddings + paraphrase_embeddings
         labels =  np.array(literal_labels + idiom_labels + paraphrase_labels)
-        show_PCS(embeddings, labels, targets, title)
+        image_filename = "pair_id_{}_fig_lit_para".format(pair_id)
+        generate_PCS(run_name, embeddings, labels, targets, title, image_filename, show_image)
 
         # Third PCA graph: literal, figurative, paraphrases, and random word
         random_id = random.choice([999, 899, 799])
@@ -287,17 +332,25 @@ def PCA_comparisions(dataset, embedding_outputs, encoded_inputs, idiom_sentence_
         
         embeddings = literal_usage_embeddings + idiom_word_embeddings + paraphrase_embeddings + random_word_embeddings
         labels =  np.array(literal_labels + idiom_labels + paraphrase_labels + len(random_word_embeddings) * [3])
-        show_PCS(embeddings, labels, targets, title)
+        image_filename = "pair_id_{}_fig_lit_para_rand".format(pair_id)
+        generate_PCS(run_name, embeddings, labels, targets, title, image_filename, show_image)
         
-        word_cosine_results = calculate_word_similarity_metrics(idiom_sent_index_group, dataset,
+        word_sim_calculations = calculate_word_similarity_metrics(idiom_sent_index_group, dataset,
                                                                 embedding_outputs, 
-                                                                encoded_inputs, random_word_sents)['cosine_similarities'] 
+                                                                encoded_inputs, random_word_sents)
+        word_cosine_results = word_sim_calculations['cosine_similarities']        
+        word_euclidean_results = word_sim_calculations['euclidean_distances']        
         
-        print("Cosine similarity scores")
+        print("Cosine similarity scores (higher is 'closer')")
         for pair_type, cosine_val in word_cosine_results.items():
             print(pair_type, ": " + str(cosine_val))
 
-def show_PCS(embeddings, labels, targets, title):
+        print("\n\nEuclidean distance scores (higher is 'further')")
+        for pair_type, eucl_dist in word_euclidean_results.items():
+            print(pair_type, ": " + str(eucl_dist))
+
+def generate_PCS(run_name, embeddings, labels, targets, title, save_filename, show=False):
+    create_PCS_output_folder(run_name)
     pca = PCA(2)  
     projected = pca.fit_transform(torch.stack(embeddings))
 
@@ -306,7 +359,17 @@ def show_PCS(embeddings, labels, targets, title):
                     label=target_name)
     plt.legend(loc='best', shadow=False, scatterpoints=1)
     plt.title(title)
-    plt.show()
+
+    if show:
+        plt.show()
+    else:
+        plt.savefig('output/{}/PCA_images/{}'.format(run_name, save_filename))
+        plt.clf()
+
+def create_PCS_output_folder(run_name):
+    folder = os.path.join('output', run_name, 'PCA_images')
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
 def output_file(run_name, filename, content):
     folder = os.path.join('output', run_name)
@@ -326,6 +389,7 @@ if __name__ =='__main__':
     parser.add_argument('--run_name', type=str, default='run_{}'.format((int(time.time()))),
                         help='A label for the run, used to name output and cache directories')
     parser.add_argument('--comparison_type', type=str, required=True)
+    parser.add_argument('--show_pca', type=str, default=False)
 
     input_args = parser.parse_args()
     main(input_args)
