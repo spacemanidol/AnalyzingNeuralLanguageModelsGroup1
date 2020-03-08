@@ -1,8 +1,8 @@
 sentence_id	pair_id	sentence	word	figurative
-1	1	Inorganic salts such as sodium chloride, potassium chloride and potassium iodide form eutectic mixtures with water.	salt	0
+1	1	Inorganic salt such as sodium chloride, potassium chloride and potassium iodide form eutectic mixtures with water.	salt	0
 2	1	Sprinkle the minimum amount of salt needed to lower the freezing point of water from slippery ice to safer mushy slush.	salt	0
 3	1	Try using fine sea salt as a scrub - this will help dry out blemishes naturally because it's slightly antiseptic.	salt	0
-4	1	Ashes and kitty litter also contain some salts, but their main use is as grit.	salt	0
+4	1	Ashes and kitty litter also contain some salt, but their main use is as grit.	salt	0
 5	1	If you sprinkle salt over every meal, stop it!	salt	0
 6	1	He found that by giving the salt in low potency there was often an improvement in the patient's well-being.	salt	0
 7	1	Season the sauce with salt and pepper.	salt	0
@@ -54,16 +54,16 @@ sentence_id	pair_id	sentence	word	figurative
 53	3	Already the moon was up, a full moon bathing everything in a pale blue light.	blue	0
 54	3	I just saw my cat jumping out of the blue bucket.	blue	0
 55	3	He saw a woman in the rich blue of a nursing uniform at the wheel. 	blue	0
-56	3	These good ole boys could turn the blue into a rainbow. 	blue	0
+56	3	These good ole boys could turn the blue into a rainbow.	blue	0
 57	3	It is divided horizontally by color with bright blue on the head and back and yellow on the stomach and tail.	blue	0
-58	3	On the other hand, blue and green are subdued and bring calm to a garden. 	blue	0
-59	3	Carolyn's the one dressed in blue. 	blue	0
-60	3	His eyes are a washed-out blue. 	blue	0
+58	3	On the other hand, blue and green are subdued and bring calm to a garden.	blue	0
+59	3	Carolyn's the one dressed in blue.	blue	0
+60	3	His eyes are a washed-out blue.	blue	0
 61	3	The unexpected happened when the nutcase beat the safest of safe incumbents. 	unexpected	0
 62	3	It is curious to note the extent to which the unexpected has come about.	unexpected	0
 63	3	And then something happens, something unexpected.	unexpected	0
 64	3	Each of these ultra-familiar tunes came up sounding fresh and surprising, and the entire set consistently delighted us with the unexpected.	unexpected	0
-65	3	Romance is born out of differences as well as similarities... out of the unexpected as well as the familiar. 	unexpected	0
+65	3	Romance is born out of differences as well as similarities... out of the unexpected as well as the familiar.	unexpected	0
 66	3	Down it swept, in through a hole bored in the corner of the kitchen window, right on into the innards of our wireless set, where a little pandemonium of burbles and squeaks would suddenly give way to the voice of a BBC newsreader speaking out of the unexpected like a deus ex machina. 	unexpected	0
 67	3	Without it I would not thrill to every unexpected occurrence, each seeming coincidence that has brought me closer to you.	unexpected	0
 68	3	I might have paid them at the time, but it was all so unexpected and so sudden,—it rattled me, quite.	unexpected	0
@@ -78,7 +78,7 @@ sentence_id	pair_id	sentence	word	figurative
 77	4	Anna and her husband had a terrible fight, and eventually he got a slap in his face.	slap	0
 78	4	 I had to laugh when I read that a slap on the belly is supposed to " weaken " a detainee's " desire to resist interrogation ". 	slap	0
 79	4	A hand raised to a slap would send her into hysterical giggles; she knew it would never be delivered.	slap	0
-80	4	She slapped him across the face and stormed out of the room.	slap	0
+80	4	She gave him a slap across the face and stormed out of the room.	slap	0
 81	4	I was so angry I wanted to give him a slap.	slap	0
 82	4	Off the ropes again and he slides under Cody, only for Cody to drop down and land a slap. 	slap	0
 83	4	Try going under the hood and giving the fuse box a slap or two to see if the horn beeps. 	slap	0
@@ -122,7 +122,7 @@ sentence_id	pair_id	sentence	word	figurative
 121	5	I know it's not the same scale, but I've definitely heard them trash-talk a movie, then announce it as one of their sponsors in the same breath	breath	1
 122	5	And if you squash that hope in the same breath that you are telling her that you love her, that's just plain mean	breath	1
 123	5	The future Christopher Alexander will be remembered in the same breath as Galileo and Descartes 	breath	1
-124	5	 I love how they complain about the borrowing and complain about taxes in the same breath...  	breath	1
+124	5	I love how they complain about the borrowing and complain about taxes in the same breath...  	breath	1
 125	5	When has anyone ever even mentioned Kevin Martin and HOF in the same breath? 	breath	1
 126	6	This is one of the best times for catching worms.	worms	0
 127	6	That means worms can spread much faster than viruses.	worms	0
@@ -131,8 +131,8 @@ sentence_id	pair_id	sentence	word	figurative
 130	6	These worms grow to an average length of about 1 metre and a diameter of 2 centimetres.	worms	0
 131	6	Green and red wiggling worms danced in his sight like fireworks.	worms	0
 132	6	My dad brought a small can of worms to use as a bait for catching more fish.	worms	0
-133	6	A nest of hungry babies chirpin for Mom to get me some more worms. 	worms	0
-134	6	 Treatment of intestinal parasites, and to kill the worms and stomach worms. 	worms	0
+133	6	A nest of hungry babies chirpin for Mom to get me some more worms.	worms	0
+134	6	 Treatment of intestinal parasites, and to kill the worms and stomach worms.	worms	0
 135	6	It was like I asked him if he ate worms for breakfast. 	worms	0
 136	6	We have our problems and our frustrations.	problems	0
 137	6	If you have any problems, give me a call.	problems	0
@@ -145,8 +145,8 @@ sentence_id	pair_id	sentence	word	figurative
 144	6	Engineers were unable to find the source of the problems in the spacecraft's cooling system.	problems	0
 145	6	After all, there is so much talk about emotional problems and abnormality that many people wonder if they need help.	problems	0
 146	6	Ok, but of course that's a whole different can of worms, isn't it?	worms	1
-147	6	Well if that's our basis for deciding what is or isn't legal, that opens up a whole can of worms	worms	1
-148	6	You're opening a can of worms you don't really want open 	worms	1
+147	6	Well if that's our basis for deciding what is or isn't legal, that opens up a whole can of worms.	worms	1
+148	6	You're opening a can of worms you don't really want open. 	worms	1
 149	6	This topic opens up all the related topics of spectroscopy, relativity, physiology, quantum mechanics, biochemistry, and a zillion other topics, great can of worms to keep us all busy for a long long time!  	worms	1
 150	6	Now that you opened up the can of worms, you have raised our interest about the two previous papal elections.  	worms	1
 151	7	My first day at Tropicana was spent in a boat, on the beach, and in the bar.	boat	0
@@ -190,15 +190,15 @@ sentence_id	pair_id	sentence	word	figurative
 189	8	That new employee brought a great new idea to the table.	idea	0
 190	8	I now have some idea for your new book.	idea	0
 191	8	The researcher has to have some idea of what he or she is looking for, even though the outcome may be unpredictable.	idea	0
-192	8	Once you have some ideas of what would suit you, you will need help to take these ideas forward.	idea	0
+192	8	Once you have an idea of what would suit you, you will need help to take these ideas forward.	idea	0
 193	8	I like Louis's idea of meeting on Saturday mornings.	idea	0
 194	8	This concept is based on Rousseau's idea that men are born morally neutral.	idea	0
 195	8	This in turn led to the idea that the universe could be finite in imaginary time but without boundaries or singularities.	idea	0
 196	8	Great food for thought, thank you	food	1
-197	8	Just feeding you some food for thought	food	1
+197	8	Just giving you some food for thought	food	1
 198	8	Just food for thought	food	1
 199	8	I think this sentence does provide some food for thought though, whether the government is Zionist or not. 	food	1
-200	8	I will also retweet this post now -- it is fantastic food for thought.  	food	1
+200	8	I will also retweet this post now -- it is fantastic food for thought.	food	1
 201	9	A merit of the product is that it lacks the fat and, therefore, the calories of cream.	cream	0
 202	9	The doctor gave me some cream to put on my rash.	cream	0
 203	9	Serve with apple sauce, sour cream or jam.	cream	0
@@ -206,8 +206,8 @@ sentence_id	pair_id	sentence	word	figurative
 205	9	Do you take cream or sugar in your coffee?	cream	0
 206	9	Allow the gelatine to cool, then add to the trout cream. 7.	cream	0
 207	9	The fresh cheese with cream was all we, or at any rate I, wanted.	cream	0
-208	9	Baliles has to clean and apply petroleum jelly or cream to Django's burns six times a day.  	cream	0
-209	9	 Blitz and top with whipped cream.  	cream	0
+208	9	Baliles has to clean and apply petroleum jelly or cream to Django's burns six times a day.	cream	0
+209	9	 Blitz and top with whipped cream.	cream	0
 210	9	No, please no cream on my coffee.	cream	0
 211	9	Hotel Okura Tokyo Where the business elite meet in Tokyo.	elite	0
 212	9	The ruling elite have resisted all attempts at reform.	elite	0
@@ -217,14 +217,14 @@ sentence_id	pair_id	sentence	word	figurative
 216	9	The Parachute Regiment are the elite of the British armed forces.	elite	0
 217	9	All the glamorous Washington elite were at the dinner that evening.	elite	0
 218	9	What was the exact nature of the social and political elite that dominated state and society at this time?	elite	0
-219	9	First, the new communications media have greatly expanded the means of information exchange between political elites.	elite	0
+219	9	First, the new communications media have greatly expanded the means of information exchange between the political elite.	elite	0
 220	9	In short, the attitudes of both the social elite and the labor movement have served to hinder economic growth.	elite	0
 221	9	So, in comparison to the cream of the crop, you're a might bit off, but don't worry	cream	1
 222	9	Unless you are cream of the crop, you won't get much from an ivy (minorities excluded)	cream	1
-223	9	The ones that seem to be the dumbest, the most unattractive ones seem to really think they are the cream of the crop.  	cream	1
+223	9	The ones that seem to be the dumbest, the most unattractive ones seem to really think they are the cream of the crop.	cream	1
 224	9	The doctors that write for this blog are the cream of the crop. 	cream	1
-225	9	Spain, who is the cream of the crop, won the 2010 World Cup and the 2012 Euro Cup.  	cream	1
-226	10	They cut fences and drive across crops.	crop	0
+225	9	Spain, who is the cream of the crop, won the 2010 World Cup and the 2012 Euro Cup.	cream	1
+226	10	They cut fences and drive across our crop.	crop	0
 227	10	Growers lost 80 percent of the apple crop in the storm.	crop	0
 228	10	Thanks to the lovely weather we had a bumper crop of peaches and nectarines this year.	crop	0
 229	10	As a late crop, it was still kingfisher green, and still full of life.	crop	0
@@ -240,7 +240,7 @@ sentence_id	pair_id	sentence	word	figurative
 239	10	The good thing about the class is that all the students belong to the same age group.	group	0
 240	10	The talks I had with members of the group I recreated in my Conversations in Bloomsbury.	group	0
 241	10	Exactly the same principles apply as with any group.	group	0
-242	10	Different ethnic groups within the country have been engaged in a civil war for more than forty-five years.	group	0
+242	10	This ethnic group within the country has been engaged in a civil war for more than forty-five years.	group	0
 243	10	The differences in responses from one age group to another were eye-opening.	group	0
 244	10	The elite of this group called themselves the Brain Trust .	group	0
 245	10	As a result, the rest of the group members missed an opportunity to deepen their knowledge.	group	0
@@ -250,7 +250,7 @@ sentence_id	pair_id	sentence	word	figurative
 249	10	The doctors that write for this blog are the cream of the crop. 	crop	1
 250	10	Spain, who is the cream of the crop, won the 2010 World Cup and the 2012 Euro Cup.  	crop	1
 251	11	There was a smell in the air, hot metal, chemical steam.	steam	0
-252	11	It was recreation hour, explained Brother Andrew with a smile, and the Brothers were letting off steam.	steam	0
+252	11	Steam and flames blasted up from the hatch and ventilators.	steam	0
 253	11	The water was just right, slid over his skin as he gave out a long low satisfied moan into the steam.	steam	0
 254	11	Look at how the kettle blows off some steam when the water boils inside it, can you see it?	steam	0
 255	11	Electrical power is created from turbine engines, which are powered by the steam coming from the heated water.  	steam	0
@@ -269,7 +269,7 @@ sentence_id	pair_id	sentence	word	figurative
 268	11	Faced with public anger about the Gulf war, the royal autocrat did make some concessions.	anger	0
 269	11	And it was so much better than the anger that ruled when Sethe did or thought anything that excluded herself.	anger	0
 270	11	"It's a lie!"" he let his anger out.	anger	0
-271	11	Actually I don't fucking care if you have to punch a wall, or go to the gym to blow off steam	steam	1
+271	11	Actually I don't fucking care if you have to punch a wall, or go to the gym to blow off steam.	steam	1
 272	11	My job was stressful, so I had flings to blow off steam. 	steam	1
 273	11	 I also had a great therapist to help me blow off steam and advise me on some ways to de-stress. 	steam	1
 274	11	The main excuse is to let the kids blow off steam running through fields and throwing things in water. 	steam	1
@@ -294,7 +294,7 @@ sentence_id	pair_id	sentence	word	figurative
 293	12	Whatever his decision, it will be aimed at making profit.	profit	0
 294	12	The company this year announced a reorganization aimed at stemming the profit decline.	profit	0
 295	12	He'd been running the clinic at a substantial profit for nearly ten years.	profit	0
-296	12	But while we still have a world where in order for one person to have a 2nd helping another person will go without it will always be corrupted by people who can justify getting a bigger slice of the pie than others	pie	1
+296	12	But while we still have a world where in order for one person to have a 2nd helping another person will go without it will always be corrupted by people who can justify getting a bigger slice of the pie than others.	pie	1
 297	12	 If anything, this understates the case, as government expenditures, including those on Medicaid, account for almost half of all medical expenditures, and Medicare has a great deal of influence over this entire slice of the pie.  	pie	1
 298	12	It is easier to bargain over a slice of the pie than to join forces to make the pie bigger. 	pie	1
 299	12	I mean, when the new Banks arrives, Dad's going to have to update his will... which means there'll be another slice of the pie I won't be getting. 	pie	1
@@ -312,14 +312,14 @@ sentence_id	pair_id	sentence	word	figurative
 311	13	Crossing the river in winter is a danger.	danger	0
 312	13	The International Atomic Energy Agency publicly warned about the danger of these explosives before the war.	danger	0
 313	13	What is going on with climate change can be considered as quite a danger. 	danger	0
-314	13	Not that I expect danger. Horror, perhaps.  	danger	0
-315	13	 If anything, the danger now is that these ideas will be pushed too fast, before the technology can cope with this.	danger	0
+314	13	Not that I expect danger-- horror, perhaps.  	danger	0
+315	13	If anything, the danger now is that these ideas will be pushed too fast, before the technology can cope with this.	danger	0
 316	13	There is a danger that museums will attempt to entertain rather than educate. 	danger	0
 317	13	Confusion between love and work is one danger posed by the collapse of the wall between the two. 	danger	0
 318	13	Wear a hat and drink plenty of fluids to reduce the danger of sunstroke. 	danger	0
 319	13	People who drink and drive are a danger to themselves and to others. 	danger	0
 320	13	The gas leak was quickly fixed, but workers at the factory say the danger remains real. 	danger	0
-321	13	I don’t want to be exposed to the danger.	danger	1
+321	13	I don’t want to be exposed to the danger.	danger	0
 322	13	So this couple has been together one day and is already on thin ice.	ice	1
 323	13	Tassia, you're on thin ice with that last comment. 	ice	1
 324	13	 Given your new job, would I be on thin ice if I hugged you?  	ice	1
@@ -342,47 +342,22 @@ sentence_id	pair_id	sentence	word	figurative
 341	14	In 10 years of teaching, I have never been asked my opinion on any matter of policy.	opinion	0
 342	14	Do you really want my opinion?	opinion	0
 343	14	I just have a difference of opinion with Sen.	opinion	0
-344	14	About 100 people showed up to express their opinions about the project.	opinion	0
+344	14	About 100 people showed up to express their opinion about the project.	opinion	0
 345	14	I don’t know what to do to change your opinion!	opinion	0
 346	14	So software companies should just let people pirate anything and everything, hoping that the people who are stealing their product will suddenly have a change of heart	heart	1
 347	14	Thought you were getting a SV650, why the change of heart?	heart	1
 348	14	So I worked it all out, I invited him to a friends place where we could be alone, telling him I had a change of heart	heart	1
 349	14	If I have a change of heart, if I come up with a new story, I could come back. 	heart	1
 350	14	She also shared that she eventually had a change of heart after speaking with Chantel. 	heart	1
-351	15	If I was as much of a crafty type as you are, I would have made a sculpture in a nutshell!	nutshell	0
-352	15	In the center was a wooden pallet with a small pile of a broken nutshell and a few rotting hunks of meat with the fur still on, nailed to the wood.  	nutshell	0
-353	15	The pet food industry uses this product as their protein base, diluting it down with cheap carbohydrates such as fast food waste, newspaper, sawdust, ground up nutshell, and anything else cheap on the world market. 	nutshell	0
-354	15	And cashew nut shell nut shell has the same stuff in it. 	nutshell	0
-355	15	There is a nut shell left on the table, please put it in the garbage bin.	nutshell	0
-356	15	Department of Agriculture's Southern Regional Research Center are confirming that nut shell has potential to serve as activated carbon.	nutshell	0
-357	15	The ranks of those embracing such auto-exoticism seem to be flourishing, particularly among plucky young rebels armed with pistachio nut shell and other throwaway materials for whom the car offers a mobile canvas.	nutshell	0
-358	15	I've made a summary of the main points in the Secretary General's speech.	summary	0
-359	15	As you go through the process, a summary of where you stand is available at the click of a mouse.	summary	0
-360	15	The results of the Survey are presented in three sections, each of which begins with a summary of its major findings.	summary	0
-361	15	Stephen Pople's books are summaries of the science course up to Year 9, and are good reference books.	summary	0
-362	15	As summaries go, this one does its job.	summary	0
-363	15	In its report on the speech, the radio carried a brief summary, but did not broadcast the whole thing.	summary	0
-364	15	Each one of perhaps a group of four should prepare a brief summary of an article of general interest.	summary	0
-365	15	But in this brief summary we have to choose; and we choose the testimony of the novel for two reasons.	summary	0
-366	15	There will be a news summary at 9.05.	summary	0
-367	15	Write a two-page summary of the results of your research.	summary	0
-368	15	""The progress we hoped for has clearly not developed, "" the council said in the summary to its final report.	summary	0
-369	15	I ask to see this summary.	summary	0
-370	15	We've read a summary of his findings.	summary	0
-371	15	In a nutshell, the Soviet's strategic capability for waging nuclear war. 	nutshell	1
-372	15	That in a nut shell is what separates Route 66 from the history and majesty of the Lincoln Highway 	nutshell	1
-373	15	sounds like you just described me in a nutshell	nutshell	1
-374	15	This truly is reddit in a nutshell; you guys are the 3rd centipede if the internet was a human centipede	nutshell	1
-375	15	 this line basically summed up the current republican party in a nut shell	nutshell	1
 376	16	In life -- as in math -- the key to solving any problem lies in the clear and proper identification thereof.	math	0
 377	16	By sixth grade, the girl who was ahead of the boys in math is now even or behind them.	math	0
 378	16	I don't think Jim should major in math.	math	0
 379	16	They do need to know math and language, but music touches the soul.	math	0
 380	16	Even the math behind a simple tax return carries assumptions that are open to challenge.	math	0
 381	16	And phrasing math problems in art terms might enhance the appeal of math as well!	math	0
-382	16	I want to first do my chemistry assignment and then do the math.	math	0
+382	16	I want to first do my chemistry assignment and then do my math homework.	math	0
 383	16	She does ballet, I do math.	math	0
-384	16	We need someone to do the math. 	math	0
+384	16	We need someone who was good at math. 	math	0
 385	16	Math was not my favorite subject at school.	math	0
 386	16	Let’s do some thinking here.	thinking	0
 387	16	But the dynamics of his thinking have never been easy to explain.	thinking	0
@@ -394,12 +369,12 @@ sentence_id	pair_id	sentence	word	figurative
 393	16	Doing some thinking before jumping into actions is generally a good practice.	thinking	0
 394	16	If she did some thinking, she would have known he would betray her.	thinking	0
 395	16	After Molly has done some thinking, she understood the matter of the problem.	thinking	0
-396	16	Hmm let's see, zero percent of nothin' is, let me do the math here	math	1
-397	16	You have 60 seconds to do the math. 	math	1
-398	16	So, the primary question is whether anybody can do the math regarding the 32 minutes	math	1
-399	16	Do the math before you take on more debt. 	math	1
+396	16	Do the math, if things stay the way they are no one will be helping no one.	math	1
+397	16	You have 60 seconds to do the math.	math	1
+398	16	When you do the math, however, the diminishing Jewish vote isn't what it used to be.	math	1
+399	16	Do the math before you take on more debt.	math	1
 400	16	Don’t tell me to do the math here, I am aware of the problem!	math	1
-401	17	Pond purloined: A Scarborough school's nature garden has been scuppered by thieves who made off with their fish pond.	pond	0
+401	17	A Scarborough school's nature garden has been scuppered by thieves who made off with their fish pond.	pond	0
 402	17	A water flea that is starving in a crowded pond is the victim not of food shortage but of competition.	pond	0
 403	17	A goldfish pond is a nice addition to our garden!	pond	0
 404	17	So far this seems to have helped, as the pond has stayed quite clear though it is in constant sunlight.	pond	0
@@ -421,10 +396,10 @@ sentence_id	pair_id	sentence	word	figurative
 420	17	The numbers transported across the Atlantic on those fateful journeys are in doubt. 	Atlantic	0
 421	17	You know I tried to post an article on r/soccer about investing in Man United, which is having an IPO this year (or whatever they call it across the pond)	pond	1
 422	17	While this Twitter feed fails to mention an (alleged?) assault, UK laws do seem a bit strange (and maybe restrictive) to some of us across the pond	pond	1
-423	17	Even with his connections across the pond, we struck out. 	pond	1
+423	17	Even with his connections across the pond, we struck out.	pond	1
 424	17	I plan to surround Emily with reminders of her days across the pond. 	pond	1
-425	17	What time is it across the pond, 1600? 	pond	1
-426	18	Pond purloined: A Scarborough school's nature garden has been scuppered by thieves who made off with their fish pond.	pond	0
+425	17	What time is it across the pond, 1600?	pond	1
+426	18	A Scarborough school's nature garden has been scuppered by thieves who made off with their fish pond.	pond	0
 427	18	A water flea that is starving in a crowded pond is the victim not of food shortage but of competition.	pond	0
 428	18	A goldfish pond is a nice addition to our garden!	pond	0
 429	18	So far this seems to have helped, as the pond has stayed quite clear though it is in constant sunlight.	pond	0
@@ -498,7 +473,7 @@ sentence_id	pair_id	sentence	word	figurative
 497	20	Would it be okay with you if we had a bite to eat now and hit the sack early?	sack	1
 498	20	I think I'm gonna hit the sack before I get even more uncomfortable.	sack	1
 499	20	But before you hit the sack, follow this expert advice for solving morning beauty emergencies.	sack	1
-500	20	These extreme speeds are similar to a fired bullet.	bullet	0
+500	21	These extreme speeds are similar to a fired bullet.	bullet	0
 501	21	Officers found a bullet hole in the driver's seat.	bullet	0
 502	21	Lopez was hit in the leg, apparently by the same bullet that struck Ortiz.	bullet	0
 503	21	He said she was clipped by a bullet during river patrol.	bullet	0
@@ -522,8 +497,8 @@ sentence_id	pair_id	sentence	word	figurative
 521	21	Like everything else in life, you're kind of just forced to bite the bullet and see the bigger picture.	bullet	1
 522	21	At that point you should bite the bullet and spend $2,199 on a 15-inch Retina MacBook Pro that offers the same storage space.	bullet	1
 523	21	That's why it's time to bite the bullet, suck it up and look to the future.	bullet	1
-524	21	The birds weren't able to fly and were lying on the ground wailing in pain.	fly	0
-525	21	The Wildcats' run-heavy attack likely won't fly Saturday against Houston, which boasts one of the country's best rush defenses.	fly	0
+524	22	The birds weren't able to fly and were lying on the ground wailing in pain.	fly	0
+525	22	The Wildcats' run-heavy attack likely won't fly Saturday against Houston, which boasts one of the country's best rush defenses.	fly	0
 526	22	Though, he did fly from Santa Monica to Pasadena in a helicopter and then picked up the motorcade there.	fly	0
 527	22	Even within an hour and forty minutes of the airport, to fly a thousand or two thousand kilometers north for lucrative jobs on mine sites that allow.	fly	0
 528	22	He'd fly over India on Google Earth for as much as six hours at a time, sometimes until three or four a.m.	fly	0
@@ -546,9 +521,9 @@ sentence_id	pair_id	sentence	word	figurative
 545	22	But I certainly won't let them know I'm tweaking things on the fly.	fly	1
 546	22	Operating on the fly, Obama made a tough call and it seems like it was a good one.	fly	1
 547	22	Often these changes happened on the fly, daily, in response to sudden customer demand or customer loss.	fly	1
-548	22	His body told him not to do it again, but his mind told him he could run faster.	run	0
-549	22	Last February, after flying to Atlanta and then driving all night to New Orleans for the Super Bowl -- his uncle, Dick Cass, is president of the Baltimore Ravens -- he immediately went for a 12-mile run.	run	0
-550	22	We used to run hills, the one by our house, when we were kids.	run	0
+548	23	His body told him not to do it again, but his mind told him he could run faster.	run	0
+549	23	Last February, after flying to Atlanta and then driving all night to New Orleans for the Super Bowl -- his uncle, Dick Cass, is president of the Baltimore Ravens -- he immediately went for a 12-mile run.	run	0
+550	23	We used to run hills, the one by our house, when we were kids.	run	0
 551	23	I chose for my students to perform the mile run. 	run	0
 552	23	Now I wanted only to get away, to run to my mother.	run	0
 553	23	My first impulse was to shout " NO! DO N'T! " and run out the door.	run	0
@@ -570,10 +545,10 @@ sentence_id	pair_id	sentence	word	figurative
 569	23	In the long run, people buy from artists they trust.	run	1
 570	23	I dunno, what's the opportunity cost in the long run?	run	1
 571	23	Some organizations thrive for only a few quarters, but in the long run, they may be extremely unstable.	run	1
-572	23	Yeah, this hand.	hand	0
-573	23	From its description, a crystal fitting into the palm of the hand, we surmised it could very well be the Tox Uthat.	hand	0
-574	23	When the mom let go of the girl's hand, the girl sprang up and ran again to the stage.	hand	0
-575	23	Raise your hand.	hand	0
+572	24	Yeah, this hand.	hand	0
+573	24	From its description, a crystal fitting into the palm of the hand, we surmised it could very well be the Tox Uthat.	hand	0
+574	24	When the mom let go of the girl's hand, the girl sprang up and ran again to the stage.	hand	0
+575	24	Raise your hand.	hand	0
 576	24	Grab his hand!	hand	0
 577	24	I count 11 scars on this hand.	hand	0
 578	24	Chiropractors can loosen up hand and finger joints, they can free up stuck shoulders sometimes too.	hand	0
@@ -594,11 +569,11 @@ sentence_id	pair_id	sentence	word	figurative
 593	24	On the other hand, it is kind of distracting.	hand	1
 594	24	Samsung's hardware pioneering, on the other hand, needs more work.	hand	1
 595	24	My husband, on the other hand, goes several times a week and doesn't like to miss it.	hand	1
-596	24	Before you learn the tender gravity of kindness, you must travel where the Indian in a white poncho lies dead by the side of the road.	road	0
-597	24	I drove back up the coulee, and as I was going through the switchbacks that lead down to the lake and our county road, the local fire chief passed me going in the opposite direction.	road	0
-598	24	This whole road will be redesigned.	road	0
-599	24	We had a fire start right across the road from our sub-division yesterday afternoon.	road	0
-600	24	Decapitated animals left on road side.	road	0
+596	25	Before you learn the tender gravity of kindness, you must travel where the Indian in a white poncho lies dead by the side of the road.	road	0
+597	25	I drove back up the coulee, and as I was going through the switchbacks that lead down to the lake and our county road, the local fire chief passed me going in the opposite direction.	road	0
+598	25	This whole road will be redesigned.	road	0
+599	25	We had a fire start right across the road from our sub-division yesterday afternoon.	road	0
+600	25	Decapitated animals left on road side.	road	0
 601	25	Wilmington memorialized his visit by naming a road in Landfall for the explorer. But he didn't stick around.	road	0
 602	25	We walk back along the road, the sun in our eyes, so we squint against the light.	road	0
 603	25	They could at the very least least snap to the nearest road connecting to the city.	road	0
@@ -618,12 +593,12 @@ sentence_id	pair_id	sentence	word	figurative
 617	25	We support terrorist elements, most recently in Syria and Libya, but before that in Iraq, Bosnia, Kosovo, and Afghanistan, and then find ourselves fighting them down the road.	road	1
 618	25	Who's going to pay for all of that free stuff down the road?	road	1
 619	25	This problem has been kicked down the road long enough.	road	1
-620	25	I ended up going out with a beautiful young lady I haven't seen in way too long to a bar in Palo Alto.	bar	0
-621	25	I'm going to go to the bar, and have clean clothes.	bar	0
-622	25	We get to the bar, and her and her cousin and her cousin's husband were the only ones in costume.	bar	0
-623	25	He loved to pick up some conversation in a bar or on the train or in a restaurant and somehow later to incorporate that.	bar	0
-624	25	And here's Sam doing the opposite: kicking up a ruckus in a bar room brawl.	bar	0
-625	25	I have been looking forever for a bar cart, and I never see them.	bar	0
+620	26	I ended up going out with a beautiful young lady I haven't seen in way too long to a bar in Palo Alto.	bar	0
+621	26	I'm going to go to the bar, and have clean clothes.	bar	0
+622	26	We get to the bar, and her and her cousin and her cousin's husband were the only ones in costume.	bar	0
+623	26	He loved to pick up some conversation in a bar or on the train or in a restaurant and somehow later to incorporate that.	bar	0
+624	26	And here's Sam doing the opposite: kicking up a ruckus in a bar room brawl.	bar	0
+625	26	I have been looking forever for a bar cart, and I never see them.	bar	0
 626	26	Now I have to cut my own bar tab.	bar	0
 627	26	But the lounge is quite nice, the bar is open, the Wi-Fi's on the house and there's a respectable duty free shop.	bar	0
 628	26	Your dad could be the milkman or a bad bar hook-up.	bar	0
@@ -642,13 +617,13 @@ sentence_id	pair_id	sentence	word	figurative
 641	26	Take care not to set the bar too low -- -- low goals will not motivate you.	bar	1
 642	26	It's worth noting for Rams fans, though, that they set the bar insanely high by hitting on so many rookies.	bar	1
 643	26	After it was released in 1998, Grim Fandango blew everyone away and set the bar ridiculously high for adventure games.	bar	1
-644	26	This page shows a bound, semi-nude woman with duct tape over her mouth. 	page	0
-645	26	Some voters said they didn't realize there was even a second page because they were stuck together. 	page	0
-646	26	Whenever I smell or page or hold the worn pages it feels so familiar. 	page	0
-647	26	Bookmark this page and pick one night of the month (i.e. second Tuesday) to watch a video. 	page	0
-648	26	You'll note my name at the top of the page as a co-author of this article. 	page	0
-649	26	But when I saw that SBI was $299, I quickly closed the page as no way in the world can I afford that.	page	0
-650	26	I just noticed that one of the pictures on the front page is of a woman measuring herself with a measuring tape. 	page	0
+644	27	This page shows a bound, semi-nude woman with duct tape over her mouth. 	page	0
+645	27	Some voters said they didn't realize there was even a second page because they were stuck together. 	page	0
+646	27	Whenever I smell or page or hold the worn pages it feels so familiar. 	page	0
+647	27	Bookmark this page and pick one night of the month (i.e. second Tuesday) to watch a video. 	page	0
+648	27	You'll note my name at the top of the page as a co-author of this article. 	page	0
+649	27	But when I saw that SBI was $299, I quickly closed the page as no way in the world can I afford that.	page	0
+650	27	I just noticed that one of the pictures on the front page is of a woman measuring herself with a measuring tape. 	page	0
 651	27	Out of the twenty-plus teens, only two admitted to reading a printed newspaper on a regular basis and that was just the sports page. 	page	0
 652	27	Don't think you are expected to generate a 600 page monster novel in three days. 	page	0
 653	27	Mutual understanding makes any relationship better. 	understanding	0
@@ -666,14 +641,14 @@ sentence_id	pair_id	sentence	word	figurative
 665	27	We can all try to get on the same page as far as what psalms, readings and collects to use. 	page	1
 666	27	Or you could let him know that you see marriage in your future and only want to date men who are on the same page. 	page	1
 667	27	I think you and I are on the same page. 	page	1
-668	27	It's famous for its fisherman, its fresh fish sandwiches, and its location between the cultural region of Sultanahmet and the modern Galata.	fish	0
-669	27	You could even catch a fish and then have it prepared for you at the park's restaurant for $1.	fish	0
-670	27	They can kill more than half the fish, and the fish they get are the larger-sized half.	fish	0
-671	27	Even urban streams are showing the benefit of restoration work, with fish returning to their home waters.	fish	0
-672	27	Might think about fish again -- fried this time -- whitebait, clams, calamari.	fish	0
-673	27	Do we have the abundant fish and game of the 18th century?	fish	0
-674	27	The men have been forced to leave and look for fish hundreds of miles away.	fish	0
-675	27	Because there aren't any fish left here.	fish	0
+668	28	It's famous for its fisherman, its fresh fish sandwiches, and its location between the cultural region of Sultanahmet and the modern Galata.	fish	0
+669	28	You could even catch a fish and then have it prepared for you at the park's restaurant for $1.	fish	0
+670	28	They can kill more than half the fish, and the fish they get are the larger-sized half.	fish	0
+671	28	Even urban streams are showing the benefit of restoration work, with fish returning to their home waters.	fish	0
+672	28	Might think about fish again -- fried this time -- whitebait, clams, calamari.	fish	0
+673	28	Do we have the abundant fish and game of the 18th century?	fish	0
+674	28	The men have been forced to leave and look for fish hundreds of miles away.	fish	0
+675	28	Because there aren't any fish left here.	fish	0
 676	28	And we both loved to fish and fished a lot together.	fish	0
 677	28	Because if they choose the wrong employee, there will be many problems related to the job of that employee.	problems	0
 678	28	Spending time with a technical person gives you insight into what engineers value and how they approach problems.	problems	0
@@ -692,13 +667,13 @@ sentence_id	pair_id	sentence	word	figurative
 691	28	Americans are going to have far bigger fish to fry at home soon enough.	fish	1
 692	28	The other day, a friend and I were discussing a political subject about which we (mostly) agree.	day	0
 693	28	I've been able to keep the commitment to exercise every day, so much better than the world where I could always go to the gym.	day	0
-694	28	At one point two men are running alongside a riverbank in the middle of the day.	day	0
-695	28	Even though it was a nice warm day in May, the water in the lake was still pretty cold.	day	0
-696	28	I had dreamed of this day for years.	day	0
-697	28	The first stop will be from 8 a.m. to noon Saturday at the Ocean View Farmers Market, followed later that day at the Kau Resource and Distance Learning Center.	day	0
-698	28	I said, " Yes, " and was summarily removed the next day.	day	0
-699	28	Atlanta is a different kind of city, only about 200,000 actually lives in the city of Atlanta but about a few million work there each day.	day	0
-700	28	The following day focused on the common core and the public library and provided practical suggestions to assist parents and educators with navigating these standards.	day	0
+694	29	At one point two men are running alongside a riverbank in the middle of the day.	day	0
+695	29	Even though it was a nice warm day in May, the water in the lake was still pretty cold.	day	0
+696	29	I had dreamed of this day for years.	day	0
+697	29	The first stop will be from 8 a.m. to noon Saturday at the Ocean View Farmers Market, followed later that day at the Kau Resource and Distance Learning Center.	day	0
+698	29	I said, " Yes, " and was summarily removed the next day.	day	0
+699	29	Atlanta is a different kind of city, only about 200,000 actually lives in the city of Atlanta but about a few million work there each day.	day	0
+700	29	The following day focused on the common core and the public library and provided practical suggestions to assist parents and educators with navigating these standards.	day	0
 701	29	I mean they're so easy to finish.	finish	0
 702	29	I won't be under as much pressure to finish the estate planning before my Thanksgiving goal, so I can be patient.	finish	0
 703	29	You didn't let me finish.	finish	0
@@ -714,16 +689,16 @@ sentence_id	pair_id	sentence	word	figurative
 713	29	Rather than just return it and call it a day, I restored the device from scratch.	day	1
 714	29	I usually just call it a day, scout out the water or go for a hike.	day	1
 715	29	After a couple of hours of enjoying the surfing, without another soul in sight since this spot hardly ever has good waves, I was about to call it a day and go back home.	day	1
-716	29	Harry Houdini once made an elephant disappear.	elephant	0
-717	29	Though the elephant loaded with gifts idea was pretty hilarious, I have to say I was pretty disappointed Newt bought into an MSM narrative.	elephant	0
-718	29	The scrotal torsion alone from that amount of spin could sterilise an elephant.	elephant	0
-719	29	I'd put big money down that if I used a crayon to draw an elephant and a donkey I'd get at least a B+.	elephant	0
-720	29	These include bear, dog, cat, horse, and elephant shaped creatures with no biological relation whatsoever.	elephant	0
-721	29	Like the problems Africans are having with elephant herds, only 1,000 times worse.	elephant	0
-722	29	The ideas came when her staff was riding an elephant or a race horse or a motorcycle.	elephant	0
-723	29	You will begin by caring for a monkey and an elephant.	elephant	0
-724	29	There are few animals on this planet more magnificent than the elephant, and getting up close and personal with one of these giants is a real treat.	elephant	0
-725	29	So in a way the unspoken subtext in the US is " You want to cook food for me?	unspoken	0
+716	30	Harry Houdini once made an elephant disappear.	elephant	0
+717	30	Though the elephant loaded with gifts idea was pretty hilarious, I have to say I was pretty disappointed Newt bought into an MSM narrative.	elephant	0
+718	30	The scrotal torsion alone from that amount of spin could sterilise an elephant.	elephant	0
+719	30	I'd put big money down that if I used a crayon to draw an elephant and a donkey I'd get at least a B+.	elephant	0
+720	30	These include bear, dog, cat, horse, and elephant shaped creatures with no biological relation whatsoever.	elephant	0
+721	30	Like the problems Africans are having with elephant herds, only 1,000 times worse.	elephant	0
+722	30	The ideas came when her staff was riding an elephant or a race horse or a motorcycle.	elephant	0
+723	30	You will begin by caring for a monkey and an elephant.	elephant	0
+724	30	There are few animals on this planet more magnificent than the elephant, and getting up close and personal with one of these giants is a real treat.	elephant	0
+725	30	So in a way the unspoken subtext in the US is " You want to cook food for me?	unspoken	0
 726	30	There are unspoken wishes, hopes and desires that go along with the hard statistics.	unspoken	0
 727	30	We have a sort of unspoken communication when we're making music and what we're influenced by.	unspoken	0
 728	30	He doesn't get the unspoken rules even when you try to explain them to him.	unspoken	0
@@ -738,3 +713,33 @@ sentence_id	pair_id	sentence	word	figurative
 737	30	There is a bit of an elephant in the room at the moment about the lack of openly theist posters.	elephant	1
 738	30	Let me first address the elephant in the room.	elephant	1
 739	30	This is the elephant in the room we've all been waiting for, " Burris said.	elephant	1
+9951	999	I'm also not a fan of the keyboard layout.	keyboard	0
+9952	999	I remember sitting at a keyboard and just weeping as I wrote this piece.	keyboard	0
+9953	999	I do like how the software keyboard auto-suggests words.	keyboard	0
+9954	999	The keyboard gives a slightly cramped feeling.	keyboard	0
+9955	999	They' ll collapse if you exert too much forward pressure, crashing the keyboard.	keyboard	0
+9956	999	He used the keyboard to control the arrow and direct the game.	keyboard	0
+9957	999	Because he thought the wireless mechanical keyboard market was full of junk.	keyboard	0
+9958	999	Still, as I sit at the keyboard, I feel I have failed to live up to my youthful potential.	keyboard	0
+9961	899	He never even touched my hands on the keyboard.	keyboard	0
+9959	999	I could hear the soft patter of a computer keyboard.	keyboard	0
+9960	899	When he passed back through Roskilde around noon it had become just another town, men in shirtsleeves and women going to market.	market	0
+9962	899	We have a farmers market back home that's much the same.	market	0
+9963	899	Today Baru went to market with a new joy: the joy of plots.	market	0
+9964	899	I'm scared I'll end up with' the greatest flea market on earth.	market	0
+9965	899	Ever been to the street market in Kowloon?	market	0
+9966	899	Strolling through the Saturday market near the river in Portland (assuming it's still going on).	market	0
+9967	899	Eventually he was able to quit his job at the market and pursue his passion full time.	market	0
+9968	899	Yeah, right, the market place.	market	0
+9969	899	I had to go to the market the other day, and there were people at the register talking about it.	market	0
+9970	899	He even noticed the market down the street with pleasure.	market	0
+9971	799	After a time Yining took out her phone and began scrolling through the dozens of pictures.	phone	0
+9972	799	Honestly it's such a joy to be able to set the phone down somewhere.	phone	0
+9973	799	So, I called him and he actually answered his phone.	phone	0
+9974	799	But within minutes I got a phone call from Andy Card, the chief of staff.	phone	0
+9975	799	I say, holding the glowing phone up to him.	phone	0
+9976	799	I do nt need any more, its a phone not a computer or an ipod.	phone	0
+9970	799	And when she's home, is her phone ever not within arm's reach?	phone	0
+9978	799	I did take the precaution of taking my cell phone out of my saddle back and putting it in my pocket.	phone	0
+9979	799	The footprint is the same, though, and it's a fairly good-sized phone in terms of length and width.	phone	0
+9980	799	He wiped his fingertips on a soft yellow rag and peered with concentration at the LED displays of the cordless phone, a present from Roger.	phone	0
