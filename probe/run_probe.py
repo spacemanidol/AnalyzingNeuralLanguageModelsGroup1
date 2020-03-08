@@ -121,6 +121,10 @@ def test_probe(input_args):
     eval_model(model, final_embeddings, labels, input_args, test_data.get_raw_for_output())
 
 
+def eval_round(in_tensor):
+    return (in_tensor >= 0.5) * 1
+
+
 def eval_model(model, data, input_labels, input_args, raw_for_out):
     flat_labels = input_labels.flatten()
     model.eval()
@@ -133,10 +137,10 @@ def eval_model(model, data, input_labels, input_args, raw_for_out):
         predicted_outputs = torch.squeeze(outputs)
 
     total = len(predicted_outputs)
-    correct = int(torch.sum((torch.round(predicted_outputs) == labels) * 1))
+    correct = int(torch.sum((eval_round(predicted_outputs) == labels) * 1))
 
     output_lines = ['\t'.join(('classifier_prob', 'classifier_judgement') + raw_for_out[0])+'\n'] + [
-        '\t'.join((str(float(x)), str(int(torch.round(x)))) + raw_for_out[index+1]) + '\n'
+        '\t'.join((str(float(x)), str(int(eval_round(x)))) + raw_for_out[index+1]) + '\n'
         for index, x in enumerate(predicted_outputs)
     ]
 
