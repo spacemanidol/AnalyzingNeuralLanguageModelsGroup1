@@ -121,8 +121,11 @@ class Dataset(ABC):
             'run_name': self.run_name
         }
 
-    def save_computed_embeddings(self, sentences, inputs, indices, pools, metadata):
-        folder = os.path.join('cache', self.run_name)
+    def save_computed_embeddings(self, sentences, inputs, indices, pools, metadata, save_sub_location=None):
+        if save_sub_location:
+            folder = os.path.join('cache', self.run_name, save_sub_location)
+        else:
+            folder = os.path.join('cache', self.run_name)
         module_logger.info('Caching info for this run in {}'.format(folder))
         module_logger.info('Please pass this folder in to future invocations to use cached data')
         if not os.path.exists(folder):
@@ -142,7 +145,7 @@ class Dataset(ABC):
         return self._load(self.sentences_filename, folder), self._load(self.inputs_filename, folder),\
                self._load(self.indices_filename, folder), self._load(self.pools_filename, folder)
 
-    def bert_word_embeddings(self, encoded_data):
+    def bert_word_embeddings(self, encoded_data, save_sub_location=None):
         module_logger.info("Loading '{}' model".format(self.model_label))
         bert_model = BertModel.from_pretrained(self.model_label)
 
@@ -163,7 +166,7 @@ class Dataset(ABC):
                   .format(sentences.shape[0], len(encoded_data), batch_sentences.shape[1], sentences.shape[1]))
 
         ordered_sentences, ordered_inputs, ordered_indices, ordered_pools = self.reorder(sentences, inputs, indices, pools)
-        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_indices, ordered_pools, self.get_metadata())
+        self.save_computed_embeddings(ordered_sentences, ordered_inputs, ordered_indices, ordered_pools, self.get_metadata(), save_sub_location)
         return ordered_sentences, ordered_inputs, ordered_indices, ordered_pools
 
     @staticmethod

@@ -26,7 +26,6 @@ def sentence_paraphrase_comparisons(input_args):
     dataset = SentenceParaphraseInspectionDataset(input_args.input, input_args.embedding_model, 
                                                 input_args.embedding_batch_size, input_args.run_name)
     embeddings = get_embeddings(dataset, input_args.embedding_cache, flattened=True)
-    embedding_outputs, encoded_inputs, _indices, _pools = embeddings
     sentence_embeddings = get_sentence_embeddings(embeddings, dataset)
 
     paraphrase_cosine_metrics = calculate_sent_cosine_metrics(dataset, sentence_embeddings)

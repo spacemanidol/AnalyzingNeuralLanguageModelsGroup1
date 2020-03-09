@@ -137,40 +137,48 @@ def eval_model(model, data, input_labels, input_args, dataset):
 
         outputs = model(inputs)
 
-        predicted_outputs = torch.squeeze(outputs)
-
-    total = len(predicted_outputs)
-
-    correct = int(torch.sum((eval_round(predicted_outputs) == labels.bool()) * 1))
+        predicted_outputs = eval_round(torch.squeeze(outputs))
 
     output_lines = ['\t'.join(('classifier_prob', 'classifier_judgement') + raw_for_out[0])+'\n'] + [
-        '\t'.join((str(float(x)), str(int(eval_round(x)))) + raw_for_out[index+1]) + '\n'
+        '\t'.join((str(float(x)), str(int(x))) + raw_for_out[index+1]) + '\n'
         for index, x in enumerate(predicted_outputs)
     ]
 
     stats_out(input_args, dataset, predicted_outputs, labels)
 
-    acc_string = "{}/{} correct for an accuracy of {}".format(correct, total, correct/total)
     output_file(input_args.run_name, '{}_classifications.tsv'.format(input_args.run), output_lines)
-    output_file(input_args.run_name, '{}_acc.txt'.format(input_args.run), [acc_string + '\n'])
-    module_logger.info(acc_string)
 
 
 def stats_out(input_args, dataset, predicted_outputs, labels):
-    if input_args.embedding_paradigm == combined:
-        all_results, summary = sentence_vector_sim_calculations(input_args, dataset, predicted_outputs)
+    if not input_args.skip_vector_sim:
+        if input_args.embedding_cache:
+            embedding_cache_folder = input_args.embedding_cache
+        else:
+            embedding_cache_folder = "cache/" + input_args.run_name
+
+        if input_args.embedding_paradigm == combined:
+            embedding_outputs, inputs, indices, _pools = dataset.load_saved_embeddings(embedding_cache_folder)
+        elif os.path.exists(embedding_cache_folder + "/separate_sents"):
+            embedding_outputs, inputs, indices, _pools = dataset.load_saved_embeddings(embedding_cache_folder + "/separate_sents")
+        else:
+            embeddings = dataset.bert_word_embeddings(dataset.get_flattened_encoded(), 'separate_sents')
+            embedding_outputs, inputs, indices, _pools = embeddings
+        
+        sentence_embeddings = dataset.aggregate_sentence_embeddings(embedding_outputs, inputs, indices)    
+
+        all_results, summary = sentence_vector_sim_calculations(dataset, predicted_outputs, sentence_embeddings)
         output_lines = format_for_output(summary) + ["{} \n".format(pair) for pair in all_results] 
         output_file(input_args.run_name, '{}_sent_vector_cosine_sim.txt'.format(input_args.run), output_lines)
 
-    f1_stats = calculate_f1_results(predicted_outputs, labels)
+    f1_stats = calculate_f1_and_acc_results(predicted_outputs, labels)
     output_file(input_args.run_name, '{}_f1_stats.txt'.format(input_args.run), format_for_output(f1_stats))
 
 
-def calculate_f1_results(predicted_outputs, labels):
+def calculate_f1_and_acc_results(predicted_outputs, labels):
     num_true_pos, num_true_neg, num_false_pos, num_false_neg = 0, 0, 0, 0
     
     for i, prediction in enumerate(predicted_outputs):
-        if eval_round(prediction):
+        if prediction:
             if labels[i]:
                 num_true_pos += 1
             else:
@@ -180,34 +188,30 @@ def calculate_f1_results(predicted_outputs, labels):
         else:
             num_true_neg += 1
 
+    correct = num_true_pos + num_true_neg
+    total = correct + num_false_pos + num_false_neg
+    accuracy = correct / total
+
     recall = num_true_pos / (num_true_pos + num_false_pos)
-    precision = num_true_pos / (num_true_pos + num_true_neg)
-    accuracy = (num_true_pos + num_true_neg) / (num_true_pos + num_true_neg + num_false_pos + num_false_neg)
-    f1 = 2 * (precision*recall) / (precision+recall)
+    precision = num_true_pos / correct
+    f1 = 2 * (precision * recall) / (precision + recall)
+
+    module_logger.info("{}/{} correct for an accuracy of {}".format(correct, total, accuracy))
 
     return {
         "num_true_positive": num_true_pos,
         "num_false_positive": num_false_pos,
         "num_true_negative": num_true_neg,
         "num_false_negative": num_false_neg,
-        "acaccuracy": accuracy,
+        "accuracy": accuracy,
         "f1": f1
     }
 
 
-def sentence_vector_sim_calculations(input_args, dataset, predicted_outputs):
-    if input_args.embedding_cache:
-        embedding_cache_file = input_args.embedding_cache
-    else:
-        embedding_cache_file = "cache/" + input_args.run_name
-
-    embeddings, inputs, indices, _pools = dataset.load_saved_embeddings(embedding_cache_file)
-    sentence_embeddings = dataset.aggregate_sentence_embeddings(embeddings, inputs, indices)
-    
+def sentence_vector_sim_calculations(dataset, predicted_outputs, sentence_embeddings):
     data = dataset.get_raw_for_output()[1:]
-    cosine_comps = [calculate_paraphrase_pair_similarity(i, pair_sents, 
-                                                            sentence_embeddings, predicted_outputs) 
-                                for i, pair_sents in enumerate(data)]
+    cosine_comps = [calculate_paraphrase_pair_similarity(i, pair_sents, sentence_embeddings, predicted_outputs) 
+                    for i, pair_sents in enumerate(data)]
 
     correctly_judged_paraphrases = [pair['cosine_similarity'] for pair in cosine_comps 
                                     if pair['label'] and pair['judgment']]
@@ -243,7 +247,7 @@ def calculate_paraphrase_pair_similarity(index, raw_data, sentence_embeddings, p
         'dataset_index': index,
         "idiom": idiom,
         'label': int(raw_data[0]),
-        'judgment': bool(eval_round(predicted_outputs[index])),
+        'judgment': bool(predicted_outputs[index]),
         'sent_1': raw_data[1],
         'sent_2': raw_data[2],
         'index': raw_data[3],
@@ -302,6 +306,7 @@ if __name__ == '__main__':
     parser.add_argument('--min_loss_step', type=float, default=0.0001,
                         help='Minimum epoch loss; smaller improvements than this will cause training to abort')
     parser.add_argument('--rand_seed', type=int, default=0)
+    parser.add_argument('--skip_vector_sim', type=bool, default=False)
 
     input_args = parser.parse_args()
     torch.manual_seed(input_args.rand_seed)
