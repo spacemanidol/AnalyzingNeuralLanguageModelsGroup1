@@ -29,8 +29,7 @@ def sentence_paraphrase_comparisons(input_args):
     embedding_outputs, encoded_inputs, _indices, _pools = embeddings
     sentence_embeddings = get_sentence_embeddings(embeddings, dataset)
 
-    paraphrase_cosine_metrics = calculate_sent_cosine_metrics(dataset, embedding_outputs, 
-                                                                            encoded_inputs, sentence_embeddings)
+    paraphrase_cosine_metrics = calculate_sent_cosine_metrics(dataset, sentence_embeddings)
     # print(paraphrase_cosine_metrics)
     print(summarize_sentence_similarity_comp(paraphrase_cosine_metrics))
 
@@ -80,9 +79,9 @@ def get_sentence_embeddings(embeddings, data):
     embedding_outputs, encoded_inputs, indices, _pools = embeddings
     return data.aggregate_sentence_embeddings(embedding_outputs, encoded_inputs, indices)
 
-def calculate_sent_cosine_metrics(dataset, embedding_outputs, encoded_inputs, sentence_embeddings):
+def calculate_sent_cosine_metrics(dataset, sentence_embeddings):
     data = dataset.get_data()
-    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(i, pair_sents, dataset, encoded_inputs, sentence_embeddings) 
+    paraphrase_cosine_metrics = [calculate_paraphrase_pair_similarity(i, pair_sents, sentence_embeddings) 
                                 for i, pair_sents in enumerate(data)]
     return paraphrase_cosine_metrics
 
@@ -92,7 +91,7 @@ def calculate_word_cosine_metrics(dataset, embedding_outputs, encoded_inputs, id
                             for idiom_sent_idx_group in idiom_sentence_indexes]
     return word_cosine_metrics
 
-def calculate_paraphrase_pair_similarity(index, classifier_out, dataset, encoded_inputs, sentence_embeddings):
+def calculate_paraphrase_pair_similarity(index, classifier_out, sentence_embeddings):
     cosine_sim = 1 - cosine(sentence_embeddings[index][0], sentence_embeddings[index][1])
     return {
         'pair_index': index,
