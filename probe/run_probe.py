@@ -199,7 +199,7 @@ def sentence_vector_sim_calculations(input_args, dataset, predicted_outputs):
     if input_args.embedding_cache:
         embedding_cache_file = input_args.embedding_cache
     else:
-        embedding_cache_file = input_args.run_name
+        embedding_cache_file = "cache/"+input_args.run_name
 
     embeddings, inputs, indices, _pools = dataset.load_saved_embeddings(embedding_cache_file)
     sentence_embeddings = dataset.aggregate_sentence_embeddings(embeddings, inputs, indices)
@@ -234,10 +234,15 @@ def sentence_vector_sim_calculations(input_args, dataset, predicted_outputs):
 
 def calculate_paraphrase_pair_similarity(index, raw_data, sentence_embeddings, predicted_outputs):
     cosine_sim = 1 - cosine(sentence_embeddings[index][0], sentence_embeddings[index][1])
+    try:
+        idiom = raw_data[5]
+    except:
+        idiom = "N/A"
 
     return {
         'dataset_index': index,
-        "idiom": raw_data[5],
+        #"idiom": raw_data[5],
+        "idiom": idiom ,
         'label': int(raw_data[0]),
         'judgment': bool(eval_round(predicted_outputs[index])),
         'sent_1': raw_data[1],
