@@ -66,9 +66,11 @@ After the first run, you can provide the `embedding_cache` argument with a strin
 
 For detailed explanation of the command line arguments, see the **Command line arguments** section below.
 
-### 2. Word-level embeddings 
+### 2. Sentence-level embeddings 
 
-[add here]
+UPDATE: Most of this functionality has been directly incorporated into the probe directory as part of the probe run itself (run_probe.py) to ensure a match between the sentence embeddings used in the classification and those compared for vector similarity. However, one can still run this evaluation on the outputted classification file directly from here too as follows:
+
+`python3 run_vector_similarity.py --comparison_type para_pairs --input ../probe/output/bert_large_combined_test/test_classifications.tsv --embedding_model bert-large-uncased --run_name sentence_word_large --embedding_batch_size 32`
 
 #### Command line arguments
 
