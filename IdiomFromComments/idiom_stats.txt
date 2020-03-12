@@ -1,0 +1,215 @@
+from time to time	80
+all over the place	68
+by all means	52
+down the road	44
+along the lines	40
+behind the scenes	40
+on the other hand	40
+in the long run	36
+with a grain of salt	32
+in a heartbeat	32
+rule of thumb	32
+on the same page	28
+matter of time	28
+up and running	28
+out of the blue	28
+slap in the face	24
+in the face of	24
+close to home	24
+in this day and age	24
+a good deal	24
+in the works	24
+out of pocket	20
+come to mind	20
+in the same boat	20
+on the table	20
+word of mouth	16
+hit the nail on the head	16
+behind closed doors	16
+bells and whistles	16
+dime a dozen	16
+on the fly	16
+lesser of two evils	16
+in the same breath	16
+bring to the table	16
+get the hang of	16
+to a T	12
+by the time	12
+on the hook	12
+shot in the dark	12
+above and beyond	12
+pain in the ass	12
+food for thought	12
+on the spot	12
+again and again	12
+bite the bullet	12
+in no time	12
+behind the wheel	12
+change of heart	12
+can of worms	12
+see the light of day	12
+go with the flow	12
+elephant in the room	12
+in light of	12
+make ends meet	8
+odds and ends	8
+call a spade a spade	8
+come a long way	8
+get the picture	8
+cream of the crop	8
+break the bank	8
+set the bar	8
+in a nutshell	8
+a bit much	8
+walk in the park	8
+go out on a limb	8
+across the pond	8
+get the point	8
+ahead of the game	8
+smoke and mirrors	8
+do the math	8
+at a glance	8
+one fell swoop	8
+from the ground up	8
+out of touch	8
+keys to the kingdom	8
+in the black	8
+on second thought	8
+out of nowhere	8
+on the right track	8
+rub it in	8
+under the rug	8
+off the bat	8
+tit for tat	8
+stand a chance	8
+down the line	8
+in a pinch	8
+run the show	8
+on the clock	8
+arm and a leg	8
+turn the tide	4
+at the best of times	4
+luck of the draw	4
+at a loss for words	4
+spur of the moment	4
+on a whim	4
+high and mighty	4
+and then some	4
+neck of the woods	4
+muddy the waters	4
+pain in the butt	4
+hard of hearing	4
+get to grips with	4
+easy on the eyes	4
+top of the line	4
+have it both ways	4
+in the cards	4
+against all odds	4
+against the clock	4
+shoulder to cry on	4
+off the table	4
+get the word out	4
+run the gamut	4
+stiff upper lip	4
+put two and two together	4
+through the roof	4
+face to face	4
+as the next guy	4
+sink or swim	4
+for the time being	4
+bet the farm	4
+pay the bills	4
+call it a day	4
+bigger fish to fry	4
+neck and neck	4
+fall into place	4
+take a back seat	4
+wet the bed	4
+off the hook	4
+smell a rat	4
+run a mile	4
+out of wedlock	4
+deer in the headlights	4
+dead in the water	4
+blessing in disguise	4
+break the cycle	4
+drop in the bucket	4
+out of gas	4
+shed a tear	4
+put the food on the table	4
+once in a blue moon	4
+nickel and dime	4
+out of whack	4
+nothing to write home about	4
+slice of the pie	4
+get the memo	4
+have a go	4
+on the spur of the moment	4
+scum of the earth	4
+brick and mortar	4
+look on the bright side	4
+from the get-go	4
+live paycheck to paycheck	4
+on the sly	4
+reach for the stars	4
+break the ice	4
+join the club	4
+for the love of	4
+take a stand	4
+put food on the table	4
+in the clear	4
+alive and kicking	4
+see the light	4
+get a life	4
+get with the program	4
+go against the grain	4
+out of thin air	4
+best of both worlds	4
+get away with murder	4
+sick and tired	4
+test the waters	4
+run into the ground	4
+on the back burner	4
+let the cat out of the bag	4
+lift a finger	4
+fish to fry	4
+agree to disagree	4
+jump through hoops	4
+live and let live	4
+scratch the surface	4
+all the rage	4
+up in the air	4
+tie up loose ends	4
+get the time	4
+worth every penny	4
+ring a bell	4
+fall on deaf ears	4
+lead up to	4
+front and center	4
+tip of the iceberg	4
+fight fire with fire	4
+on the ball	4
+make an appearance	4
+on the brink	4
+jump to conclusions	4
+make matters worse	4
+six feet under	4
+cut both ways	4
+come to grips with	4
+back at you	4
+in the books	4
+break a leg	4
+under the covers	4
+on all fours	4
+down in the dumps	4
+blow off steam	4
+boots on the ground	4
+kick the tires	4
+crash and burn	4
+hit the jackpot	4
+moment in the sun	4
+fall on hard times	4
+on thin ice	4
+get it over with	4
+open the floodgates	4
+make an example of	4
