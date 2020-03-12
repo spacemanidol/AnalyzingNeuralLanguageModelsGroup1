@@ -1,0 +1,1 @@
+{"learning_rate": 0.00247875217, "epochs": 10000, "seed": 1583398837989, "training_file": "/home2/warose91/ling575_nn/AnalyzingNeuralLanguageModelsGroup1/data/t5.tsv", "embedding_paradigm": "combined"}

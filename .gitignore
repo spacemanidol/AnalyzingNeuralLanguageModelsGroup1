@@ -7,8 +7,14 @@ probe/*.tsv
 .idea/*
 probe/cache/*
 probe/output/*
+vector_similarity/cache/*
+vector_similarity/output/*
 #Model
 */pytorch_model.bin
+*/*/pytorch_model.bin
+pytorch_model.bin
+*/*/checkpoint-*
+runs/
 # Build and Release Folders
 bin-debug/
 bin-release/
@@ -31,3 +37,4 @@ bin-release/
 
 # Project specific ignores
 __pycache__
+.ipynb_checkpoints

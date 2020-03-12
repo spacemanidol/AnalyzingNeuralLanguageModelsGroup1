@@ -1,0 +1,17 @@
+Trial_cls	trial_combined	Train Data Description	Dev Data Description	Embedding model description	best acc	best prec	best f1	best recall
+442	N/A	Full MRPC 4076/1726	Full MRPC 4076/1726	bert base uncased	0,716969697	0,817413356	0,777956557	0,742133538
+443	N/A	Full MRPC 4076/1726	All our data 1600/400	bert base uncased	0,5375	0,948837209	0,68	0,52987013
+444	N/A	All our data 1600/400	All our data 1600/400	bert base uncased	0,525	0,523809524	0,533980583	0,544554455
+445	458	Full MRPC 4076/1726	Full MRPC 4076/1726	bert base uncased, finetuned on MRPC	0,81030303	0,707554226	0,944237918	0,854561879
+446	459	Full MRPC 4076/1726	All our data 1600/400	bert base uncased, finetuned on MRPC	0,5	0,955	0,943661972	0,676767677
+447	460	All our data 1600/400	All our data 1600/400	bert base uncased, finetuned on MRPC	0,645	0,73	0,56561086	0,679347826
+448	461	Full MRPC 4076/1726	Full MRPC 4076/1726	bert base uncased, finetuned on all our data	0,732121212	0,808774834	0,971269694	0,791540785
+449	463	All our data 1600/400	All our data 1600/400	bert base uncased, finetuned on all our data	0,7775	0,785	0,633587786	0,779342723
+450	N/A	All our data 1600/400	Full MRPC 4076/1726	bert base uncased, finetuned on all our data	0,518787879	0,799065421	0,7125	0,642857143
+451	464	Full MRPC 4076/1726	Full MRPC 4076/1726	bert base uncased, finetuned on our data disjunct idioms	0,726666667	0,811509591	0,960072595	0,793103448
+452	N/A	Our data disjunct 1600/400	Our data disjunct 1600/400	bert base uncased, finetuned on our data disjunct idioms	0,7775	0,575562701	0,641577061	0,724696356
+453	N/A	Our data disjunct 1600/400	Full MRPC 4076/1726	bert base uncased, finetuned on our data disjunct idioms	0,595757576	0,844354018	0,75045208	0,67534581
+454	470	Elena's Idioms	Elena's Idioms	bert base uncased, finetuned on Elena's data	0,933333333	0,929166667	0,640226629	0,875968992
+455	471	Elena's Idioms	Daniel's Idioms	bert base uncased, finetuned on Elena's data	0,6	0,858333333	0,838709677	0,688741722
+456	472	Elena's Idioms	Full MRPC 4076/1726	bert base uncased, finetuned on Elena's data	0,64969697	0,970149254	0,883317261	0,768456376
+457	467	Full MRPC 4076/1726	Full MRPC 4076/1726	bert base uncased, finetuned on Elena's data	0,738181818	0,790640394	0,962488564	0,792168675

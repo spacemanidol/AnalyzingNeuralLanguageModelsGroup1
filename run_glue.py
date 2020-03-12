@@ -179,10 +179,10 @@ def train(args, train_dataset, model, tokenizer):
         epochs_trained = global_step // (len(train_dataloader) // args.gradient_accumulation_steps)
         steps_trained_in_current_epoch = global_step % (len(train_dataloader) // args.gradient_accumulation_steps)
 
-        logger.info("  Continuing training from checkpoint, will skip to saved global_step")
-        logger.info("  Continuing training from epoch %d", epochs_trained)
-        logger.info("  Continuing training from global step %d", global_step)
-        logger.info("  Will skip the first %d steps in the first epoch", steps_trained_in_current_epoch)
+     #   logger.info("  Continuing training from checkpoint, will skip to saved global_step")
+     #   logger.info("  Continuing training from epoch %d", epochs_trained)
+     #   logger.info("  Continuing training from global step %d", global_step)
+     #   logger.info("  Will skip the first %d steps in the first epoch", steps_trained_in_current_epoch)
 
     tr_loss, logging_loss = 0.0, 0.0
     model.zero_grad()
@@ -264,11 +264,11 @@ def train(args, train_dataset, model, tokenizer):
                     tokenizer.save_pretrained(output_dir)
 
                     torch.save(args, os.path.join(output_dir, "training_args.bin"))
-                    logger.info("Saving model checkpoint to %s", output_dir)
+    #                logger.info("Saving model checkpoint to %s", output_dir)
 
                     torch.save(optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
                     torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"))
-                    logger.info("Saving optimizer and scheduler states to %s", output_dir)
+   #                 logger.info("Saving optimizer and scheduler states to %s", output_dir)
 
             if args.max_steps > 0 and global_step > args.max_steps:
                 epoch_iterator.close()
@@ -305,9 +305,9 @@ def evaluate(args, model, tokenizer, prefix=""):
             model = torch.nn.DataParallel(model)
 
         # Eval!
-        logger.info("***** Running evaluation {} *****".format(prefix))
-        logger.info("  Num examples = %d", len(eval_dataset))
-        logger.info("  Batch size = %d", args.eval_batch_size)
+      #  logger.info("***** Running evaluation {} *****".format(prefix))
+      #  logger.info("  Num examples = %d", len(eval_dataset))
+      #  logger.info("  Batch size = %d", args.eval_batch_size)
         eval_loss = 0.0
         nb_eval_steps = 0
         preds = None
@@ -344,9 +344,9 @@ def evaluate(args, model, tokenizer, prefix=""):
 
         output_eval_file = os.path.join(eval_output_dir, prefix, "eval_results.txt")
         with open(output_eval_file, "w") as writer:
-            logger.info("***** Eval results {} *****".format(prefix))
+       #     logger.info("***** Eval results {} *****".format(prefix))
             for key in sorted(result.keys()):
-                logger.info("  %s = %s", key, str(result[key]))
+       #         logger.info("  %s = %s", key, str(result[key]))
                 writer.write("%s = %s\n" % (key, str(result[key])))
 
     return results
@@ -369,10 +369,10 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False):
         ),
     )
     if os.path.exists(cached_features_file) and not args.overwrite_cache:
-        logger.info("Loading features from cached file %s", cached_features_file)
+#        logger.info("Loading features from cached file %s", cached_features_file)
         features = torch.load(cached_features_file)
     else:
-        logger.info("Creating features from dataset file at %s", args.data_dir)
+#        logger.info("Creating features from dataset file at %s", args.data_dir)
         label_list = processor.get_labels()
         if task in ["mnli", "mnli-mm"] and args.model_type in ["roberta", "xlmroberta"]:
             # HACK(label indices are swapped in RoBERTa pretrained model)
@@ -391,7 +391,7 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False):
             pad_token_segment_id=4 if args.model_type in ["xlnet"] else 0,
         )
         if args.local_rank in [-1, 0]:
-            logger.info("Saving features into cached file %s", cached_features_file)
+#            logger.info("Saving features into cached file %s", cached_features_file)
             torch.save(features, cached_features_file)
 
     if args.local_rank == 0 and not evaluate:
@@ -417,29 +417,29 @@ def main():
     parser.add_argument(
         "--data_dir",
         default=None,
-        type=str,
         required=True,
+        type=str,
         help="The input data dir. Should contain the .tsv files (or other data files) for the task.",
     )
     parser.add_argument(
         "--model_type",
-        default=None,
+        default='bert',
         type=str,
-        required=True,
+        required=False,
         help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()),
     )
     parser.add_argument(
         "--model_name_or_path",
-        default=None,
+        default='bert-base-uncased',
         type=str,
-        required=True,
+        required=False,
         help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),
     )
     parser.add_argument(
         "--task_name",
-        default=None,
+        default='MRPC',
         type=str,
-        required=True,
+        required=False,
         help="The name of the task to train selected in the list: " + ", ".join(processors.keys()),
     )
     parser.add_argument(
@@ -450,7 +450,7 @@ def main():
         help="The output directory where the model predictions and checkpoints will be written.",
     )
 
-    # Other parameters
+    # Other parametersd
     parser.add_argument(
         "--config_name", default="", type=str, help="Pretrained config name or path if not the same as model_name",
     )
@@ -473,13 +473,13 @@ def main():
         help="The maximum total input sequence length after tokenization. Sequences longer "
         "than this will be truncated, sequences shorter will be padded.",
     )
-    parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
-    parser.add_argument("--do_eval", action="store_true", help="Whether to run eval on the dev set.")
+    parser.add_argument("--do_train", default=True, action="store_true", help="Whether to run training.")
+    parser.add_argument("--do_eval", default=True, action="store_true", help="Whether to run eval on the dev set.")
     parser.add_argument(
-        "--evaluate_during_training", action="store_true", help="Run evaluation during training at each logging step.",
+            "--evaluate_during_training", default=True, action="store_true", help="Run evaluation during training at each logging step.",
     )
     parser.add_argument(
-        "--do_lower_case", action="store_true", help="Set this flag if you are using an uncased model.",
+            "--do_lower_case", default=True, action="store_true", help="Set this flag if you are using an uncased model.",
     )
 
     parser.add_argument(
@@ -509,8 +509,8 @@ def main():
     )
     parser.add_argument("--warmup_steps", default=0, type=int, help="Linear warmup over warmup_steps.")
 
-    parser.add_argument("--logging_steps", type=int, default=500, help="Log every X updates steps.")
-    parser.add_argument("--save_steps", type=int, default=500, help="Save checkpoint every X updates steps.")
+    parser.add_argument("--logging_steps", type=int, default=100, help="Log every X updates steps.")
+    parser.add_argument("--save_steps", type=int, default=1000, help="Save checkpoint every X updates steps.")
     parser.add_argument(
         "--eval_all_checkpoints",
         action="store_true",
@@ -518,7 +518,7 @@ def main():
     )
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
     parser.add_argument(
-        "--overwrite_output_dir", action="store_true", help="Overwrite the content of the output directory",
+            "--overwrite_output_dir", default=True, action="store_true", help="Overwrite the content of the output directory",
     )
     parser.add_argument(
         "--overwrite_cache", action="store_true", help="Overwrite the cached training and evaluation sets",
@@ -553,7 +553,6 @@ def main():
                 args.output_dir
             )
         )
-    print("here")
     # Setup distant debugging if needed
     if args.server_ip and args.server_port:
         # Distant debugging - see https://code.visualstudio.com/docs/python/debugging#_attach-to-a-local-script
@@ -604,7 +603,6 @@ def main():
     # Load pretrained model and tokenizer
     if args.local_rank not in [-1, 0]:
         torch.distributed.barrier()  # Make sure only the first process in distributed training will download model & vocab
-    print("Here")
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
     config = config_class.from_pretrained(
@@ -630,7 +628,7 @@ def main():
 
     model.to(args.device)
 
-    logger.info("Training/evaluation parameters %s", args)
+#    logger.info("Training/evaluation parameters %s", args)
 
     # Training
     if args.do_train:
@@ -644,7 +642,7 @@ def main():
         if not os.path.exists(args.output_dir) and args.local_rank in [-1, 0]:
             os.makedirs(args.output_dir)
 
-        logger.info("Saving model checkpoint to %s", args.output_dir)
+ #       logger.info("Saving model checkpoint to %s", args.output_dir)
         # Save a trained model, configuration and tokenizer using `save_pretrained()`.
         # They can then be reloaded using `from_pretrained()`
         model_to_save = (
@@ -670,8 +668,8 @@ def main():
             checkpoints = list(
                 os.path.dirname(c) for c in sorted(glob.glob(args.output_dir + "/**/" + WEIGHTS_NAME, recursive=True))
             )
-            logging.getLogger("transformers.modeling_utils").setLevel(logging.WARN)  # Reduce logging
-        logger.info("Evaluate the following checkpoints: %s", checkpoints)
+  #          logging.getLogger("transformers.modeling_utils").setLevel(logging.WARN)  # Reduce logging
+  #      logger.info("Evaluate the following checkpoints: %s", checkpoints)
         for checkpoint in checkpoints:
             global_step = checkpoint.split("-")[-1] if len(checkpoints) > 1 else ""
             prefix = checkpoint.split("/")[-1] if checkpoint.find("checkpoint") != -1 else ""
