@@ -8,7 +8,6 @@ probe/*.tsv
 probe/cache/*
 probe/output/*
 vector_similarity/cache/*
-vector_similarity/output/*
 #Model
 */pytorch_model.bin
 */*/pytorch_model.bin
@@ -38,3 +37,4 @@ bin-release/
 # Project specific ignores
 __pycache__
 .ipynb_checkpoints
+.DS_Store
