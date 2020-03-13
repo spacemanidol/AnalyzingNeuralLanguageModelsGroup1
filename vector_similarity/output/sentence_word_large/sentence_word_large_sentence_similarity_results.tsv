@@ -1,0 +1,7 @@
+average_cosine_sim_for_correctly_judged_paraphrases: 0.8569971099495888
+average_cosine_sim_for_correctly_judged_non_paraphrases: 0.949426515918711
+average_cosine_sim_for_incorrectly_judged_paraphrases: 0.9462961047178223
+average_cosine_sim_for_incorrectly_judged_non_paraphrases: 0.8110689409077168
+average_cosine_for_paraphrases: 0.9320082655549049
+average_cosine_for_non_paraphrases: 0.9383579099178314
+
