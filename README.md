@@ -1,13 +1,14 @@
 # AnalyzingNeuralLanguageModelsGroup1
-Group A for LING 575: Analyzing Neural Language Models [Win '20] 
+Group 1 for LING 575: Analyzing Neural Language Models [Win '20] 
 
 By Daniel Campos, Paige Finkelstein, Elena Khasanova, Wes Rose, and Josh Tanner
 
 
 Reddit data from [Reddit Comment Dataset](https://files.pushshift.io/reddit/comments/)
+
 Idiom Lexicon downloaded from [IBM Debater Datasets](https://www.bing.com/search?q=project+debater+datasets&PC=U316&FORM=CHROMN)
 
-### Idiom Paraphrase Detection Probing Classifier
+### Idiom Paraphrase Detection Probing Classifier Experiments
 `probe` directory
 
 ### Vector Similarity Experiments 
