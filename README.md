@@ -44,24 +44,24 @@ python3 /AnalyzingNeuralLanguageModelsGroup1/probe/run_probe.py --run test --inp
 
 Data folder contains all of the data that we used for our experiments, as well as results for some finetuning experiments. The key for the data files is as follows:
 
-Full MRPC 4076/1726: Full MRPC 4076/1726. Training Split\
-MRPC 1600/400: MRPC 1600/400. Training Split\
-MRPC 800/200: MRPC 800/200. Training Split\
-Our Idiom Data Random Split 1600/400: Our Idiom Data Random Split 1600/400. Training Split\
-Our Idiom Data Random Split 800/200: Our Idiom Data Random Split 800/200. Training Split\
-Our Idiom data disjunct 1600/400: Our Idiom data disjunct 1600/400. Training Split\
-Our Idiom data disjunct 800/200: Our Idiom data disjunct 800/200. Training Split\
-Our Idiom Data Method 1: Our Idiom Data Method 1. Training Split\
-Our Idiom Data Method 2: Our Idiom Data Method 2. Training Split\
-Full MRPC 4076/1726: Full MRPC 4076/1726. Dev Split\
-MRPC 1600/400: MRPC 1600/400. Dev Split\
-MRPC 800/200: MRPC 800/200. Dev Split\
-Our Idiom Data Random Split 1600/400: Our Idiom Data Random Split 1600/400. Dev Split\
-Our Idiom Data Random Split 800/200: Our Idiom Data Random Split 800/200. Dev Split\
-Our Idiom data disjunct 1600/400: Our Idiom data disjunct 1600/400. Dev Split\
-Our Idiom data disjunct 800/200: Our Idiom data disjunct 800/200. Dev Split\
-Our Idiom Data Method 1: Our Idiom Data Method 1. Dev Split\
-Our Idiom Data Method 2: Our Idiom Data Method 2. Dev Split\
+t1.tsv: Full MRPC 4076/1726. Training Split\
+t1,.tsv: MRPC 1600/400. Training Split\
+t1,,.tsv: MRPC 800/200. Training Split\
+t2.tsv: Our Idiom Data Random Split 1600/400. Training Split\
+t2,.tsv: Our Idiom Data Random Split 800/200. Training Split\
+t3.tsv: Our Idiom data disjunct 1600/400. Training Split\
+t3,.tsv: Our Idiom data disjunct 800/200. Training Split\
+t4.tsv: Our Idiom Data Method 1. Training Split\
+t5.tsv: Our Idiom Data Method 2. Training Split\
+d1.tsv: Full MRPC 4076/1726. Dev Split\
+d1,.tsv: MRPC 1600/400. Dev Split\
+d1,,.tsv: MRPC 800/200. Dev Split\
+d2.tsv: Our Idiom Data Random Split 1600/400. Dev Split\
+d2,.tsv: Our Idiom Data Random Split 800/200. Dev Split\
+d3.tsv: Our Idiom data disjunct 1600/400. Dev Split\
+d3,.tsv: Our Idiom data disjunct 800/200. Dev Split\
+d4.tsv: Our Idiom Data Method 1. Dev Split\
+d5.tsv: Our Idiom Data Method 2. Dev Split\
 
 ### Other Information
 
