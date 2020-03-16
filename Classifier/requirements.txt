@@ -1,7 +1,0 @@
-torch>=1.2.0
-transformers
-tensorboardX
-tensorboard
-torchtext
-spacy
-annoy
