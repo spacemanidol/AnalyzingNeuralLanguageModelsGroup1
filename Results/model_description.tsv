@@ -1,6 +1,0 @@
-Model Description	Model Location (microsoft)	Model Location (script)
-bert base uncased		bert-base-uncased
-bert base uncased, finetuned on MRPC	https://msmarco.blob.core.windows.net/other/pytorch_model.bin-1	/home2/warose91/ling575_nn/AnalyzingNeuralLanguageModelsGroup1/models/Exp1
-bert base uncased, finetuned on all our data	https://msmarco.blob.core.windows.net/other/pytorch_model.bin-4	/home2/warose91/ling575_nn/AnalyzingNeuralLanguageModelsGroup1/models/Exp4
-bert base uncased, finetuned on our data disjunct idioms	https://msmarco.blob.core.windows.net/other/pytorch_model.bin-6	/home2/warose91/ling575_nn/AnalyzingNeuralLanguageModelsGroup1/models/Exp6
-bert base uncased, finetuned on Elena's data	https://msmarco.blob.core.windows.net/other/pytorch_model.bin-17	/home2/warose91/ling575_nn/AnalyzingNeuralLanguageModelsGroup1/models/Exp17

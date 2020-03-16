@@ -1,8 +1,0 @@
-accuracy = 0.5325
-f1 = 0.6767676767676767
-precision = 0.9436619718309859
-recall = 0.5275590551181102
-num_true_pos = 201
-num_false_pos = 180
-num_true_neg = 12
-num_false_neg = 7
